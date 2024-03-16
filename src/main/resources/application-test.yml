@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/autoescola #criar banco autoescola
+    url: jdbc:postgresql://localhost:5432/RH #criar banco autoescola
     username: postgres #usuario local
     password: 852456 #senha local
   jpa:
