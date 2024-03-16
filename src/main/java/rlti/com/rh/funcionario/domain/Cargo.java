@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "FUNCIONARIO")
+@Entity(name = "CARGO")
 public class Cargo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

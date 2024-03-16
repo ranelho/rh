@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import rlti.com.rh.funcionario.application.api.FuncionarioRequest;
+import rlti.com.rh.utils.MatriculaGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,4 +59,14 @@ public class Funcionario {
     @LastModifiedDate
     LocalDateTime updatedAt;
 
+    public Funcionario(FuncionarioRequest request) {
+        this.nomeCompleto = request.nomeCompleto();
+        this.cpf = request.cpf();
+        this.dataNascimento = request.dataNascimento();
+        this.matricula = Long.valueOf(MatriculaGenerator.gerarMatricula());
+        this.grau = request.grau();
+        this.cargo = request.cargo();
+        this.sexo = request.sexo();
+        this.estadoCivil = request.estadoCivil();
+    }
 }
