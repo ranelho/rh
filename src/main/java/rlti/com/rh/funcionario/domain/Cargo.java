@@ -17,6 +17,7 @@ public class Cargo {
     private String nome;
     private GrauMinimo grauMinimo;
     private String descricao;
+    private Integer quantidadeDeHorasSemanais;
 
     @OneToOne
     @JoinColumn(name = "salario_base_id_salario_base")
