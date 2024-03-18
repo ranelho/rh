@@ -41,23 +41,30 @@ O sistema de RH terá as seguintes funcionalidades básicas:
 ## Contribuição
 
 Contribuições são bem-vindas! Se você tiver sugestões de melhorias, novas funcionalidades ou correções de bugs, sinta-se à vontade para abrir uma issue ou enviar um pull request.
+``` 
+https://github.com/ranelho/rh.git 
+```
 
-## Autor
+### Swagger
+```
+http://localhost:8080/rh/api/public/swagger-ui/index.html# 
+```
 
-Este projeto foi desenvolvido por [Ranelho Lacerda].
-
-## UC01
+#### UC01
 - CRUD Funcionário
 - CRUD Dependente
 - CRUD Contato
 
-# UC02
+#### UC02
 - CRUD Cargo
 - CRUD Salario Base
 
-# UC03
+#### UC03
 - CRUD Impostos
-  - INSS
-  - IRPF
+- INSS
+- IRPF
 
+## Autor
+
+Este projeto foi desenvolvido por [Ranelho Lacerda].
 
