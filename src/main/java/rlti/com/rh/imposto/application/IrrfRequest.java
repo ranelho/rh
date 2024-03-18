@@ -2,11 +2,11 @@ package rlti.com.rh.imposto.application;
 
 import java.time.LocalDate;
 
-public record InssRequest(
-        Double valorMinimo,
-        Double valorMaximo,
+public record IrrfRequest (
+        Double contribuicao,
         Double aliquota,
         LocalDate inicioVigencia,
         LocalDate fimVigencia,
-        Double deducao
-) {}
+        Double baseCalculo
+) {
+}

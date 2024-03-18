@@ -1,15 +1,34 @@
 package rlti.com.rh.imposto.application;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/imposto")
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
+
+@Tag(name = "Imposto",  description = "API de Imposto")
+@RequestMapping("/v1/imposto")
 public interface ImpostoApi {
 
-    @PostMapping(value = "/inss", produces = "application/json", consumes = "application/json"  )
-    @ResponseStatus(code = HttpStatus.CREATED, reason = "Inss criado com sucesso")
-    boolean criarInss (@Valid InssRequest inssRequest);
+    @PostMapping("/inss")
+    @ResponseStatus(CREATED)
+    @Operation(summary = "Cria um novo inss", description = "Cria um novo inss", tags = "Imposto")
+    boolean criarInss(@Valid @RequestBody InssRequest inssRequest);
+
+    @PostMapping("/irrf")
+    @ResponseStatus(CREATED)
+    @Operation(summary = "Cria um novo irrf", description = "Cria um novo irrf", tags = "Imposto")
+    boolean criarIrrf(@Valid @RequestBody IrrfRequest irrfRequest);
+
+    @GetMapping("/inss/{id}")
+    @ResponseStatus(OK)
+    @Operation(summary = "Consulta um inss", description = "Consulta um inss", tags = "Imposto")
+    InssResponse consultarInss(@PathVariable Long id);
+
+    @GetMapping("/irrf/{id}")
+    @ResponseStatus(OK)
+    @Operation(summary = "Consulta um irrf", description = "Consulta um irrf", tags = "Imposto")
+    IrrfResponse consultarIrrf(@PathVariable Long id);
 }
