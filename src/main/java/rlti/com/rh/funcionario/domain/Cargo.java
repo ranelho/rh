@@ -14,13 +14,12 @@ public class Cargo {
     @Column(name = "id_cargo", nullable = false)
     private Long idCargo;
 
-    private String nome;
+    private String nomeCargo;
     private GrauMinimo grauMinimo;
-    private String descricao;
+    private String descricaoCargo;
     private Integer quantidadeDeHorasSemanais;
 
     @OneToOne
     @JoinColumn(name = "salario_base_id_salario_base")
     private SalarioBase salarioBase;
-
 }
