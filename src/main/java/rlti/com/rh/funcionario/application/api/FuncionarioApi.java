@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RequestMapping("/api/v1/funcionario")
+@RequestMapping("/v1/funcionario")
 public interface FuncionarioApi {
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
+    @ResponseStatus(code = HttpStatus.CREATED, reason = "Funcionario criado com sucesso")
     boolean novoFuncionario(@Valid FuncionarioRequest request);
 }

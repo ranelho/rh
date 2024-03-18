@@ -18,9 +18,9 @@ public class SalarioBase {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_salario_base", nullable = false)
+
     private Long idSalarioBase;
-    private Double valor;
+    private Double valorSalario;
     @CreatedDate
     LocalDateTime createdAt;
-
 }
