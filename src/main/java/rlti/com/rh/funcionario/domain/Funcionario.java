@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import rlti.com.rh.contrato.domain.Contrato;
 import rlti.com.rh.funcionario.application.api.FuncionarioRequest;
 import rlti.com.rh.utils.Utils;
 
