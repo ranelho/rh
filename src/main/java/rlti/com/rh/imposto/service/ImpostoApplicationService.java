@@ -11,6 +11,9 @@ import rlti.com.rh.imposto.doman.Inss;
 import rlti.com.rh.imposto.doman.Irrf;
 import rlti.com.rh.imposto.repository.ImpostoRepository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -36,5 +39,10 @@ public class ImpostoApplicationService implements ImpostoService {
     @Override
     public IrrfResponse consultarIrrf(Long id) {
         return new IrrfResponse(impostoRepository.consultarIrrf(id));
+    }
+
+    @Override
+    public List<InssResponse> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia) {
+        return InssResponse.converte(impostoRepository.consultarAllInss(inicioVigencia, fimVigencia));
     }
 }

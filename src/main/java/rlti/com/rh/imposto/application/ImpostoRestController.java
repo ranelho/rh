@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 import rlti.com.rh.imposto.service.ImpostoService;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -30,5 +33,10 @@ public class ImpostoRestController implements ImpostoApi {
     @Override
     public IrrfResponse consultarIrrf(Long id) {
         return impostoService.consultarIrrf(id);
+    }
+
+    @Override
+    public List<InssResponse> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia) {
+        return impostoService.consultarAllInss(inicioVigencia, fimVigencia);
     }
 }

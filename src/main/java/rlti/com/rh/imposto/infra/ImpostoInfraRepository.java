@@ -9,6 +9,9 @@ import rlti.com.rh.imposto.doman.Inss;
 import rlti.com.rh.imposto.doman.Irrf;
 import rlti.com.rh.imposto.repository.ImpostoRepository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Repository
 @Slf4j
 @RequiredArgsConstructor
@@ -39,5 +42,11 @@ public class ImpostoInfraRepository implements ImpostoRepository {
     public Irrf consultarIrrf(Long id) {
         return irrfJpaRepository.findById(id)
                 .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Irrf não encontrado"));
+    }
+
+    @Override
+    public List<Inss> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia) {
+        return irrfJpaRepository.findByInicioVigenciaAndFimVigencia(inicioVigencia, fimVigencia);
+
     }
 }

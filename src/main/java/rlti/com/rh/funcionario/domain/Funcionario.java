@@ -6,10 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import rlti.com.rh.funcionario.application.api.FuncionarioRequest;
-import rlti.com.rh.utils.MatriculaGenerator;
+import rlti.com.rh.utils.Utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,12 +28,14 @@ public class Funcionario {
     private Long idFuncionario;
 
     private String nomeCompleto;
+    @CPF
+    @Column(unique = true)
     private String cpf;
     private LocalDate dataNascimento;
     @Column(unique = true)
     private Long matricula;
     @Enumerated(EnumType.STRING)
-    private GrauMinimo grau;
+    private GrauDeInstrucao grauDeInstrucao;
 
     @OneToOne
     private Cargo cargo;
@@ -60,13 +63,11 @@ public class Funcionario {
     LocalDateTime updatedAt;
 
     public Funcionario(FuncionarioRequest request) {
-        this.nomeCompleto = request.nomeCompleto();
+        this.nomeCompleto = Utils.formatName(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
-        this.matricula = Long.valueOf(MatriculaGenerator.gerarMatricula());
-        this.grau = request.grau();
-        this.cargo = request.cargo();
+        this.matricula = Long.valueOf(Utils.gerarMatricula());
+        this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
-        this.estadoCivil = request.estadoCivil();
     }
 }
