@@ -37,30 +37,31 @@ public class Funcionario {
     @Enumerated(EnumType.STRING)
     private GrauDeInstrucao grauDeInstrucao;
 
-    @OneToOne
-    private Cargo cargo;
-
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
     @Enumerated(EnumType.STRING)
     private EstadoCivil estadoCivil;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
-    @JsonIgnore
-    private List<Dependente> dependentes;
-
-    @OneToOne
-    private Contato contato;
-
-    @OneToOne
-    @JoinColumn(name = "formacao_id_formacao")
-    private Formacao formacao;
-
     @CreatedDate
     LocalDateTime createdAt;
     @LastModifiedDate
     LocalDateTime updatedAt;
+
+    @OneToOne
+    private Contato contato;
+
+    @OneToMany
+    private List<Contrato> contrato;
+
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
+    @JsonIgnore
+    private List<Dependente> dependentes;
+
+    @OneToMany
+    @JoinColumn(name = "formacao_id_formacao")
+    private List<Formacao> formacao;
+
 
     public Funcionario(FuncionarioRequest request) {
         this.nomeCompleto = Utils.formatName(request.nomeCompleto());
