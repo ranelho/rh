@@ -23,4 +23,5 @@ public class SalarioBase {
     private Double valorSalario;
     @CreatedDate
     LocalDateTime createdAt;
+    private Long nivel;
 }
