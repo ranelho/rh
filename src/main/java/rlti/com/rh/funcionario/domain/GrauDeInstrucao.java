@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum GrauMinimo {
+public enum GrauDeInstrucao {
     ENSINO_FUNDAMENTAL("Ensino Fundamental"),
     ENSINO_MEDIO("Ensino Médio"),
     ENSINO_TECNICO("Ensino Técnico"),

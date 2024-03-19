@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "IRPF")
+@Entity(name = "Irrf")
 public class Irrf {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -15,7 +15,7 @@ public class Cargo {
     private Long idCargo;
 
     private String nomeCargo;
-    private GrauMinimo grauMinimo;
+    private GrauDeInstrucao grauDeInstrucao;
     private String descricaoCargo;
     private Integer quantidadeDeHorasSemanais;
 
