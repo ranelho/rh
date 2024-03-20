@@ -12,7 +12,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-@Tag(name = "Imposto",  description = "API de Imposto")
+@Tag(name = "Imposto", description = "API de Imposto")
 @RequestMapping("/v1/imposto")
 public interface ImpostoApi {
 
@@ -40,6 +40,6 @@ public interface ImpostoApi {
     @ResponseStatus(OK)
     @Operation(summary = "Consulta todos os inss", description = "Consulta todos os inss", tags = "Imposto")
     List<InssResponse> consultarAllInss(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicioVigencia,
-                                     @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fimVigencia);
+                                        @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fimVigencia);
 
 }

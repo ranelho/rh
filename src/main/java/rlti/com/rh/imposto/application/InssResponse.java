@@ -13,7 +13,6 @@ public record InssResponse(
         LocalDate fimVigencia,
         Double deducao
 ) {
-
     public InssResponse(Inss inss) {
         this(inss.getValorMinimo(), inss.getValorMaximo(), inss.getAliquota(), inss.getInicioVigencia(),
                 inss.getFimVigencia(), inss.getDeducao());
