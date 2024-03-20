@@ -10,12 +10,13 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import rlti.com.rh.contrato.domain.Contrato;
-import rlti.com.rh.funcionario.application.api.FuncionarioRequest;
-import rlti.com.rh.utils.Utils;
+import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static rlti.com.rh.utils.Utils.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -63,12 +64,11 @@ public class Funcionario {
     @JoinColumn(name = "formacao_id_formacao")
     private List<Formacao> formacao;
 
-
     public Funcionario(FuncionarioRequest request) {
-        this.nomeCompleto = Utils.formatName(request.nomeCompleto());
+        this.nomeCompleto = formatName(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
-        this.matricula = Long.valueOf(Utils.gerarMatricula());
+        this.matricula = Long.valueOf(gerarMatricula());
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
     }

@@ -1,4 +1,4 @@
-package rlti.com.rh.funcionario.application.api;
+package rlti.com.rh.funcionario.application.api.request;
 
 import lombok.Builder;
 import org.hibernate.validator.constraints.br.CPF;

@@ -4,6 +4,5 @@ public enum MotivoDesligamento {
     DEMISSAO,
     FALECIMENTO,
     JUSTA_CAUSA,
-    A_PEDIDO,
-    DOENCA
+    A_PEDIDO
 }

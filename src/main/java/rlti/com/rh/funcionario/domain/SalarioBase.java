@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import rlti.com.rh.funcionario.application.api.request.SalarioBaseRequest;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -18,10 +20,16 @@ public class SalarioBase {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_salario_base", nullable = false)
-
     private Long idSalarioBase;
-    private Double valorSalario;
+
+    private BigDecimal valorSalario;
+    private Long nivel;
+
     @CreatedDate
     LocalDateTime createdAt;
-    private Long nivel;
+
+    public SalarioBase(SalarioBaseRequest salarioBaseRequest) {
+        this.valorSalario = salarioBaseRequest.valorSalario();
+        this.nivel = salarioBaseRequest.nivel();
+    }
 }
