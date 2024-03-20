@@ -33,3 +33,4 @@ public class SalarioBase {
         this.nivel = salarioBaseRequest.nivel();
     }
 }
+
