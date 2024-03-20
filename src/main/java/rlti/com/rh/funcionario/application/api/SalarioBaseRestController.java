@@ -12,6 +12,7 @@ import rlti.com.rh.funcionario.service.SalarioBaseService;
 @Slf4j
 @RequiredArgsConstructor
 public class SalarioBaseRestController implements SalarioBaseApi {
+
     private final SalarioBaseService salarioBaseService;
 
     @Override
@@ -20,5 +21,4 @@ public class SalarioBaseRestController implements SalarioBaseApi {
         SalarioBase salarioBase = salarioBaseService.novoSalarioBase(request);
         return SalarioBaseIdResponse.builder().idSalarioBase(salarioBase.getIdSalarioBase()).build();
     }
-
 }

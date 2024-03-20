@@ -5,11 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import rlti.com.rh.funcionario.application.api.request.CargoRequest;
 import rlti.com.rh.funcionario.application.api.response.CargoIdResponse;
-import rlti.com.rh.funcionario.application.api.response.SalarioBaseIdResponse;
 import rlti.com.rh.funcionario.domain.Cargo;
 import rlti.com.rh.funcionario.domain.SalarioBase;
 import rlti.com.rh.funcionario.repository.CargoRepository;
-import rlti.com.rh.funcionario.repository.SalarioBaseRepository;
 
 @Service
 @Slf4j

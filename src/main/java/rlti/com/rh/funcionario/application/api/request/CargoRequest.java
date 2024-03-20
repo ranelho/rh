@@ -1,7 +1,6 @@
 package rlti.com.rh.funcionario.application.api.request;
 
 import rlti.com.rh.funcionario.domain.GrauDeInstrucao;
-import rlti.com.rh.funcionario.domain.SalarioBase;
 
 public record CargoRequest(
         String nomeCargo,

@@ -8,8 +8,6 @@ import rlti.com.rh.funcionario.domain.SalarioBase;
 import rlti.com.rh.funcionario.repository.SalarioBaseRepository;
 import rlti.com.rh.handler.APIException;
 
-import java.util.Optional;
-
 @Repository
 @Slf4j
 @RequiredArgsConstructor
