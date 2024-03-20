@@ -22,30 +22,35 @@ public class ImpostoInfraRepository implements ImpostoRepository {
 
     @Override
     public boolean criasInss(Inss inss) {
+        log.info("ImpostoInfraRepository.criasInss");
         inssJpaRepository.save(inss);
         return true;
     }
 
     @Override
     public boolean criarIrrf(Irrf irrf) {
+        log.info("ImpostoInfraRepository.criarIrrf");
         irrfJpaRepository.save(irrf);
         return true;
     }
 
     @Override
     public Inss consultarInss(Long id) {
+        log.info("ImpostoInfraRepository.consultarInss");
         return inssJpaRepository.findById(id)
                 .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Inss não encontrado"));
     }
 
     @Override
     public Irrf consultarIrrf(Long id) {
+        log.info("ImpostoInfraRepository.consultarIrrf");
         return irrfJpaRepository.findById(id)
                 .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Irrf não encontrado"));
     }
 
     @Override
     public List<Inss> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia) {
+        log.info("ImpostoInfraRepository.consultarAllInss");
         return irrfJpaRepository.findByInicioVigenciaAndFimVigencia(inicioVigencia, fimVigencia);
 
     }
