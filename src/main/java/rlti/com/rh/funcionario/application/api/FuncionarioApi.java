@@ -1,21 +1,30 @@
 package rlti.com.rh.funcionario.application.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
 import rlti.com.rh.funcionario.application.api.response.FuncionarioIdResponse;
+import rlti.com.rh.funcionario.application.api.response.FuncionarioResponse;
+
+import java.util.List;
 
 @Tag(name = "Funcionário", description = "API de Funcionário")
-@RequestMapping("/v1/funcionario")
+@RequestMapping("/v1/funcionarios")
 public interface FuncionarioApi {
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED, reason = "Funcionario criado com sucesso")
+    @ResponseStatus(code = HttpStatus.CREATED)
     FuncionarioIdResponse novoFuncionario(@Valid @RequestBody FuncionarioRequest request);
 
+    @GetMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "Consulta um funcionario", description = "Consulta um funcionario", tags = "Funcionario")
+    FuncionarioResponse findFuncionarioById(@PathVariable("id") Long id);
+
+    @GetMapping("/nome/{nome}")
+    @ResponseStatus(code = HttpStatus.OK)
+    List<FuncionarioResponse> findFuncionariosByNome(@PathVariable("nome") String nome);
 }

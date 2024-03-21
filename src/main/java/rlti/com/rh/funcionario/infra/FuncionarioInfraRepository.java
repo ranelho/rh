@@ -9,7 +9,7 @@ import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.funcionario.repository.FuncionarioRepository;
 import rlti.com.rh.handler.APIException;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 @Slf4j
@@ -24,5 +24,17 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
         }catch (DataIntegrityViolationException e) {
             throw APIException.build(HttpStatus.BAD_REQUEST,"Funcionário já cadastrado, CPF: " + funcionario.getNomeCompleto());
         }
+    }
+
+    @Override
+    public Funcionario findFuncionarioById(Long id) {
+        return funcionarioJpaRepository.findById(id)
+                .orElseThrow(()-> APIException.build(HttpStatus.BAD_REQUEST, "Funcionário não encontrado!"));
+    }
+
+    @Override
+    public List<Funcionario> findFuncionariosByNome(String nome) {
+        log.info("Buscando funcionario pelo nome: {}", nome);
+        return funcionarioJpaRepository.findByNomeCompletoContainingIgnoreCase(nome.toUpperCase());
     }
 }
