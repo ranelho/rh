@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import rlti.com.rh.funcionario.domain.enums.GrauParentesco;
 
 import java.time.LocalDate;
 

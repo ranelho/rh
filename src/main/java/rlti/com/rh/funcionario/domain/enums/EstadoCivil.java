@@ -1,4 +1,4 @@
-package rlti.com.rh.funcionario.domain;
+package rlti.com.rh.funcionario.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
