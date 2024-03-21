@@ -9,8 +9,12 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import rlti.com.rh.contrato.domain.Contrato;
 import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
+import rlti.com.rh.funcionario.domain.enums.EstadoCivil;
+import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
+import rlti.com.rh.funcionario.domain.enums.Sexo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +26,7 @@ import static rlti.com.rh.utils.Utils.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 @Entity(name = "FUNCIONARIO")
 public class Funcionario {
     @Id
@@ -54,6 +59,7 @@ public class Funcionario {
     private Contato contato;
 
     @OneToMany
+    @JsonIgnore
     private List<Contrato> contrato;
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
@@ -61,6 +67,7 @@ public class Funcionario {
     private List<Dependente> dependentes;
 
     @OneToMany
+    @JsonIgnore
     @JoinColumn(name = "formacao_id_formacao")
     private List<Formacao> formacao;
 

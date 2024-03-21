@@ -3,6 +3,7 @@ package rlti.com.rh.funcionario.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import rlti.com.rh.funcionario.application.api.request.CargoRequest;
+import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
 
 @AllArgsConstructor
 @NoArgsConstructor
