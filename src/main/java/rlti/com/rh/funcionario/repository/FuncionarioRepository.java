@@ -8,4 +8,6 @@ public interface FuncionarioRepository {
     Funcionario save(Funcionario funcionario);
     Funcionario findFuncionarioById(Long idFuncionario);
     List<Funcionario> findFuncionariosByNome(String nome);
+    Funcionario findFuncionarioByMatricula(String matricula);
+    Funcionario findByCpf(String cpf);
 }

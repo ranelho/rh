@@ -1,7 +1,7 @@
-package rlti.com.rh.funcionario.infra;
+package rlti.com.rh.contrato.infra;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import rlti.com.rh.funcionario.domain.Cargo;
+import rlti.com.rh.contrato.domain.Cargo;
 
 import java.util.Optional;
 

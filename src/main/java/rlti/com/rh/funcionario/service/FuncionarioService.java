@@ -10,4 +10,8 @@ public interface FuncionarioService {
     FuncionarioIdResponse novoFuncionario(FuncionarioRequest request);
     FuncionarioResponse findFuncionarioById(Long idFuncionario);
     List<FuncionarioResponse> findFuncionariosByNome(String nome);
+    void updateFuncionario(Long id, FuncionarioRequest request);
+    void addFuncionarioContrato(String matricula, Long idCargo);
+    FuncionarioResponse findFuncionarioByMatricula(String matricula);
+    FuncionarioResponse findFuncionarioByCpf(String cpf);
 }

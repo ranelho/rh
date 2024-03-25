@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import rlti.com.rh.contrato.domain.Contrato;
 import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
 import rlti.com.rh.funcionario.domain.enums.EstadoCivil;
 import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
@@ -20,7 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static rlti.com.rh.utils.Utils.*;
+import static rlti.com.rh.utils.Utils.formatName;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +29,8 @@ import static rlti.com.rh.utils.Utils.*;
 @Entity(name = "FUNCIONARIO")
 public class Funcionario {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "funcionario_seq_generator")
+    @SequenceGenerator(name="funcionario_seq_generator", sequenceName = "funcionario_sequence", allocationSize=1)
     @Column(name = "id_funcionario", nullable = false)
     private Long idFuncionario;
 
@@ -39,8 +39,7 @@ public class Funcionario {
     @Column(unique = true)
     private String cpf;
     private LocalDate dataNascimento;
-    @Column(unique = true)
-    private Long matricula;
+
     @Enumerated(EnumType.STRING)
     private GrauDeInstrucao grauDeInstrucao;
 
@@ -58,9 +57,9 @@ public class Funcionario {
     @OneToOne
     private Contato contato;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
     @JsonIgnore
-    private List<Contrato> contrato;
+    private List<Matricula> matriculas;
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
     @JsonIgnore
@@ -75,8 +74,19 @@ public class Funcionario {
         this.nomeCompleto = formatName(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
-        this.matricula = Long.valueOf(gerarMatricula());
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
+    }
+
+    public void update(FuncionarioRequest request) {
+        this.nomeCompleto = formatName(request.nomeCompleto());
+        this.cpf = request.cpf();
+        this.dataNascimento = request.dataNascimento();
+        this.grauDeInstrucao = request.grauDeInstrucao();
+        this.sexo = request.sexo();
+    }
+
+    public void addMatricula(Matricula matricula) {
+        this.matriculas.add(matricula);
     }
 }

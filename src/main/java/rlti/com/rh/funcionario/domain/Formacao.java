@@ -16,7 +16,8 @@ import java.time.LocalDate;
 @Entity(name = "FORMACAO")
 public class Formacao {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "formacao_seq_generator")
+    @SequenceGenerator(name="formacao_seq_generator", sequenceName = "formacao_sequence", allocationSize=1)
     @Column(name = "id_formacao", nullable = false)
     private Long idFormacao;
 

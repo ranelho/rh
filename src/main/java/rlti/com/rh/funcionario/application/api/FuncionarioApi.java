@@ -27,4 +27,21 @@ public interface FuncionarioApi {
     @GetMapping("/nome/{nome}")
     @ResponseStatus(code = HttpStatus.OK)
     List<FuncionarioResponse> findFuncionariosByNome(@PathVariable("nome") String nome);
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    void updateFuncionario(@PathVariable("id") Long id,@Valid @RequestBody FuncionarioRequest request);
+
+    @PatchMapping("/{id}/cargo/{idContrato}")
+    @ResponseStatus(code = HttpStatus.OK)
+    void addFuncionarioContrato(@PathVariable("matricula") String matricula, @PathVariable("idContrato") Long idContrato);
+
+    @GetMapping("/matricula/{matricula}")
+    @ResponseStatus(code = HttpStatus.OK)
+    FuncionarioResponse findFuncionarioByMatricula(@PathVariable("matricula") String matricula);
+
+    @GetMapping("/cpf/{cpf}")
+    @ResponseStatus(code = HttpStatus.OK)
+    FuncionarioResponse findFuncionarioByCpf(@PathVariable("cpf") String cpf);
+
 }

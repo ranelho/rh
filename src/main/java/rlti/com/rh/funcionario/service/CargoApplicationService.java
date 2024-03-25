@@ -3,12 +3,12 @@ package rlti.com.rh.funcionario.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.funcionario.application.api.request.CargoRequest;
-import rlti.com.rh.funcionario.application.api.response.CargoIdResponse;
-import rlti.com.rh.funcionario.application.api.response.CargoResponse;
-import rlti.com.rh.funcionario.domain.Cargo;
+import rlti.com.rh.contrato.application.api.request.CargoRequest;
+import rlti.com.rh.contrato.application.api.response.CargoIdResponse;
+import rlti.com.rh.contrato.application.api.response.CargoResponse;
+import rlti.com.rh.contrato.domain.Cargo;
 import rlti.com.rh.funcionario.domain.SalarioBase;
-import rlti.com.rh.funcionario.repository.CargoRepository;
+import rlti.com.rh.contrato.repository.CargoRepository;
 
 @Service
 @Slf4j

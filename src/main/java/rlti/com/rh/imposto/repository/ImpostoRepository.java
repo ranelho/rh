@@ -4,6 +4,7 @@ import rlti.com.rh.imposto.doman.Inss;
 import rlti.com.rh.imposto.doman.Irrf;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 public interface ImpostoRepository {
@@ -12,4 +13,5 @@ public interface ImpostoRepository {
     Inss consultarInss(Long id);
     Irrf consultarIrrf(Long id);
     List<Inss> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia);
+    List<Inss> findVigencia(YearMonth yearMonth);
 }
