@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 @Entity(name = "SALARIO_BASE")
 public class SalarioBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salario_base_seq_generator")
+    @SequenceGenerator(name="salario_base_seq_generator", sequenceName = "salario_base_sequence", allocationSize=1)
     @Column(name = "id_salario_base", nullable = false)
     private Long idSalarioBase;
 

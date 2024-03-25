@@ -31,4 +31,24 @@ public class FuncionarioRestController implements FuncionarioApi {
     public List<FuncionarioResponse> findFuncionariosByNome(String nome) {
         return funcionarioService.findFuncionariosByNome(nome);
     }
+
+    @Override
+    public void updateFuncionario(Long id, FuncionarioRequest request) {
+        funcionarioService.updateFuncionario(id, request);
+    }
+
+    @Override
+    public void addFuncionarioContrato(String matricula, Long idContrato) {
+        funcionarioService.addFuncionarioContrato(matricula, idContrato);
+    }
+
+    @Override
+    public FuncionarioResponse findFuncionarioByMatricula(String matricula) {
+        return funcionarioService.findFuncionarioByMatricula(matricula);
+    }
+
+    @Override
+    public FuncionarioResponse findFuncionarioByCpf(String cpf) {
+        return funcionarioService.findFuncionarioByCpf(cpf);
+    }
 }

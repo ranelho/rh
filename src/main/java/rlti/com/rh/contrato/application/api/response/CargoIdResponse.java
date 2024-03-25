@@ -1,4 +1,4 @@
-package rlti.com.rh.funcionario.application.api.response;
+package rlti.com.rh.contrato.application.api.response;
 
 import lombok.Builder;
 import lombok.Getter;

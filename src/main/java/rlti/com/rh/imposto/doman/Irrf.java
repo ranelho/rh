@@ -8,6 +8,7 @@ import lombok.Setter;
 import rlti.com.rh.imposto.application.IrrfRequest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +17,8 @@ import java.time.LocalDate;
 @Entity(name = "Irrf")
 public class Irrf {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "irpf_seq_generator")
+    @SequenceGenerator(name="irpf_seq_generator", sequenceName = "irpf_sequence", allocationSize=1)
     @Column(name = "id_irpf", nullable = false)
     private Long idIrpf;
 
@@ -33,4 +35,6 @@ public class Irrf {
         this.fimVigencia = irrfRequest.fimVigencia();
         this.baseCalculo = irrfRequest.baseCalculo();
     }
+
+
 }

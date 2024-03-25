@@ -13,7 +13,8 @@ import lombok.Setter;
 @Entity(name = "CONTATO")
 public class Contato {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contato_seq_generator")
+    @SequenceGenerator(name="contato_seq_generator", sequenceName = "contato_sequence", allocationSize=1)
     @Column(name = "id_contato", nullable = false)
     private Long idContato;
 

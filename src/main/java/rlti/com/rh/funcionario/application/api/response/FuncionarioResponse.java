@@ -1,6 +1,7 @@
 package rlti.com.rh.funcionario.application.api.response;
 
 import rlti.com.rh.funcionario.domain.Funcionario;
+import rlti.com.rh.funcionario.domain.Matricula;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +11,7 @@ public record FuncionarioResponse(
       String nomeCompleto,
       String cpf,
       LocalDate dataNascimento,
-      Long matricula
+      List<MatriculaResponse> matriculas
 ) {
     public FuncionarioResponse(Funcionario funcionario) {
         this(
@@ -18,7 +19,7 @@ public record FuncionarioResponse(
                 funcionario.getNomeCompleto(),
                 funcionario.getCpf(),
                 funcionario.getDataNascimento(),
-                funcionario.getMatricula()
+                MatriculaResponse.converte(funcionario.getMatriculas())
         );
     }
     public static List<FuncionarioResponse> converte(List<Funcionario> funcionarios) {

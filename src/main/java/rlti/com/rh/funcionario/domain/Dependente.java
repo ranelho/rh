@@ -17,7 +17,8 @@ import java.time.LocalDate;
 @Entity(name = "DEPENDENTE")
 public class Dependente {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dependente_seq_generator")
+    @SequenceGenerator(name="dependente_seq_generator", sequenceName = "dependente_sequence", allocationSize=1)
     @Column(name = "id_dependente", nullable = false)
     private Long idDependente;
 
