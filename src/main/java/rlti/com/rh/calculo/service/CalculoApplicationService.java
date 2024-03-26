@@ -35,12 +35,11 @@ public class CalculoApplicationService implements CalculoService {
     public SimulacaoInssResponse simularCalculoInss(SimulacaoInssRequest request) {
         Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(request.matricula()));
         List<Inss> inss = impostoRepository.findVigenciaInss(request.mesAno());
-        BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
-        InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
         List<Irrf> irrf = impostoRepository.findVigenciaIrrf(request.mesAno());
         int dependentes = dependenteRepository.countDependenteFuncionario(contrato.getMatricula().getFuncionario());
+        BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
+        InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
         IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
-        log.info(irResult.toString());
         return new SimulacaoInssResponse(contrato, inssResult, irResult,request.mesAno());
     }
 }
