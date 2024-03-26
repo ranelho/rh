@@ -1,7 +1,7 @@
 package rlti.com.rh.calculo.service;
 
-import rlti.com.rh.calculo.request.SimulacaoInssRequest;
-import rlti.com.rh.calculo.response.SimulacaoInssResponse;
+import rlti.com.rh.calculo.application.api.request.SimulacaoInssRequest;
+import rlti.com.rh.calculo.application.api.response.SimulacaoInssResponse;
 
 public interface CalculoService {
     SimulacaoInssResponse simularCalculoInss(SimulacaoInssRequest request);

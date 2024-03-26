@@ -1,4 +1,4 @@
-package rlti.com.rh.calculo.request;
+package rlti.com.rh.calculo.application.api.request;
 
 import java.time.YearMonth;
 

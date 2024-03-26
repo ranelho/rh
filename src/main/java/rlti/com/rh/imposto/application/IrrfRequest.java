@@ -1,12 +1,14 @@
 package rlti.com.rh.imposto.application;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record IrrfRequest (
-        Double contribuicao,
         Double aliquota,
         LocalDate inicioVigencia,
         LocalDate fimVigencia,
-        Double baseCalculo
+        BigDecimal deducao,
+        BigDecimal valorMaximo,
+        BigDecimal valorMinimo
 ) {
 }

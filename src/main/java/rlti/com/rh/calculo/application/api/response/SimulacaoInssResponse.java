@@ -1,6 +1,7 @@
-package rlti.com.rh.calculo.response;
+package rlti.com.rh.calculo.application.api.response;
 
 import rlti.com.rh.calculo.InssResult;
+import rlti.com.rh.calculo.IrResult;
 import rlti.com.rh.contrato.domain.Contrato;
 
 import java.math.BigDecimal;
@@ -18,10 +19,11 @@ public record SimulacaoInssResponse(
         BigDecimal salarioBruto,
         double aliquota,
         BigDecimal valorDescontoInss,
+        BigDecimal valorDescontoIrrf,
         BigDecimal fgts,
         BigDecimal salarioLiquido
 ) {
-    public SimulacaoInssResponse(Contrato contrato, InssResult inssResult, YearMonth yearMonth) {
+    public SimulacaoInssResponse(Contrato contrato, InssResult inssResult, IrResult irResult, YearMonth yearMonth) {
         this(
                 contrato.getMatricula().getFuncionario().getNomeCompleto(),
                 contrato.getMatricula().getFuncionario().getCpf(),
@@ -33,8 +35,9 @@ public record SimulacaoInssResponse(
                 inssResult.getSalarioBruto(),
                 inssResult.getAliquota(),
                 inssResult.getInssCalculado(),
+                irResult.getIrrfCalculado(),
                 inssResult.getSalarioBruto().multiply(BigDecimal.valueOf(0.08)), //fgts 8%
-                inssResult.getValorLiquido()
+                irResult.getSalarioLiquido()
         );
     }
 }
