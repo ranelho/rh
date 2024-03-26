@@ -1,6 +1,7 @@
 package rlti.com.rh.funcionario.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Contato {
     @Column(name = "id_contato", nullable = false)
     private Long idContato;
 
+    @Email
     private String email;
     private String telefone;
     private String rua;

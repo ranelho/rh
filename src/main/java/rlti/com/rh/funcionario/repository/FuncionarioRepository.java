@@ -5,7 +5,7 @@ import rlti.com.rh.funcionario.domain.Funcionario;
 import java.util.List;
 
 public interface FuncionarioRepository {
-    Funcionario save(Funcionario funcionario);
+    Funcionario salvaFuncionario(Funcionario funcionario);
     Funcionario findFuncionarioById(Long idFuncionario);
     List<Funcionario> findFuncionariosByNome(String nome);
     Funcionario findFuncionarioByMatricula(String matricula);

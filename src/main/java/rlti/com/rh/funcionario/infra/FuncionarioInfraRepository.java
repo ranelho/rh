@@ -19,7 +19,7 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
     private final FuncionarioJpaRepository funcionarioJpaRepository;
 
     @Override
-    public Funcionario save(Funcionario funcionario) {
+    public Funcionario salvaFuncionario(Funcionario funcionario) {
         try {
             return funcionarioJpaRepository.save(funcionario);
         }catch (DataIntegrityViolationException e) {

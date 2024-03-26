@@ -3,14 +3,12 @@ package rlti.com.rh.funcionario.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.contrato.domain.Contrato;
 import rlti.com.rh.contrato.repository.ContratoRepository;
 import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
 import rlti.com.rh.funcionario.application.api.response.FuncionarioIdResponse;
 import rlti.com.rh.funcionario.application.api.response.FuncionarioResponse;
 import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.contrato.repository.CargoRepository;
-import rlti.com.rh.funcionario.domain.Matricula;
 import rlti.com.rh.funcionario.repository.FuncionarioRepository;
 import rlti.com.rh.funcionario.repository.MatriculaRepository;
 
@@ -28,7 +26,7 @@ public class FuncionarioApplicationService implements FuncionarioService {
 
     @Override
     public FuncionarioIdResponse novoFuncionario(FuncionarioRequest request) {
-        Funcionario funcionario = funcionarioRepository.save(new Funcionario(request));
+        Funcionario funcionario = funcionarioRepository.salvaFuncionario(new Funcionario(request));
         return FuncionarioIdResponse.builder().id(funcionario.getIdFuncionario()).build();
     }
 
@@ -48,7 +46,7 @@ public class FuncionarioApplicationService implements FuncionarioService {
     public void updateFuncionario(Long id, FuncionarioRequest request) {
         Funcionario funcionario = funcionarioRepository.findFuncionarioById(id);
         funcionario.update(request);
-        funcionarioRepository.save(funcionario);
+        funcionarioRepository.salvaFuncionario(funcionario);
     }
 
     @Override

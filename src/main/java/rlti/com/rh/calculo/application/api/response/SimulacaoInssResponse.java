@@ -17,13 +17,15 @@ public record SimulacaoInssResponse(
         String setor,
         String mesCompetencia,
         BigDecimal salarioBruto,
+        int quantidadeDependentes,
         double aliquota,
         BigDecimal valorDescontoInss,
         BigDecimal valorDescontoIrrf,
         BigDecimal fgts,
         BigDecimal salarioLiquido
 ) {
-    public SimulacaoInssResponse(Contrato contrato, InssResult inssResult, IrResult irResult, YearMonth yearMonth) {
+    public SimulacaoInssResponse(Contrato contrato, InssResult inssResult, IrResult irResult,
+                                 YearMonth yearMonth, int quantidadeDependentes) {
         this(
                 contrato.getMatricula().getFuncionario().getNomeCompleto(),
                 contrato.getMatricula().getFuncionario().getCpf(),
@@ -33,6 +35,7 @@ public record SimulacaoInssResponse(
                 contrato.getSetor().getNomeSetor(),
                 yearMonth.toString(),
                 inssResult.getSalarioBruto(),
+                quantidadeDependentes,
                 inssResult.getAliquota(),
                 inssResult.getInssCalculado(),
                 irResult.getIrrfCalculado(),

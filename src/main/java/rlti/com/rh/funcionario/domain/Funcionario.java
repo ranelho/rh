@@ -2,6 +2,7 @@ package rlti.com.rh.funcionario.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,25 +35,22 @@ public class Funcionario {
     @Column(name = "id_funcionario", nullable = false)
     private Long idFuncionario;
 
+    @NotNull
     private String nomeCompleto;
     @CPF
     @Column(unique = true)
     private String cpf;
     private LocalDate dataNascimento;
-
+    private String rg;
+    private LocalDate dataEmissaoRg;
+    private String ctps;
+    private String pis;
     @Enumerated(EnumType.STRING)
     private GrauDeInstrucao grauDeInstrucao;
-
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-
     @Enumerated(EnumType.STRING)
     private EstadoCivil estadoCivil;
-
-    @CreatedDate
-    LocalDateTime createdAt;
-    @LastModifiedDate
-    LocalDateTime updatedAt;
 
     @OneToOne
     private Contato contato;
@@ -69,6 +67,11 @@ public class Funcionario {
     @JsonIgnore
     @JoinColumn(name = "formacao_id_formacao")
     private List<Formacao> formacao;
+
+    @CreatedDate
+    LocalDateTime createdAt;
+    @LastModifiedDate
+    LocalDateTime updatedAt;
 
     public Funcionario(FuncionarioRequest request) {
         this.nomeCompleto = formatName(request.nomeCompleto());
@@ -88,5 +91,9 @@ public class Funcionario {
 
     public void addMatricula(Matricula matricula) {
         this.matriculas.add(matricula);
+    }
+
+    public void adDependente(Dependente dependente) {
+        this.dependentes.add(dependente);
     }
 }
