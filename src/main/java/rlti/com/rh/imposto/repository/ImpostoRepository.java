@@ -13,5 +13,6 @@ public interface ImpostoRepository {
     Inss consultarInss(Long id);
     Irrf consultarIrrf(Long id);
     List<Inss> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia);
-    List<Inss> findVigencia(YearMonth yearMonth);
+    List<Inss> findVigenciaInss(YearMonth yearMonth);
+    List<Irrf> findVigenciaIrrf(YearMonth yearMonth);
 }

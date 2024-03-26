@@ -1,9 +1,9 @@
-package rlti.com.rh.calculo;
+package rlti.com.rh.calculo.application.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import rlti.com.rh.calculo.request.SimulacaoInssRequest;
-import rlti.com.rh.calculo.response.SimulacaoInssResponse;
+import rlti.com.rh.calculo.application.api.request.SimulacaoInssRequest;
+import rlti.com.rh.calculo.application.api.response.SimulacaoInssResponse;
 
 @RequestMapping("/v1/simular-calculo-inss")
 public interface CaculoApi {

@@ -16,5 +16,5 @@ public interface IrrfJpaRepository  extends JpaRepository<Irrf, Long> {
     @Query(value = "SELECT * FROM Irrf WHERE " +
             "inicio_vigencia <= to_date(?1 || '-01', 'YYYY-MM-DD') + interval '1 month' AND " +
             "fim_vigencia >= to_date(?1 || '-01', 'YYYY-MM-DD')", nativeQuery = true)
-    List<Irrf> findVigencia(String yearMonth);
+    List<Irrf> findVigenciaIrrf(String yearMonth);
 }
