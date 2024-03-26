@@ -40,6 +40,6 @@ public class CalculoApplicationService implements CalculoService {
         BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
         InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
         IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
-        return new SimulacaoInssResponse(contrato, inssResult, irResult,request.mesAno());
+        return new SimulacaoInssResponse(contrato, inssResult, irResult,request.mesAno(), dependentes);
     }
 }

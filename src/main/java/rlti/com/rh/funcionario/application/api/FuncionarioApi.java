@@ -21,7 +21,6 @@ public interface FuncionarioApi {
 
     @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    @Operation(summary = "Consulta um funcionario", description = "Consulta um funcionario", tags = "Funcionario")
     FuncionarioResponse findFuncionarioById(@PathVariable("id") Long id);
 
     @GetMapping("/nome/{nome}")
@@ -43,5 +42,4 @@ public interface FuncionarioApi {
     @GetMapping("/cpf/{cpf}")
     @ResponseStatus(code = HttpStatus.OK)
     FuncionarioResponse findFuncionarioByCpf(@PathVariable("cpf") String cpf);
-
 }

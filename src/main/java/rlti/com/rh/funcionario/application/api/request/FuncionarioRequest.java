@@ -19,6 +19,10 @@ public record FuncionarioRequest(
         @NotNull
         LocalDate dataNascimento,
         @NotNull
+        String rg,
+        LocalDate dataEmissaoRg,
+        String ctps,
+        String pis,
         GrauDeInstrucao grauDeInstrucao,
         @NotNull
         Sexo sexo,

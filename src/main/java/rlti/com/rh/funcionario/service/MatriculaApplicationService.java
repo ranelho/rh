@@ -20,7 +20,7 @@ public class MatriculaApplicationService implements MatriculaService {
         Funcionario funcionario = funcionarioRepository.findByCpf(cpf);
         Matricula matricula = matriculaRepository.novaMatricula(new Matricula(funcionario));
         funcionario.addMatricula(matricula);
-        funcionarioRepository.save(funcionario);
+        funcionarioRepository.salvaFuncionario(funcionario);
         return matricula.getNumeroMatricula();
     }
 }

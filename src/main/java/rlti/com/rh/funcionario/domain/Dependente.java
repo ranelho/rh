@@ -6,9 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
+import rlti.com.rh.funcionario.application.api.request.DependenteRequest;
 import rlti.com.rh.funcionario.domain.enums.GrauParentesco;
 
 import java.time.LocalDate;
+
+import static rlti.com.rh.utils.Utils.formatName;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +27,10 @@ public class Dependente {
     private Long idDependente;
 
     private String nomeCompleto;
+    @CPF
+    private String cpf;
     private LocalDate dataNascimento;
+    @Enumerated(EnumType.STRING)
     private GrauParentesco grauParentesco;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,4 +38,11 @@ public class Dependente {
     @JsonIgnore
     private Funcionario funcionario;
 
+    public Dependente(Funcionario funcionario, DependenteRequest request) {
+        this.funcionario = funcionario;
+        this.nomeCompleto = formatName(request.nomeCompleto());
+        this.cpf = request.cpf();
+        this.dataNascimento = request.dataNascimento();
+        this.grauParentesco = request.grauParentesco();
+    }
 }

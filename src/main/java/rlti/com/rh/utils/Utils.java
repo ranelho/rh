@@ -1,5 +1,7 @@
 package rlti.com.rh.utils;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Random;
 
 public class Utils {
@@ -49,5 +51,10 @@ public class Utils {
 
         // Remove o espaço em branco extra no final e retorna o nome formatado
         return formattedName.toString().trim();
+    }
+
+    public static int calcularIdade(LocalDate dataNascimento) {
+        LocalDate hoje = LocalDate.now(); // Obtém a data atual
+        return Period.between(dataNascimento, hoje).getYears(); // Calcula a diferença em anos entre as datas
     }
 }
