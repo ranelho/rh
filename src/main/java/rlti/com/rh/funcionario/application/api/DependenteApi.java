@@ -19,4 +19,5 @@ public interface DependenteApi {
     @DeleteMapping("/remover/{cpfDependente}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removerDependente(@PathVariable("cpfDependente") String cpfDependente);
+
 }
