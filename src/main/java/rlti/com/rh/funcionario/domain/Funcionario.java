@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static rlti.com.rh.utils.Utils.formatName;
+import static rlti.com.rh.utils.Utils.formatText;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -78,7 +78,7 @@ public class Funcionario {
     private List<Formacao> formacao;
 
     public Funcionario(FuncionarioRequest request) {
-        this.nomeCompleto = formatName(request.nomeCompleto());
+        this.nomeCompleto = formatText(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
         this.rg = request.rg();
@@ -94,7 +94,7 @@ public class Funcionario {
     }
 
     public void update(FuncionarioRequest request) {
-        this.nomeCompleto = formatName(request.nomeCompleto());
+        this.nomeCompleto = formatText(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
         this.grauDeInstrucao = request.grauDeInstrucao();

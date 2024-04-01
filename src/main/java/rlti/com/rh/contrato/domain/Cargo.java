@@ -1,13 +1,15 @@
 package rlti.com.rh.contrato.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import rlti.com.rh.contrato.application.api.request.CargoRequest;
 import rlti.com.rh.funcionario.domain.SalarioBase;
 import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
-import rlti.com.rh.utils.Utils;
 
-import static rlti.com.rh.utils.Utils.*;
+import static rlti.com.rh.utils.Utils.formatText;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +34,7 @@ public class Cargo {
     private SalarioBase salarioBase;
 
     public Cargo(CargoRequest request, SalarioBase salarioBase) {
-        this.nomeCargo = formatName(request.nomeCargo());
+        this.nomeCargo = formatText(request.nomeCargo());
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.descricaoCargo = request.descricaoCargo();
         this.quantidadeDeHorasSemanais = request.quantidadeDeHorasSemanais();

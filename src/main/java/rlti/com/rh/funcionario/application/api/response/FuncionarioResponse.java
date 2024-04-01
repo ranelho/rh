@@ -1,7 +1,6 @@
 package rlti.com.rh.funcionario.application.api.response;
 
 import rlti.com.rh.funcionario.domain.Funcionario;
-import rlti.com.rh.funcionario.domain.Matricula;
 import rlti.com.rh.utils.Utils;
 
 import java.time.LocalDate;

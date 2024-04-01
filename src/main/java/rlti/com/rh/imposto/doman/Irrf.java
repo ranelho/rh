@@ -9,7 +9,6 @@ import rlti.com.rh.imposto.application.IrrfRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,10 +17,10 @@ import java.util.List;
 @Entity(name = "Irrf")
 public class Irrf {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "irpf_seq_generator")
-    @SequenceGenerator(name="irpf_seq_generator", sequenceName = "irpf_sequence", allocationSize=1)
-    @Column(name = "id_irpf", nullable = false)
-    private Long idIrpf;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "irrf_seq_generator")
+    @SequenceGenerator(name="irrf_seq_generator", sequenceName = "irrf_sequence", allocationSize=1)
+    @Column(name = "id_irrf", nullable = false)
+    private Long idIrrf;
 
     private Double aliquota;
     private BigDecimal deducao;
@@ -39,6 +38,4 @@ public class Irrf {
         this.valorMinimo = irrfRequest.valorMinimo();
         this.valorMaximo = irrfRequest.valorMaximo();
     }
-
-
 }

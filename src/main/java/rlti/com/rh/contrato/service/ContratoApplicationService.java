@@ -3,16 +3,15 @@ package rlti.com.rh.contrato.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.contrato.application.api.response.ContratoIdResponse;
 import rlti.com.rh.contrato.application.api.ContratoRequest;
-import rlti.com.rh.contrato.domain.Contrato;
-import rlti.com.rh.contrato.repository.ContratoRepository;
+import rlti.com.rh.contrato.application.api.response.ContratoIdResponse;
 import rlti.com.rh.contrato.domain.Cargo;
+import rlti.com.rh.contrato.domain.Contrato;
 import rlti.com.rh.contrato.domain.Setor;
 import rlti.com.rh.contrato.repository.CargoRepository;
-import rlti.com.rh.funcionario.application.api.request.ContatoRequest;
-import rlti.com.rh.funcionario.domain.Matricula;
+import rlti.com.rh.contrato.repository.ContratoRepository;
 import rlti.com.rh.contrato.repository.SetorRepository;
+import rlti.com.rh.funcionario.domain.Matricula;
 import rlti.com.rh.funcionario.repository.MatriculaRepository;
 
 @Service

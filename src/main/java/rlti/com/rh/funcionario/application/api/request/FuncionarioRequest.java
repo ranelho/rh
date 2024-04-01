@@ -3,7 +3,6 @@ package rlti.com.rh.funcionario.application.api.request;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.hibernate.validator.constraints.br.CPF;
-import rlti.com.rh.contrato.application.api.ContratoRequest;
 import rlti.com.rh.funcionario.domain.enums.EstadoCivil;
 import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
 import rlti.com.rh.funcionario.domain.enums.Sexo;

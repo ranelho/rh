@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rlti.com.rh.contrato.application.api.request.SetorRequest;
-import rlti.com.rh.utils.Utils;
 
-import static rlti.com.rh.utils.Utils.*;
+import static rlti.com.rh.utils.Utils.formatText;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +24,6 @@ public class Setor {
     private String nomeSetor;
 
     public Setor(SetorRequest request) {
-        this.nomeSetor = formatName(request.nomeSetor());
+        this.nomeSetor = formatText(request.nomeSetor());
     }
 }

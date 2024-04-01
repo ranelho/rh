@@ -12,7 +12,7 @@ import rlti.com.rh.funcionario.domain.enums.GrauParentesco;
 
 import java.time.LocalDate;
 
-import static rlti.com.rh.utils.Utils.formatName;
+import static rlti.com.rh.utils.Utils.formatText;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,7 +40,7 @@ public class Dependente {
 
     public Dependente(Funcionario funcionario, DependenteRequest request) {
         this.funcionario = funcionario;
-        this.nomeCompleto = formatName(request.nomeCompleto());
+        this.nomeCompleto = formatText(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
         this.grauParentesco = request.grauParentesco();
