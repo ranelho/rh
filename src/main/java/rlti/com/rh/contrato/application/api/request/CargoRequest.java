@@ -4,7 +4,6 @@ import rlti.com.rh.funcionario.application.api.request.SalarioBaseRequest;
 import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
 
 public record CargoRequest(
-        //TODO -> FAZER VALIDAÇÃO
         String nomeCargo,
         GrauDeInstrucao grauDeInstrucao,
         String descricaoCargo,

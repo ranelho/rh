@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rlti.com.rh.contrato.application.api.ContratoRequest;
-import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.funcionario.domain.Matricula;
 
 import java.time.LocalDate;

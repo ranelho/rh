@@ -6,34 +6,39 @@ import java.util.Random;
 
 public class Utils {
 
-    public static String gerarMatricula() {
-        // Inicializa um objeto Random
-        Random random = new Random();
+    private static final Random random = new Random();
 
-        // Define o tamanho da matrícula desejada
+    // Private constructor to hide the implicit public one
+    private Utils() {
+        throw new AssertionError(); // This prevents instantiation even from within the class
+    }
+
+    // Method to generate a registration number
+    public static String gerarMatricula() {
+        // Define the length of the desired registration number
         int tamanhoMatricula = 6;
 
-        // Cria uma string para armazenar a matrícula gerada
+        // Create a StringBuilder to store the generated registration number
         StringBuilder matricula = new StringBuilder();
 
-        // Gera cada dígito da matrícula
+        // Generate each digit of the registration number
         for (int i = 0; i < tamanhoMatricula; i++) {
-            // Gera um número aleatório entre 0 e 9
+            // Generate a random number between 0 and 9
             int digito = random.nextInt(10);
-            // Adiciona o dígito à matrícula
+            // Add the digit to the registration number
             matricula.append(digito);
         }
 
-        // Retorna a matrícula gerada como uma string
+        // Return the generated registration number as a string
         return matricula.toString();
     }
 
-    public static String formatName(String name) {
+
+    public static String formatText(String name) {
         // Verifica se o nome é vazio ou nulo
         if (name == null || name.isEmpty()) {
             return "";
         }
-
         // Divide o nome em palavras
         String[] words = name.split("\\s+");
         StringBuilder formattedName = new StringBuilder();
@@ -48,7 +53,6 @@ public class Utils {
             // Adiciona a palavra ao nome formatado
             formattedName.append(word).append(" ");
         }
-
         // Remove o espaço em branco extra no final e retorna o nome formatado
         return formattedName.toString().trim();
     }
