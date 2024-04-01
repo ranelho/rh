@@ -79,4 +79,4 @@ curl -X 'GET' \
   'http://localhost:8080/rh/api/v1/funcionarios/cpf/56948296548' \
   -H 'accept: */*'
 ```
-[Retornar ao README Principal](./README.md)
+[Retornar ao README Principal](../README.md)
