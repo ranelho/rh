@@ -45,15 +45,24 @@ public class Funcionario {
     private LocalDate dataEmissaoRg;
     private String ctps;
     private String pis;
-    @Enumerated(EnumType.STRING)
-    private GrauDeInstrucao grauDeInstrucao;
-    @Enumerated(EnumType.STRING)
-    private Sexo sexo;
-    @Enumerated(EnumType.STRING)
-    private EstadoCivil estadoCivil;
+    private String nomePai;
+    private String nomeMae;
+    @Enumerated(EnumType.STRING)     private GrauDeInstrucao grauDeInstrucao;
+    @Enumerated(EnumType.STRING)     private Sexo sexo;
+    @Enumerated(EnumType.STRING)     private EstadoCivil estadoCivil;
+
+    @CreatedDate
+    LocalDateTime createdAt;
+    @LastModifiedDate
+    LocalDateTime updatedAt;
 
     @OneToOne
+    @JsonIgnore
     private Contato contato;
+
+    @OneToOne
+    @JsonIgnore
+    private ContaPagamento contaPagamento;
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
     @JsonIgnore
@@ -68,17 +77,20 @@ public class Funcionario {
     @JoinColumn(name = "formacao_id_formacao")
     private List<Formacao> formacao;
 
-    @CreatedDate
-    LocalDateTime createdAt;
-    @LastModifiedDate
-    LocalDateTime updatedAt;
-
     public Funcionario(FuncionarioRequest request) {
         this.nomeCompleto = formatName(request.nomeCompleto());
         this.cpf = request.cpf();
         this.dataNascimento = request.dataNascimento();
+        this.rg = request.rg();
+        this.dataEmissaoRg = request.dataEmissaoRg();
+        this.ctps = request.ctps();
+        this.pis = request.pis();
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
+        this.estadoCivil = request.estadoCivil();
+        this.nomePai = request.nomePai();
+        this.nomeMae = request.nomeMae();
+        this.contato = new Contato(request.contatoRequest());
     }
 
     public void update(FuncionarioRequest request) {
@@ -95,5 +107,9 @@ public class Funcionario {
 
     public void adDependente(Dependente dependente) {
         this.dependentes.add(dependente);
+    }
+
+    public void addContato(Contato contato) {
+        this.contato = contato;
     }
 }

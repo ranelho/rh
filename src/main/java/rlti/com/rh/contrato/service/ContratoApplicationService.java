@@ -10,6 +10,7 @@ import rlti.com.rh.contrato.repository.ContratoRepository;
 import rlti.com.rh.contrato.domain.Cargo;
 import rlti.com.rh.contrato.domain.Setor;
 import rlti.com.rh.contrato.repository.CargoRepository;
+import rlti.com.rh.funcionario.application.api.request.ContatoRequest;
 import rlti.com.rh.funcionario.domain.Matricula;
 import rlti.com.rh.contrato.repository.SetorRepository;
 import rlti.com.rh.funcionario.repository.MatriculaRepository;

@@ -31,7 +31,7 @@ public interface FuncionarioApi {
     @ResponseStatus(code = HttpStatus.OK)
     void updateFuncionario(@PathVariable("id") Long id,@Valid @RequestBody FuncionarioRequest request);
 
-    @PatchMapping("/{id}/cargo/{idContrato}")
+    @PatchMapping("/{matricula}/cargo/{idContrato}")
     @ResponseStatus(code = HttpStatus.OK)
     void addFuncionarioContrato(@PathVariable("matricula") String matricula, @PathVariable("idContrato") Long idContrato);
 

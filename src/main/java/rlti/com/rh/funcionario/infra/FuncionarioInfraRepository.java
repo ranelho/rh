@@ -17,16 +17,18 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class FuncionarioInfraRepository implements FuncionarioRepository {
     private final FuncionarioJpaRepository funcionarioJpaRepository;
+    private final ContatoJpaRepository contatoJpaRepository;
 
     @Override
     public Funcionario salvaFuncionario(Funcionario funcionario) {
         try {
+            contatoJpaRepository.save(funcionario.getContato());
             return funcionarioJpaRepository.save(funcionario);
         }catch (DataIntegrityViolationException e) {
             throw APIException.build(HttpStatus.BAD_REQUEST,"Funcionário já cadastrado, CPF: " + funcionario.getNomeCompleto());
         }
     }
-
+    
     @Override
     public Funcionario findFuncionarioById(Long id) {
         return funcionarioJpaRepository.findById(id)

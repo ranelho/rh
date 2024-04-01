@@ -30,10 +30,9 @@ public class CalculoInss {
                 inss = valorDesconto;
                 salarioBruto = salarioFuncionario.subtract(inss);
 
-                break; // Já encontrou a alíquota aplicável, então pode parar de procurar
+                break;
             }
         }
-
         return new InssResult(salarioFuncionario, inssList.get(0).getAliquota(), inss, salarioBruto);
     }
 

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import rlti.com.rh.funcionario.application.api.request.ContatoRequest;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +31,30 @@ public class Contato {
     private String numero;
     private String complemento;
     private String pais;
+
+    public Contato(ContatoRequest contatoRequest) {
+        this.email = contatoRequest.email();
+        this.telefone = contatoRequest.telefone();
+        this.rua = contatoRequest.rua();
+        this.bairro = contatoRequest.bairro();
+        this.cidade = contatoRequest.cidade();
+        this.estado = contatoRequest.estado();
+        this.cep = contatoRequest.cep();
+        this.numero = contatoRequest.numero();
+        this.complemento = contatoRequest.complemento();
+        this.pais = contatoRequest.pais();
+    }
+
+    public void update(ContatoRequest contatoRequest) {
+        this.email = contatoRequest.email();
+        this.telefone = contatoRequest.telefone();
+        this.rua = contatoRequest.rua();
+        this.bairro = contatoRequest.bairro();
+        this.cidade = contatoRequest.cidade();
+        this.estado = contatoRequest.estado();
+        this.cep = contatoRequest.cep();
+        this.numero = contatoRequest.numero();
+        this.complemento = contatoRequest.complemento();
+        this.pais = contatoRequest.pais();
+    }
 }
