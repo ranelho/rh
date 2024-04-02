@@ -15,7 +15,7 @@ public class CargoInfraRepository implements CargoRepository {
     private final CargoJpaRepository cargoJpaRepository;
 
     @Override
-    public Cargo save(Cargo cargo) {
+    public Cargo saveCargo(Cargo cargo) {
         log.info("CargoInfraRepository.save");
         return cargoJpaRepository.save(cargo);
     }

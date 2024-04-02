@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rlti.com.rh.contrato.application.api.request.SetorRequest;
+import rlti.com.rh.contrato.application.request.SetorRequest;
 
 import static rlti.com.rh.utils.Utils.formatText;
 

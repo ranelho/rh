@@ -22,7 +22,7 @@ public class DependenteInfraRepository implements DependenteRepository {
     }
 
     @Override
-    public Dependente salvaDependente(Dependente dependente) {
+    public Dependente saveDependente(Dependente dependente) {
         return dependenteJpaRepository.save(dependente);
     }
 
@@ -33,7 +33,7 @@ public class DependenteInfraRepository implements DependenteRepository {
     }
 
     @Override
-    public void removerDependente(Dependente dependente) {
+    public void deleteDependenteFuncionario(Dependente dependente) {
         dependenteJpaRepository.delete(dependente);
     }
 }
