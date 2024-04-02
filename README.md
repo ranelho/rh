@@ -41,6 +41,7 @@ O sistema de RH terá as seguintes funcionalidades básicas:
 ## Contribuição
 
 Contribuições são bem-vindas! Se você tiver sugestões de melhorias, novas funcionalidades ou correções de bugs, sinta-se à vontade para abrir uma issue ou enviar um pull request.
+
 ``` 
 https://github.com/ranelho/rh.git 
 ```
@@ -67,4 +68,3 @@ http://localhost:8080/rh/api/public/swagger-ui/index.html#
 ## Autor
 
 Este projeto foi desenvolvido por [Ranelho Lacerda].
-
