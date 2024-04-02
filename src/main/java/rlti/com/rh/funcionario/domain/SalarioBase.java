@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import rlti.com.rh.funcionario.application.api.request.SalarioBaseRequest;
+import rlti.com.rh.funcionario.application.request.SalarioBaseRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

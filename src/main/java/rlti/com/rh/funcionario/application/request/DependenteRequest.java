@@ -1,4 +1,4 @@
-package rlti.com.rh.funcionario.application.api.request;
+package rlti.com.rh.funcionario.application.request;
 
 import org.hibernate.validator.constraints.br.CPF;
 import rlti.com.rh.funcionario.domain.enums.GrauParentesco;

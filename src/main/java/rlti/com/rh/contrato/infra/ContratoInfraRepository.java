@@ -24,7 +24,7 @@ public class ContratoInfraRepository implements ContratoRepository {
     }
 
     @Override
-    public Contrato criaContrato(Contrato contrato) {
+    public Contrato saveContrato(Contrato contrato) {
         return contratoJpaRepository.save(contrato);
     }
 

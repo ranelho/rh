@@ -1,4 +1,4 @@
-package rlti.com.rh.funcionario.application.api.request;
+package rlti.com.rh.funcionario.application.request;
 
 public record ContatoRequest(
         String email,

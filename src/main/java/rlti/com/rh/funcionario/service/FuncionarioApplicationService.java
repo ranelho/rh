@@ -3,14 +3,12 @@ package rlti.com.rh.funcionario.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.contrato.repository.ContratoRepository;
-import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
-import rlti.com.rh.funcionario.application.api.response.FuncionarioIdResponse;
-import rlti.com.rh.funcionario.application.api.response.FuncionarioResponse;
+import rlti.com.rh.funcionario.application.request.FuncionarioRequest;
+import rlti.com.rh.funcionario.application.request.FuncionarioUpdateRequest;
+import rlti.com.rh.funcionario.application.response.FuncionarioIdResponse;
+import rlti.com.rh.funcionario.application.response.FuncionarioResponse;
 import rlti.com.rh.funcionario.domain.Funcionario;
-import rlti.com.rh.contrato.repository.CargoRepository;
 import rlti.com.rh.funcionario.repository.FuncionarioRepository;
-import rlti.com.rh.funcionario.repository.MatriculaRepository;
 
 import java.util.List;
 
@@ -19,14 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FuncionarioApplicationService implements FuncionarioService {
 
-    private final MatriculaRepository matriculaRepository;
     private final FuncionarioRepository funcionarioRepository;
-    private final CargoRepository cargoRepository;
-    private final ContratoRepository contratoRepository;
 
     @Override
-    public FuncionarioIdResponse novoFuncionario(FuncionarioRequest request) {
-        Funcionario funcionario = funcionarioRepository.salvaFuncionario(new Funcionario(request));
+    public FuncionarioIdResponse newFuncionario(FuncionarioRequest request) {
+        Funcionario funcionario = funcionarioRepository.saveFuncionario(new Funcionario(request));
         return FuncionarioIdResponse.builder().id(funcionario.getIdFuncionario()).build();
     }
 
@@ -37,21 +32,16 @@ public class FuncionarioApplicationService implements FuncionarioService {
     }
 
     @Override
-    public List<FuncionarioResponse> findFuncionariosByNome(String nome) {
+    public List<FuncionarioResponse> findAllFuncionariosByNome(String nome) {
         log.info("Buscando funcionario pelo nome {}", nome);
-        return FuncionarioResponse.converte(funcionarioRepository.findFuncionariosByNome(nome));
+        return FuncionarioResponse.converte(funcionarioRepository.findAllFuncionariosByNome(nome));
     }
 
     @Override
-    public void updateFuncionario(Long id, FuncionarioRequest request) {
+    public void updateFuncionario(Long id, FuncionarioUpdateRequest request) {
         Funcionario funcionario = funcionarioRepository.findFuncionarioById(id);
         funcionario.update(request);
-        funcionarioRepository.salvaFuncionario(funcionario);
-    }
-
-    @Override
-    public void addFuncionarioContrato(String matricula, Long idContrato) {
-        contratoRepository.findContratoById(idContrato);
+        funcionarioRepository.saveFuncionario(funcionario);
     }
 
     @Override
@@ -61,6 +51,6 @@ public class FuncionarioApplicationService implements FuncionarioService {
 
     @Override
     public FuncionarioResponse findFuncionarioByCpf(String cpf) {
-        return new FuncionarioResponse(funcionarioRepository.findByCpf(cpf));
+        return new FuncionarioResponse(funcionarioRepository.findFuncionarioByCpf(cpf));
     }
 }

@@ -1,7 +1,7 @@
-package rlti.com.rh.contrato.application.api.response;
+package rlti.com.rh.contrato.application.response;
 
 import rlti.com.rh.contrato.domain.Cargo;
-import rlti.com.rh.funcionario.application.api.response.SalarioBaseResponse;
+import rlti.com.rh.funcionario.application.response.SalarioBaseResponse;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import rlti.com.rh.funcionario.domain.Funcionario;
 
 public interface DependenteRepository {
     int countDependenteFuncionario(Funcionario funcionario);
-    Dependente salvaDependente(Dependente dependente);
+    Dependente saveDependente(Dependente dependente);
     Dependente findByCpf(String cpfDependente);
-    void removerDependente(Dependente dependente);
+    void deleteDependenteFuncionario(Dependente dependente);
 }

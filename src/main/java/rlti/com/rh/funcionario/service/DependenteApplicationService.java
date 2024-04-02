@@ -2,7 +2,7 @@ package rlti.com.rh.funcionario.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.funcionario.application.api.request.DependenteRequest;
+import rlti.com.rh.funcionario.application.request.DependenteRequest;
 import rlti.com.rh.funcionario.domain.Dependente;
 import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.funcionario.repository.DependenteRepository;
@@ -16,16 +16,16 @@ public class DependenteApplicationService implements DependenteService {
     private final FuncionarioRepository funcionarioRepository;
 
     @Override
-    public void novoDependente(String cpf, DependenteRequest request) {
-        Funcionario funcionario = funcionarioRepository.findByCpf(cpf);
-        Dependente dependente = dependenteRepository.salvaDependente(new Dependente(funcionario,request));
-        funcionario.adDependente(dependente);
-        funcionarioRepository.salvaFuncionario(funcionario);
+    public void newDependenteFuncionario(String cpf, DependenteRequest request) {
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
+        Dependente dependente = dependenteRepository.saveDependente(new Dependente(funcionario,request));
+        funcionario.addDependente(dependente);
+        funcionarioRepository.saveFuncionario(funcionario);
     }
 
     @Override
-    public void removerDependente(String cpfDependente) {
+    public void deleteDependenteFuncionario(String cpfDependente) {
         Dependente dependente = dependenteRepository.findByCpf(cpfDependente);
-        dependenteRepository.removerDependente(dependente);
+        dependenteRepository.deleteDependenteFuncionario(dependente);
     }
 }

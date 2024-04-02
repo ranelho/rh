@@ -1,14 +1,15 @@
-package rlti.com.rh.funcionario.service;
+package rlti.com.rh.contrato.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.contrato.application.api.request.CargoRequest;
-import rlti.com.rh.contrato.application.api.response.CargoIdResponse;
-import rlti.com.rh.contrato.application.api.response.CargoResponse;
+import rlti.com.rh.contrato.application.request.CargoRequest;
+import rlti.com.rh.contrato.application.response.CargoIdResponse;
+import rlti.com.rh.contrato.application.response.CargoResponse;
 import rlti.com.rh.contrato.domain.Cargo;
 import rlti.com.rh.funcionario.domain.SalarioBase;
 import rlti.com.rh.contrato.repository.CargoRepository;
+import rlti.com.rh.funcionario.service.SalarioBaseService;
 
 @Service
 @Slf4j
@@ -18,13 +19,13 @@ public class CargoApplicationService implements CargoService {
     private final SalarioBaseService salarioBaseService;
 
     @Override
-    public CargoIdResponse novoCargo(CargoRequest request) {
+    public CargoIdResponse newCargo(CargoRequest request) {
         log.info("CargoApplicationService.novoCargo");
         SalarioBase salarioBase = request.salarioBase().idSalarioBase() == null ?
-                salarioBaseService.novoSalarioBase(request.salarioBase()) :
+                salarioBaseService.findById(salarioBaseService.saveSalarioBase(request.salarioBase()).getIdSalarioBase()) :
                 salarioBaseService.findById(request.salarioBase().idSalarioBase());
 
-        Cargo cargo = cargoRepository.save(new Cargo(request, salarioBase));
+        Cargo cargo = cargoRepository.saveCargo(new Cargo(request, salarioBase));
         return CargoIdResponse.builder().idCargo(cargo.getIdCargo()).build();
     }
 

@@ -17,10 +17,10 @@ public class MatriculaApplicationService implements MatriculaService {
 
     @Override
     public String novaMatricula(String cpf) {
-        Funcionario funcionario = funcionarioRepository.findByCpf(cpf);
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
         Matricula matricula = matriculaRepository.novaMatricula(new Matricula(funcionario));
         funcionario.addMatricula(matricula);
-        funcionarioRepository.salvaFuncionario(funcionario);
+        funcionarioRepository.saveFuncionario(funcionario);
         return matricula.getNumeroMatricula();
     }
 }

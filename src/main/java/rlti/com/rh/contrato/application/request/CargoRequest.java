@@ -1,6 +1,6 @@
-package rlti.com.rh.contrato.application.api.request;
+package rlti.com.rh.contrato.application.request;
 
-import rlti.com.rh.funcionario.application.api.request.SalarioBaseRequest;
+import rlti.com.rh.funcionario.application.request.SalarioBaseRequest;
 import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
 
 public record CargoRequest(

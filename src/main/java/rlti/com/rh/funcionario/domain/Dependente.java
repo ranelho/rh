@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
-import rlti.com.rh.funcionario.application.api.request.DependenteRequest;
+import rlti.com.rh.funcionario.application.request.DependenteRequest;
 import rlti.com.rh.funcionario.domain.enums.GrauParentesco;
 
 import java.time.LocalDate;

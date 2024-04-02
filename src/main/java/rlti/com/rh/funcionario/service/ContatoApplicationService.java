@@ -2,7 +2,7 @@ package rlti.com.rh.funcionario.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import rlti.com.rh.funcionario.application.api.request.ContatoRequest;
+import rlti.com.rh.funcionario.application.request.ContatoRequest;
 import rlti.com.rh.funcionario.domain.Contato;
 import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.funcionario.repository.ContatoRepository;
@@ -17,7 +17,7 @@ public class ContatoApplicationService implements ContatoService {
 
     @Override
     public void addContatoFuncionario(String cpf, ContatoRequest contatoRequest) {
-        Funcionario funcionario = funcionarioRepository.findByCpf(cpf);
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
         if (funcionario.getContato() == null) {
             funcionario.addContato(contatoRepository.saveContato(new Contato(contatoRequest)));
         }else {
@@ -27,7 +27,7 @@ public class ContatoApplicationService implements ContatoService {
 
     @Override
     public void updateContato(String cpf, ContatoRequest contatoRequest) {
-        Contato contato = funcionarioRepository.findByCpf(cpf).getContato();
+        Contato contato = funcionarioRepository.findFuncionarioByCpf(cpf).getContato();
         contato.update(contatoRequest);
         contatoRepository.saveContato(contato);
     }

@@ -21,7 +21,7 @@ public class SetorInfraRepository implements SetorRepository {
     }
 
     @Override
-    public Setor criaSetor(Setor setor) {
+    public Setor saveSetor(Setor setor) {
         return  setorJpaRepository.save(setor);
     }
 }

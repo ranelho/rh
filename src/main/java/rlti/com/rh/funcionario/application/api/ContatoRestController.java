@@ -2,7 +2,7 @@ package rlti.com.rh.funcionario.application.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
-import rlti.com.rh.funcionario.application.api.request.ContatoRequest;
+import rlti.com.rh.funcionario.application.request.ContatoRequest;
 import rlti.com.rh.funcionario.service.ContatoService;
 
 @RestController
@@ -12,7 +12,7 @@ public class ContatoRestController implements ContatoApi {
     private final ContatoService contatoService;
 
     @Override
-    public void addContatoParticipante(String cpf, ContatoRequest contatoRequest) {
+    public void addContatoFuncionario(String cpf, ContatoRequest contatoRequest) {
         contatoService.addContatoFuncionario(cpf, contatoRequest);
     }
 

@@ -4,5 +4,5 @@ import rlti.com.rh.contrato.domain.Setor;
 
 public interface SetorRepository {
     Setor findSetorById(Long idSetor);
-    Setor criaSetor(Setor setor);
+    Setor saveSetor(Setor setor);
 }

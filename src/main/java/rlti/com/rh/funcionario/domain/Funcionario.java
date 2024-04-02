@@ -11,7 +11,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
+import rlti.com.rh.funcionario.application.request.FuncionarioRequest;
+import rlti.com.rh.funcionario.application.request.FuncionarioUpdateRequest;
 import rlti.com.rh.funcionario.domain.enums.EstadoCivil;
 import rlti.com.rh.funcionario.domain.enums.GrauDeInstrucao;
 import rlti.com.rh.funcionario.domain.enums.Sexo;
@@ -93,19 +94,22 @@ public class Funcionario {
         this.contato = new Contato(request.contatoRequest());
     }
 
-    public void update(FuncionarioRequest request) {
+    public void update(FuncionarioUpdateRequest request) {
         this.nomeCompleto = formatText(request.nomeCompleto());
-        this.cpf = request.cpf();
-        this.dataNascimento = request.dataNascimento();
+        this.rg = request.rg();
+        this.dataEmissaoRg = request.dataEmissaoRg();
+        this.ctps = request.ctps();
+        this.pis = request.pis();
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
+        this.estadoCivil = request.estadoCivil();
     }
 
     public void addMatricula(Matricula matricula) {
         this.matriculas.add(matricula);
     }
 
-    public void adDependente(Dependente dependente) {
+    public void addDependente(Dependente dependente) {
         this.dependentes.add(dependente);
     }
 

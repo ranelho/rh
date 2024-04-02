@@ -1,4 +1,4 @@
-package rlti.com.rh.contrato.application.api.request;
+package rlti.com.rh.contrato.application.request;
 
 public record SetorRequest(
         String nomeSetor

@@ -4,9 +4,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import rlti.com.rh.funcionario.application.api.request.FuncionarioRequest;
-import rlti.com.rh.funcionario.application.api.response.FuncionarioIdResponse;
-import rlti.com.rh.funcionario.application.api.response.FuncionarioResponse;
+import rlti.com.rh.funcionario.application.request.FuncionarioRequest;
+import rlti.com.rh.funcionario.application.request.FuncionarioUpdateRequest;
+import rlti.com.rh.funcionario.application.response.FuncionarioIdResponse;
+import rlti.com.rh.funcionario.application.response.FuncionarioResponse;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface FuncionarioApi {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    FuncionarioIdResponse novoFuncionario(@Valid @RequestBody FuncionarioRequest request);
+    FuncionarioIdResponse newFuncionario(@Valid @RequestBody FuncionarioRequest request);
 
     @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -24,15 +25,11 @@ public interface FuncionarioApi {
 
     @GetMapping("/nome/{nome}")
     @ResponseStatus(code = HttpStatus.OK)
-    List<FuncionarioResponse> findFuncionariosByNome(@PathVariable("nome") String nome);
+    List<FuncionarioResponse> findAllFuncionariosByNome(@PathVariable("nome") String nome);
 
     @PatchMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    void updateFuncionario(@PathVariable("id") Long id,@Valid @RequestBody FuncionarioRequest request);
-
-    @PatchMapping("/{matricula}/cargo/{idContrato}")
-    @ResponseStatus(code = HttpStatus.OK)
-    void addFuncionarioContrato(@PathVariable("matricula") String matricula, @PathVariable("idContrato") Long idContrato);
+    void updateFuncionario(@PathVariable("id") Long id,@Valid @RequestBody FuncionarioUpdateRequest request);
 
     @GetMapping("/matricula/{matricula}")
     @ResponseStatus(code = HttpStatus.OK)

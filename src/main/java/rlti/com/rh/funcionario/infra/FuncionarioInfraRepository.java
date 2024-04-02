@@ -20,7 +20,7 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
     private final ContatoJpaRepository contatoJpaRepository;
 
     @Override
-    public Funcionario salvaFuncionario(Funcionario funcionario) {
+    public Funcionario saveFuncionario(Funcionario funcionario) {
         try {
             contatoJpaRepository.save(funcionario.getContato());
             return funcionarioJpaRepository.save(funcionario);
@@ -36,7 +36,7 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
     }
 
     @Override
-    public List<Funcionario> findFuncionariosByNome(String nome) {
+    public List<Funcionario> findAllFuncionariosByNome(String nome) {
         log.info("Buscando funcionario pelo nome: {}", nome);
         return funcionarioJpaRepository.findByNomeCompletoContainingIgnoreCase(nome.toUpperCase());
     }
@@ -47,7 +47,7 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
     }
 
     @Override
-    public Funcionario findByCpf(String cpf) {
+    public Funcionario findFuncionarioByCpf(String cpf) {
         return funcionarioJpaRepository.findByCpf(cpf).orElseThrow(getApiExceptionSupplier());
     }
 
