@@ -51,7 +51,7 @@ http://localhost:8080/rh/api/public/swagger-ui/index.html#
 ```
 
 #### UC01
-- CRUD Funcionário
+- [CRUD Funcionário](./uc01-crud-funcionario/README.md)
 - CRUD Dependente
 - CRUD Contato
 
