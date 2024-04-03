@@ -11,6 +11,7 @@ import java.util.Map;
 @UtilityClass
 @Slf4j
 public class AniversarioChecker {
+
     public static Map<String, String> verificarAniversario(Funcionario funcionario) {
         Map<String, String> detalhesFuncionario = new HashMap<>();
         LocalDate dataAtual = LocalDate.now();
@@ -25,9 +26,5 @@ public class AniversarioChecker {
             detalhesFuncionario.put("mensagem", "Parabéns, " + funcionario.getNomeCompleto() + "! Hoje é o seu aniversário e você está fazendo " + anos + " anos!");
         }
         return detalhesFuncionario;
-    }
-
-    public static void enviarEmail(String nomeCompleto, String email, String mensagem) {
-        log.info("Envio de email de aniversário para {}", nomeCompleto);
     }
 }
