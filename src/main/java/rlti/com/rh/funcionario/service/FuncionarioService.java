@@ -14,4 +14,5 @@ public interface FuncionarioService {
     void updateFuncionario(Long id, FuncionarioUpdateRequest request);
     FuncionarioResponse findFuncionarioByMatricula(String matricula);
     FuncionarioResponse findFuncionarioByCpf(String cpf);
+    void verificaAniversarioBath();
 }

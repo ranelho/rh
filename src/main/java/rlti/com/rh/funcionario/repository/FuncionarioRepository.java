@@ -10,4 +10,6 @@ public interface FuncionarioRepository {
     List<Funcionario> findAllFuncionariosByNome(String nome);
     Funcionario findFuncionarioByMatricula(String matricula);
     Funcionario findFuncionarioByCpf(String cpf);
+    List<Funcionario> findAllFuncionarios();
+    List<Funcionario> findAllByAniversario(int mesAtual, int diaAtual);
 }

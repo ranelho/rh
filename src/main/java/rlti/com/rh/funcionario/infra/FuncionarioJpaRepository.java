@@ -14,4 +14,8 @@ public interface FuncionarioJpaRepository extends JpaRepository<Funcionario, Lon
     @Query(value = "select f.* from funcionario F inner join matricula m on M.funcionario_id_funcionario = f.id_funcionario \n" +
             "\twhere m.numero_matricula  = :numeroMatricula", nativeQuery = true)
     Optional<Funcionario> findByNumeroMatricula(String numeroMatricula);
+
+    @Query(value = "SELECT * FROM Funcionario WHERE EXTRACT(MONTH FROM data_nascimento) = :mesAtual AND EXTRACT(DAY FROM data_nascimento) = :diaAtual", nativeQuery = true)
+    List<Funcionario> findAllByAniversario(int mesAtual, int diaAtual);
+
 }
