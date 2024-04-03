@@ -1,50 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parabéns pelo Aniversário!</title>
+    <title>Feliz Aniversário, {{nome}}!</title>
     <style>
         /* Estilos CSS */
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
-
         .container {
             max-width: 600px;
             margin: 20px auto;
             background-color: #fff;
+            border: 2px solid #ddd;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 300px;
+            border-radius: 5px;
+        }
         h1 {
             color: #333;
             text-align: center;
+            font-family: "Playfair Display", serif;
         }
-
         p {
             color: #666;
             font-size: 16px;
             line-height: 1.6;
+            text-align: justify; /* Justifica o texto */
         }
-
         .message {
             margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .message p {
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Parabéns pelo Aniversário!</h1>
-    <p>Olá {{nome}}, <br> Parabéns pelo seu aniversário! Desejamos a você muitas felicidades e sucesso neste novo ano de vida.</p>
+    <div class="image-container">
+        <img src="https://img1.picmix.com/output/stamp/normal/2/5/4/6/306452_201de.gif" alt="Imagem do aniversariante">
+    </div>
+    <h1>Caro, {{nome}}!</h1>
+    <p>Hoje é um dia especial, pois celebramos o seu aniversário! Em nome de toda a equipe Lacerda Technologies,
+        gostaríamos de desejar a você um dia repleto de alegria, felicidade e momentos especiais.</p>
+    <p>Seu trabalho duro e dedicação são verdadeiramente valorizados. Que este novo ano traga muitas realizações pessoais e profissionais,
+        além de momentos memoráveis ao lado dos seus entes queridos.</p>
+    <p>Feliz aniversário, {{nome}}! Que este seja apenas o começo de um ano incrível para você.</p>
     <div class="message">
         <p>Atenciosamente,</p>
-        <p>Ranelho Lacerda</p>
+        <p>Lacerda Technologies</p>
     </div>
 </div>
 </body>
