@@ -9,12 +9,13 @@ import rlti.com.rh.funcionario.application.response.FuncionarioIdResponse;
 import rlti.com.rh.funcionario.application.response.FuncionarioResponse;
 import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.funcionario.repository.FuncionarioRepository;
+import rlti.com.rh.utils.email.EmailService;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import static rlti.com.rh.utils.AniversarioChecker.enviarEmail;
 import static rlti.com.rh.utils.AniversarioChecker.verificarAniversario;
 
 @Service
@@ -23,6 +24,7 @@ import static rlti.com.rh.utils.AniversarioChecker.verificarAniversario;
 public class FuncionarioApplicationService implements FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
+    private final EmailService emailService;
 
     @Override
     public FuncionarioIdResponse newFuncionario(FuncionarioRequest request) {
@@ -69,8 +71,12 @@ public class FuncionarioApplicationService implements FuncionarioService {
         for (Funcionario funcionario : funcionarios) {
             Map<String, String> detalhesFuncionario = verificarAniversario(funcionario);
             if (!detalhesFuncionario.isEmpty() && detalhesFuncionario.get("email") != null) {
-                enviarEmail(detalhesFuncionario.get("nomeCompleto"), detalhesFuncionario.get("email"),
-                        detalhesFuncionario.get("mensagem"));
+                try {
+                    emailService.enviarEmail(detalhesFuncionario.get("nomeCompleto"), detalhesFuncionario.get("email"),
+                            detalhesFuncionario.get("mensagem"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }else {
                 log.warn("Funcionario não possui email cadastrado: {}", funcionario.getNomeCompleto());
             }
