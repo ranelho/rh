@@ -18,15 +18,3 @@ scheduled:
   birthdayCheck:
     enabled: ${ENABLE_BIRTHDAY_CHECK:false}
     cronExpression: ${CRON_BIRTHDAY_CHECK:0 8 * * * *}
-
-#gera script do bd
-#      jakarta:
-#        persistence:
-#          schema-generation:
-#            create-source: metadata
-#            scripts:
-#              action: create
-#              create-target: create.sql
-#          hibernate:
-#            hbm2ddl:
-#              delimiter: ";"
