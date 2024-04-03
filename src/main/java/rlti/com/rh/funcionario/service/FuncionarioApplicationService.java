@@ -11,7 +11,6 @@ import rlti.com.rh.funcionario.domain.Funcionario;
 import rlti.com.rh.funcionario.repository.FuncionarioRepository;
 import rlti.com.rh.utils.email.EmailService;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -71,12 +70,8 @@ public class FuncionarioApplicationService implements FuncionarioService {
         for (Funcionario funcionario : funcionarios) {
             Map<String, String> detalhesFuncionario = verificarAniversario(funcionario);
             if (!detalhesFuncionario.isEmpty() && detalhesFuncionario.get("email") != null) {
-                try {
-                    emailService.enviarEmail(detalhesFuncionario.get("nomeCompleto"), detalhesFuncionario.get("email"),
-                            detalhesFuncionario.get("mensagem"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                emailService.enviarEmail(detalhesFuncionario.get("nomeCompleto"), detalhesFuncionario.get("email"),
+                        detalhesFuncionario.get("mensagem"));
             }else {
                 log.warn("Funcionario não possui email cadastrado: {}", funcionario.getNomeCompleto());
             }

@@ -1,23 +1,40 @@
 package rlti.com.rh.baths;
 
-import lombok.RequiredArgsConstructor;
+import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import rlti.com.rh.funcionario.service.FuncionarioService;
 
+
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class ScheduledTasks {
 
     private final FuncionarioService funcionarioService;
 
-    //@Scheduled(cron = "*/5 * * * * *", zone = "America/Sao_Paulo")
-    @Scheduled(cron = "0 8 * * * *", zone = "America/Sao_Paulo")
+    public ScheduledTasks(FuncionarioService funcionarioService) {
+        this.funcionarioService = funcionarioService;
+    }
+
+    @Value("${scheduled.birthdayCheck.enabled}")
+    private boolean birthdayCheckEnabled;
+
+    @Value("${scheduled.birthdayCheck.cronExpression}")
+    private String birthdayCheckCronExpression;
+
+    @Scheduled(cron = "${scheduled.birthdayCheck.cronExpression}", zone = "America/Sao_Paulo")
     public void runVerificaAniversarioBath() {
-        log.info("ScheduledTasks.runVerificaAniversarioBath");
-        funcionarioService.verificaAniversarioBath();
+        if (birthdayCheckEnabled) {
+            log.info("ScheduledTasks.runVerificaAniversarioBath");
+            try {
+                funcionarioService.verificaAniversarioBath();
+            } catch (RetryableException e) {
+                log.error(e.getMessage());
+            }
+        } else {
+            log.info("Birthday check task is disabled.");
+        }
     }
 }

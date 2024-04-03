@@ -1,5 +1,6 @@
 package rlti.com.rh.utils.email;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,9 @@ public class EmailApplicationService implements EmailService {
         this.emailClient = emailClient;
     }
 
+    @SneakyThrows
     @Override
-    public void enviarEmail(String nomeCompleto, String email, String mensagem) throws IOException {
+    public void enviarEmail(String nomeCompleto, String email, String mensagem)  {
         log.info("Envio de email de aniversário para {}", nomeCompleto);
         String htmlContent;
         htmlContent = lerConteudoDoArquivo(PATH_HTML);
