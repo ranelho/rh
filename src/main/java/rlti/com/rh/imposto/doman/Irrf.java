@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rlti.com.rh.imposto.application.IrrfRequest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -16,21 +17,25 @@ import java.time.LocalDate;
 @Entity(name = "Irrf")
 public class Irrf {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_irpf", nullable = false)
-    private Long idIrpf;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "irrf_seq_generator")
+    @SequenceGenerator(name="irrf_seq_generator", sequenceName = "irrf_sequence", allocationSize=1)
+    @Column(name = "id_irrf", nullable = false)
+    private Long idIrrf;
 
-    private Double contribuicao;
     private Double aliquota;
+    private BigDecimal deducao;
+    private BigDecimal valorMinimo;
+    private BigDecimal valorMaximo;
+
     private LocalDate inicioVigencia;
     private LocalDate fimVigencia;
-    private Double baseCalculo;
 
     public Irrf(IrrfRequest irrfRequest) {
-        this.contribuicao = irrfRequest.contribuicao();
         this.aliquota = irrfRequest.aliquota();
         this.inicioVigencia = irrfRequest.inicioVigencia();
         this.fimVigencia = irrfRequest.fimVigencia();
-        this.baseCalculo = irrfRequest.baseCalculo();
+        this.deducao = irrfRequest.deducao();
+        this.valorMinimo = irrfRequest.valorMinimo();
+        this.valorMaximo = irrfRequest.valorMaximo();
     }
 }

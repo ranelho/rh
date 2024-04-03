@@ -21,7 +21,7 @@ public class SalarioBaseInfraRepository implements SalarioBaseRepository {
     }
 
     @Override
-    public SalarioBase save(SalarioBase salarioBase) {
+    public SalarioBase saveSalarioBase(SalarioBase salarioBase) {
         return salarioBaseJpaRepository.save(salarioBase);
     }
 

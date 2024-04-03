@@ -10,6 +10,7 @@ import rlti.com.rh.imposto.doman.Irrf;
 import rlti.com.rh.imposto.repository.ImpostoRepository;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Repository
@@ -51,7 +52,16 @@ public class ImpostoInfraRepository implements ImpostoRepository {
     @Override
     public List<Inss> consultarAllInss(LocalDate inicioVigencia, LocalDate fimVigencia) {
         log.info("ImpostoInfraRepository.consultarAllInss");
-        return irrfJpaRepository.findByInicioVigenciaAndFimVigencia(inicioVigencia, fimVigencia);
+        return inssJpaRepository.findAllByInicioVigenciaAndFimVigencia(inicioVigencia, fimVigencia);
+    }
 
+    @Override
+    public List<Inss> findVigenciaInss(YearMonth yearMonth) {
+        return inssJpaRepository.findVigenciaInss(yearMonth.toString());
+    }
+
+    @Override
+    public List<Irrf> findVigenciaIrrf(YearMonth yearMonth) {
+        return irrfJpaRepository.findVigenciaIrrf(yearMonth.toString());
     }
 }
