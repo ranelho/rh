@@ -15,6 +15,7 @@ import rlti.com.rh.funcionario.service.SalarioBaseService;
 @Slf4j
 @RequiredArgsConstructor
 public class CargoApplicationService implements CargoService {
+
     private final CargoRepository cargoRepository;
     private final SalarioBaseService salarioBaseService;
 

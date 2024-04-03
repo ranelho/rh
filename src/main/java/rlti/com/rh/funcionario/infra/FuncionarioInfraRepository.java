@@ -51,6 +51,16 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
         return funcionarioJpaRepository.findByCpf(cpf).orElseThrow(getApiExceptionSupplier());
     }
 
+    @Override
+    public List<Funcionario> findAllFuncionarios() {
+        return funcionarioJpaRepository.findAll();
+    }
+
+    @Override
+    public List<Funcionario> findAllByAniversario(int mesAtual, int diaAtual) {
+        return funcionarioJpaRepository.findAllByAniversario(mesAtual, diaAtual);
+    }
+
     private static Supplier<APIException> getApiExceptionSupplier() {
         return () -> APIException.build(HttpStatus.BAD_REQUEST, "Funcionário não encontrado!");
     }
