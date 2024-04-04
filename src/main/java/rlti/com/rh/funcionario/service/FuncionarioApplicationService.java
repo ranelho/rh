@@ -77,4 +77,9 @@ public class FuncionarioApplicationService implements FuncionarioService {
             }
         }
     }
+
+    @Override
+    public List<Funcionario> findAllFuncionarios() {
+        return funcionarioRepository.findAllFuncionarios();
+    }
 }

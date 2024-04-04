@@ -17,4 +17,4 @@ emailClient:
 scheduled:
   birthdayCheck:
     enabled: ${ENABLE_BIRTHDAY_CHECK:false}
-    cronExpression: ${CRON_BIRTHDAY_CHECK:*/5 * * * * *}
+    cronExpression: ${CRON_BIRTHDAY_CHECK:0 8 * * * *}
