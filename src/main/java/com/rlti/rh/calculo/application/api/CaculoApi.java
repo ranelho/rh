@@ -12,4 +12,8 @@ public interface CaculoApi {
     @PostMapping()
     @ResponseStatus(code = HttpStatus.OK)
     SimulacaoResponse simularCalculoInss(@RequestBody SimulacaoInssRequest request);
+
+    @PostMapping("/efetuar-calculo/{mesCompetencia}")
+    @ResponseStatus(code = HttpStatus.OK)
+    boolean efetuarCalculo(String mesCompetencia);
 }

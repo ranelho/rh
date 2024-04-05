@@ -29,7 +29,7 @@ public class HorasInfraRepository implements HorasRepository {
     }
 
     @Override
-    public List<HorasTrabalhadas> findAllHoras(String competencia) {
-        return horasJpaRepository.findAllByMesCompetencia(competencia);
+    public List<HorasTrabalhadas> findAllHorasTrue(String competencia) {
+        return horasJpaRepository.findAllByMesCompetenciaAndCompetenciaFechada(competencia, true);
     }
 }

@@ -8,6 +8,6 @@ public record HorasRequest(
         Double horasExtras,
         Double horasNoturnas,
         String numeroMatricula,
-        Boolean aberto
+        Boolean competenciaFechada
 ) {
 }

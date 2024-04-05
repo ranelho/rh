@@ -1,6 +1,8 @@
 package com.rlti.rh.folha.domain;
 
 
+import com.rlti.rh.empresa.application.api.EmpresaDetalhadoResponse;
+import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,7 +58,10 @@ public class FolhaMensal {
     @OneToMany
     private List<Descontos> descontos;
 
-    public FolhaMensal(FolhaMensaRequest folhaMensaRequest) {
+    @OneToOne
+    Empresa empresa;
+
+    public FolhaMensal(FolhaMensaRequest folhaMensaRequest, Empresa empresa) {
         this.idContrato = folhaMensaRequest.idContrato();
         this.idFuncionario = folhaMensaRequest.idFuncionario();
         this.ctps = folhaMensaRequest.ctps();
@@ -80,5 +85,12 @@ public class FolhaMensal {
         this.valorDescontoIrrf = folhaMensaRequest.valorDescontoIrrf();
         this.fgts = folhaMensaRequest.fgts();
         this.salarioLiquido = folhaMensaRequest.salarioLiquido();
+        this.totalVencimentos = folhaMensaRequest.totalVencimentos();
+        this.totalDescontos = folhaMensaRequest.totalDescontos();
+        this.empresa = empresa;
+    }
+
+    public void addDescontos(List<Descontos> descontos) {
+        this.descontos = descontos;
     }
 }

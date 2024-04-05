@@ -9,6 +9,8 @@ import com.rlti.rh.calculo.application.api.response.SimulacaoResponse;
 import com.rlti.rh.calculo.repository.DescontosRepository;
 import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.contrato.repository.ContratoRepository;
+import com.rlti.rh.empresa.application.repository.EmpresaRepository;
+import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import com.rlti.rh.folha.domain.Descontos;
 import com.rlti.rh.folha.domain.FolhaMensal;
@@ -41,6 +43,7 @@ public class CalculoApplicationService implements CalculoService {
     private final HorasRepository horasRepository;
     private final FolhaMensalRepository folhaRepository;
     private final DescontosRepository descontosRepository;
+    private final EmpresaRepository empresaRepository;
 
 
     @Override
@@ -55,8 +58,8 @@ public class CalculoApplicationService implements CalculoService {
         return new SimulacaoResponse(contrato, inssResult, irResult,request.mesAno(), dependentes);
     }
 
-    void efetuarCalculo(String competencia){
-        List<HorasTrabalhadas> horasTrabalhadas = horasRepository.findAllHoras(competencia);
+    public boolean efetuarCalculo(String competencia){
+        List<HorasTrabalhadas> horasTrabalhadas = horasRepository.findAllHorasTrue(competencia);
         for (HorasTrabalhadas h : horasTrabalhadas) {
             Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(h.getMatricula().getNumeroMatricula()));
 
@@ -76,24 +79,27 @@ public class CalculoApplicationService implements CalculoService {
             FolhaMensal folhaMensal = saveFolhaMensal(competencia, h, contrato, salarioFuncionario, irResult, inssResult, dependentes, totalVencimentos, totalDescontos);
             saveDescontos(inssResult, folhaMensal, irResult);
         }
+        return true;
     }
 
     private FolhaMensal saveFolhaMensal(String competencia, HorasTrabalhadas h, Contrato contrato, BigDecimal salarioFuncionario,
                                         IrResult irResult, InssResult inssResult, int dependentes, BigDecimal totalVencimentos, BigDecimal totalDescontos) {
+        Empresa empresa = empresaRepository.getByCnpj("81436017000198");
         FolhaMensaRequest folhaMensaRequest = new FolhaMensaRequest(contrato, salarioFuncionario, irResult, inssResult,
                                 contrato.getMatricula().getFuncionario(), competencia, dependentes, h, totalVencimentos, totalDescontos);
-        return folhaRepository.saveFolhaMensal(new FolhaMensal(folhaMensaRequest));
+        return folhaRepository.saveFolhaMensal(new FolhaMensal(folhaMensaRequest,empresa));
     }
 
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
         Descontos descontoInss = new Descontos(inssResult, folhaMensal);
         List<Descontos> descontosASalvar = new ArrayList<>();
 
-        if (irResult.getIrrfCalculado() != null) {
+        if (irResult.getIrrfCalculado().compareTo(BigDecimal.ZERO) > 0) {
             Descontos descontoIrrf = new Descontos(irResult, folhaMensal);
             descontosASalvar.add(descontoIrrf);
         }
         descontosASalvar.add(descontoInss);
-        descontosRepository.saveAll(descontosASalvar);
+        folhaMensal.addDescontos(descontosRepository.saveAll(descontosASalvar));
+        folhaRepository.saveFolhaMensal(folhaMensal);
     }
 }
