@@ -1,8 +1,8 @@
 package com.rlti.rh.folha.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.rh.calculo.InssResult;
 import com.rlti.rh.calculo.IrResult;
-import com.rlti.rh.imposto.doman.Irrf;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +19,7 @@ import java.util.List;
 public class Descontos {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "descontos_seq_generator", sequenceName = "descontos_sequence", allocationSize = 1)
     @Column(name = "id_desconto", nullable = false)
     private Long idDesconto;
 
@@ -28,6 +28,7 @@ public class Descontos {
     private BigDecimal valorDesconto;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "folha_mensal_id_folha_mensal")
     private FolhaMensal folhaMensal;
 

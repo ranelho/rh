@@ -18,4 +18,9 @@ public class CaculoRestController implements CaculoApi {
     public SimulacaoResponse simularCalculoInss(SimulacaoInssRequest request) {
         return calculoService.simularCalculoInss(request);
     }
+
+    @Override
+    public boolean efetuarCalculo(String mesCompetencia) {
+        return calculoService.efetuarCalculo(mesCompetencia);
+    }
 }

@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class Vencimentos {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="vencimentos_seq_generator", sequenceName = "vencimentos_sequence", allocationSize=1)
     @Column(name = "id_vencimento", nullable = false)
     private Long idVencimento;
 

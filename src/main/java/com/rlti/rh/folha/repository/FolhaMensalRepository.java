@@ -4,4 +4,5 @@ import com.rlti.rh.folha.domain.FolhaMensal;
 
 public interface FolhaMensalRepository {
     FolhaMensal saveFolhaMensal(FolhaMensal folhaMensal);
+    FolhaMensal findByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno);
 }

@@ -9,5 +9,5 @@ import java.util.List;
 public interface HorasRepository {
     void salvarHoras(HorasTrabalhadas horasTrabalhadas);
     HorasTrabalhadas findHorasByNumeroMatriculaAndMesReferencia(Matricula matricula, Date mesReferencia);
-    List<HorasTrabalhadas> findAllHoras(String competencia);
+    List<HorasTrabalhadas> findAllHorasTrue(String competencia);
 }

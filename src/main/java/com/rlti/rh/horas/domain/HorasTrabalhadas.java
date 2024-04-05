@@ -27,7 +27,7 @@ public class HorasTrabalhadas {
     private String mesCompetencia;
     private Double horasExtras;
     private Double horasNoturnas;
-    private Boolean aberto;
+    private Boolean competenciaFechada;
 
     @OneToOne
     @JoinColumn(name = "matricula_id_matricula")
@@ -40,7 +40,7 @@ public class HorasTrabalhadas {
         this.mesCompetencia = horasRequest.mesCompetencia();
         this.horasExtras = horasRequest.horasExtras();
         this.horasNoturnas = horasRequest.horasNoturnas();
-        this.aberto = horasRequest.aberto();
+        this.competenciaFechada = horasRequest.competenciaFechada();
         this.matricula = matricula;
     }
 
@@ -50,6 +50,6 @@ public class HorasTrabalhadas {
         this.faltasJustificadas = horasRequest.faltasJustificadas();
         this.horasExtras = horasRequest.horasExtras();
         this.horasNoturnas = horasRequest.horasNoturnas();
-        this.aberto = horasRequest.aberto();
+        this.competenciaFechada = horasRequest.competenciaFechada();
     }
 }
