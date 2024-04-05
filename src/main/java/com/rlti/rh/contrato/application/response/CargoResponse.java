@@ -26,3 +26,4 @@ public record CargoResponse(
         return cargos.stream().map(CargoResponse::new).toList();
     }
 }
+
