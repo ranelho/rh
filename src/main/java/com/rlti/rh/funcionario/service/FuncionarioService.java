@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.service;
 
+import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
 import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
@@ -17,4 +18,5 @@ public interface FuncionarioService {
     FuncionarioResponse findFuncionarioByCpf(String cpf);
     void verificaAniversarioBath();
     List<Funcionario> findAllFuncionarios();
+    void newContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest);
 }

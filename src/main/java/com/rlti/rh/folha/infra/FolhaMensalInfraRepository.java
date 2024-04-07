@@ -2,10 +2,10 @@ package com.rlti.rh.folha.infra;
 
 import com.rlti.rh.folha.domain.FolhaMensal;
 import com.rlti.rh.folha.repository.FolhaMensalRepository;
-import com.rlti.rh.handler.APIException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,8 +19,17 @@ public class FolhaMensalInfraRepository implements FolhaMensalRepository {
     }
 
     @Override
-    public FolhaMensal findByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno) {
-        return folhaMensalJPARepository.findByNumeroMatriculaAndMesCompetencia(numeroMatricula, mesAno)
-                .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Contracheque não localizado"));
+    public Optional<FolhaMensal> findByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno) {
+        return folhaMensalJPARepository.findByNumeroMatriculaAndMesCompetencia(numeroMatricula, mesAno);
+    }
+
+    @Override
+    public Optional<FolhaMensal> findFolhaMensalByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno, boolean fechada) {
+        return folhaMensalJPARepository.findByNumeroMatriculaAndMesCompetenciaAndFechada(numeroMatricula, mesAno, fechada);
+    }
+
+    @Override
+    public void delete(FolhaMensal folhaMensal) {
+        folhaMensalJPARepository.delete(folhaMensal);
     }
 }

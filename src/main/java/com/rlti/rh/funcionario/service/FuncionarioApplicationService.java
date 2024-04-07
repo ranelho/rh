@@ -1,5 +1,8 @@
 package com.rlti.rh.funcionario.service;
 
+import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.domain.ContaPagamento;
+import com.rlti.rh.funcionario.repository.ContaPagamentoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ public class FuncionarioApplicationService implements FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final EmailService emailService;
+    private final ContaPagamentoRepository contaPagamentoRepository;
 
     @Override
     public FuncionarioIdResponse newFuncionario(FuncionarioRequest request) {
@@ -81,5 +85,13 @@ public class FuncionarioApplicationService implements FuncionarioService {
     @Override
     public List<Funcionario> findAllFuncionarios() {
         return funcionarioRepository.findAllFuncionarios();
+    }
+
+    @Override
+    public void newContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
+        ContaPagamento contaPagamento = contaPagamentoRepository.saveContaPagamento(new ContaPagamento(contaPagamentoRequest));
+        funcionario.setContaPagamento(contaPagamento);
+        funcionarioRepository.saveFuncionario(funcionario);
     }
 }

@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface FolhaMensalJPARepository extends JpaRepository<FolhaMensal, Long> {
     Optional<FolhaMensal> findByNumeroMatriculaAndMesCompetencia(String numeroMatricula, String mesAno);
+    Optional<FolhaMensal> findByNumeroMatriculaAndMesCompetenciaAndFechada(String numeroMatricula, String mesAno, boolean fechada);
 }

@@ -1,10 +1,6 @@
 package com.rlti.rh.folha.application.api;
 
-import com.rlti.rh.calculo.InssResult;
-import com.rlti.rh.calculo.IrResult;
-import com.rlti.rh.contrato.domain.Contrato;
-import com.rlti.rh.funcionario.domain.Funcionario;
-import com.rlti.rh.horas.domain.HorasTrabalhadas;
+import com.rlti.rh.calculo.service.FolhaMensalData;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -16,10 +12,6 @@ public record FolhaMensaRequest(
         Long idFuncionario,
         String ctps,
         String pis,
-  /*    String banco,
-        String agencia,
-        String conta,
-        LocalDate dataPagamento,*/
         String nomeCompleto,
         String cpf,
         String numeroMatricula,
@@ -27,7 +19,6 @@ public record FolhaMensaRequest(
         String cargo,
         String setor,
         String mesCompetencia,
-        Integer quantidadeDependentes,
         Integer diasTrabalhados,
         Double quantidadeHorasExtras,
         Integer quantidadeFaltas,
@@ -40,38 +31,41 @@ public record FolhaMensaRequest(
         BigDecimal fgts,
         BigDecimal salarioLiquido,
         BigDecimal totalVencimentos,
-        BigDecimal totalDescontos
+        BigDecimal totalDescontos,
+        String banco,
+        String agencia,
+        String conta
 ) {
-    public FolhaMensaRequest(Contrato contrato, BigDecimal salarioBruto, IrResult irResult,
-                             InssResult inssResult, Funcionario funcionario, String mesCompetencia,
-                             int quantidadeDependentes, HorasTrabalhadas horasTrabalhadas,BigDecimal totalVencimentos,
-                             BigDecimal totalDescontos) {
+
+    public FolhaMensaRequest(FolhaMensalData data) {
         this(
-                contrato.getIdContrato(),
-                funcionario.getIdFuncionario(),
-                funcionario.getCtps(),
-                funcionario.getPis(),
-                funcionario.getNomeCompleto(),
-                funcionario.getCpf(),
-                contrato.getMatricula().getNumeroMatricula(),
-                contrato.getDataAdmissao(),
-                contrato.getCargo().getNomeCargo(),
-                contrato.getSetor().getNomeSetor(),
-                mesCompetencia,
-                quantidadeDependentes,
-                horasTrabalhadas.getDiasTrabalhados(),
-                horasTrabalhadas.getHorasExtras(),
-                horasTrabalhadas.getFaltas(),
-                horasTrabalhadas.getHorasNoturnas(),
-                salarioBruto,
-                inssResult.getInssCalculado(),
-                inssResult.getAliquota(),
-                irResult.getIrrfCalculado(),
-                irResult.getPercentualDesconto(),
-                totalVencimentos.multiply(BigDecimal.valueOf(0.08)), //fgts 8%
-                irResult.getSalarioLiquido(),
-                totalVencimentos,
-                totalDescontos
+                data.contrato().getIdContrato(),
+                data.contrato().getMatricula().getFuncionario().getIdFuncionario(),
+                data.contrato().getMatricula().getFuncionario().getCtps(),
+                data.contrato().getMatricula().getFuncionario().getPis(),
+                data.contrato().getMatricula().getFuncionario().getNomeCompleto(),
+                data.contrato().getMatricula().getFuncionario().getCpf(),
+                data.contrato().getMatricula().getNumeroMatricula(),
+                data.contrato().getDataAdmissao(),
+                data.contrato().getCargo().getNomeCargo(),
+                data.contrato().getSetor().getNomeSetor(),
+                data.competencia(),
+                data.horasTrabalhadas().getDiasTrabalhados(),
+                data.horasTrabalhadas().getHorasExtras(),
+                data.horasTrabalhadas().getFaltas(),
+                data.horasTrabalhadas().getHorasNoturnas(),
+                data.contrato().getCargo().getSalarioBase().getValorSalario(),
+                data.inssResult().getInssCalculado(),
+                data.inssResult().getAliquota(),
+                data.irResult().getIrrfCalculado(),
+                data.irResult().getPercentualDesconto(),
+                data.totalVencimentos().multiply(BigDecimal.valueOf(0.08)),
+                data.irResult().getSalarioLiquido(),
+                data.totalVencimentos(),
+                data.totalDescontos(),
+                data.contrato().getMatricula().getFuncionario().getContaPagamento().getBanco(),
+                data.contrato().getMatricula().getFuncionario().getContaPagamento().getAgencia(),
+                data.contrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta()
         );
     }
 }
