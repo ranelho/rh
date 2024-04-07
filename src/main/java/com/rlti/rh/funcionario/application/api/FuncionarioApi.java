@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.application.api;
 
+import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -38,4 +39,8 @@ public interface FuncionarioApi {
     @GetMapping("/cpf/{cpf}")
     @ResponseStatus(code = HttpStatus.OK)
     FuncionarioResponse findFuncionarioByCpf(@PathVariable("cpf") String cpf);
+
+    @PostMapping("conta-pagamento/{cpf}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    void newContaPagamento(@PathVariable("cpf") String cpf, @Valid @RequestBody ContaPagamentoRequest contaPagamentoRequest);
 }

@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.domain;
 
+import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,15 @@ public class ContaPagamento {
     @Column(name = "id_conta_pagamento", nullable = false)
     private Long idContaPagamento;
 
+    private String banco;
     private String agencia;
     private String numeroConta;
     @Enumerated(EnumType.STRING)    private TipoConta tipoConta;
 
+    public ContaPagamento(ContaPagamentoRequest contaPagamentoRequest) {
+        this.banco = contaPagamentoRequest.banco();
+        this.agencia = contaPagamentoRequest.agencia();
+        this.numeroConta = contaPagamentoRequest.numeroConta();
+        this.tipoConta = contaPagamentoRequest.tipoConta();
+    }
 }

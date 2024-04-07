@@ -2,6 +2,8 @@ package com.rlti.rh.calculo.infra;
 
 import com.rlti.rh.calculo.repository.DescontosRepository;
 import com.rlti.rh.folha.domain.Descontos;
+import com.rlti.rh.folha.domain.FolhaMensal;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +22,11 @@ public class DescontosInfraRepository implements DescontosRepository {
     @Override
     public void save(Descontos descontoInss) {
         descontosJpaRepository.save(descontoInss);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByFolhaMensal(FolhaMensal folhaMensal) {
+        descontosJpaRepository.deleteAllByFolhaMensal(folhaMensal);
     }
 }

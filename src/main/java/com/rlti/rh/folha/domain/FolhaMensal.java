@@ -1,7 +1,6 @@
 package com.rlti.rh.folha.domain;
 
 
-import com.rlti.rh.empresa.application.api.EmpresaDetalhadoResponse;
 import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import jakarta.persistence.*;
@@ -22,10 +21,14 @@ import java.util.List;
 public class FolhaMensal {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name="folha_mensal_seq_generator", sequenceName = "folha_mensal_sequence", allocationSize=1)
+    @SequenceGenerator(name="folha_mensal_seq_generator", sequenceName = "folha_mensal_sequence", allocationSize=1 )
     @Column(name = "id_folha_mensal", nullable = false)
     private Long idFolhaMensal;
 
+    private String cpf;
+    private String mesCompetencia;
+    @Enumerated(EnumType.STRING)
+    private TipoFolha tipoFolha;
     private Long idContrato;
     private Long idFuncionario;
     private String ctps;
@@ -35,12 +38,10 @@ public class FolhaMensal {
     private String conta;
     private LocalDate dataPagamento;
     private String nomeFuncionario;
-    private String cpf;
     private String numeroMatricula;
     private LocalDate dataAdmissao;
     private String cargo;
     private String setor;
-    private String mesCompetencia;
     private Integer quantidadeDependentes;
     private Integer diasTrabalhados;
     private BigDecimal salarioBruto;
@@ -52,10 +53,12 @@ public class FolhaMensal {
     private BigDecimal totalVencimentos;
     private BigDecimal totalDescontos;
     private BigDecimal salarioLiquido;
+    private Boolean fechada;
 
-    @OneToMany
+    @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vencimentos> vencimentos;
-    @OneToMany
+
+    @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Descontos> descontos;
 
     @OneToOne
@@ -66,10 +69,9 @@ public class FolhaMensal {
         this.idFuncionario = folhaMensaRequest.idFuncionario();
         this.ctps = folhaMensaRequest.ctps();
         this.pis = folhaMensaRequest.pis();
-/*        this.banco = folhaMensaRequest.banco();
+        this.banco = folhaMensaRequest.banco();
         this.agencia = folhaMensaRequest.agencia();
         this.conta = folhaMensaRequest.conta();
-        this.dataPagamento = folhaMensaRequest.dataPagamento();*/
         this.nomeFuncionario = folhaMensaRequest.nomeCompleto();
         this.cpf = folhaMensaRequest.cpf();
         this.numeroMatricula = folhaMensaRequest.numeroMatricula();
@@ -77,7 +79,6 @@ public class FolhaMensal {
         this.cargo = folhaMensaRequest.cargo();
         this.setor = folhaMensaRequest.setor();
         this.mesCompetencia = folhaMensaRequest.mesCompetencia();
-        this.quantidadeDependentes = folhaMensaRequest.quantidadeDependentes();
         this.diasTrabalhados = folhaMensaRequest.diasTrabalhados();
         this.salarioBruto = folhaMensaRequest.salarioBruto();
         this.valorDescontoInss = folhaMensaRequest.valorDescontoInss();
@@ -87,10 +88,24 @@ public class FolhaMensal {
         this.salarioLiquido = folhaMensaRequest.salarioLiquido();
         this.totalVencimentos = folhaMensaRequest.totalVencimentos();
         this.totalDescontos = folhaMensaRequest.totalDescontos();
+        this.fechada = false;
         this.empresa = empresa;
     }
 
     public void addDescontos(List<Descontos> descontos) {
         this.descontos = descontos;
+    }
+
+    public void update(FolhaMensaRequest folhaMensaRequest) {
+        this.diasTrabalhados = folhaMensaRequest.diasTrabalhados();
+        this.salarioBruto = folhaMensaRequest.salarioBruto();
+        this.valorDescontoInss = folhaMensaRequest.valorDescontoInss();
+        this.aliquotaInss = folhaMensaRequest.aliquotaInss();
+        this.valorDescontoIrrf = folhaMensaRequest.valorDescontoIrrf();
+        this.fgts = folhaMensaRequest.fgts();
+        this.salarioLiquido = folhaMensaRequest.salarioLiquido();
+        this.totalVencimentos = folhaMensaRequest.totalVencimentos();
+        this.totalDescontos = folhaMensaRequest.totalDescontos();
+        this.fechada = false;
     }
 }

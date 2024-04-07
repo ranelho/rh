@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -60,46 +61,55 @@ public class CalculoApplicationService implements CalculoService {
 
     public boolean efetuarCalculo(String competencia){
         List<HorasTrabalhadas> horasTrabalhadas = horasRepository.findAllHorasTrue(competencia);
-        for (HorasTrabalhadas h : horasTrabalhadas) {
-            Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(h.getMatricula().getNumeroMatricula()));
 
-            //calculo inss e irrf
-            List<Inss> inss = impostoRepository.findVigenciaInss(YearMonth.parse(competencia));
-            List<Irrf> irrf = impostoRepository.findVigenciaIrrf(YearMonth.parse(competencia));
+        List<Inss> inss = impostoRepository.findVigenciaInss(YearMonth.parse(competencia));
+        List<Irrf> irrf = impostoRepository.findVigenciaIrrf(YearMonth.parse(competencia));
+
+        for (HorasTrabalhadas horas : horasTrabalhadas) {
+            Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
+                    horas.getMatricula().getNumeroMatricula(), competencia);
+            Contrato contrato = contratoRepository.findByMatricula(
+                    matriculaRepository.findByNumeroMatricula(horas.getMatricula().getNumeroMatricula()));
             BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
             int dependentes = dependenteRepository.countDependenteFuncionario(contrato.getMatricula().getFuncionario());
             InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
             IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
-            BigDecimal totalDescontos = inssResult.getInssCalculado().add(irResult.getIrrfCalculado());
 
-            //criar calculo de horas extras
-            BigDecimal extras = BigDecimal.valueOf(h.getHorasExtras()).multiply(BigDecimal.valueOf(0.25));
+            BigDecimal extras = BigDecimal.valueOf(horas.getHorasExtras()).multiply(BigDecimal.valueOf(0.25));
             BigDecimal totalVencimentos = salarioFuncionario.add(extras);
 
-            FolhaMensal folhaMensal = saveFolhaMensal(competencia, h, contrato, salarioFuncionario, irResult, inssResult, dependentes, totalVencimentos, totalDescontos);
+            FolhaMensalData dados = new FolhaMensalData(competencia, horas, contrato, irResult, inssResult, totalVencimentos,
+                    inssResult.getInssCalculado().add(irResult.getIrrfCalculado()));
+
+           if (!optionalFolhaMensal.get().getFechada()) {
+                folhaRepository.delete(optionalFolhaMensal.get());
+            }
+            FolhaMensal folhaMensal = saveFolhaMensal(dados);
             saveDescontos(inssResult, folhaMensal, irResult);
         }
         return true;
     }
 
-    private FolhaMensal saveFolhaMensal(String competencia, HorasTrabalhadas h, Contrato contrato, BigDecimal salarioFuncionario,
-                                        IrResult irResult, InssResult inssResult, int dependentes, BigDecimal totalVencimentos, BigDecimal totalDescontos) {
+    private FolhaMensal saveFolhaMensal(FolhaMensalData dados) {
         Empresa empresa = empresaRepository.getByCnpj("81436017000198");
-        FolhaMensaRequest folhaMensaRequest = new FolhaMensaRequest(contrato, salarioFuncionario, irResult, inssResult,
-                                contrato.getMatricula().getFuncionario(), competencia, dependentes, h, totalVencimentos, totalDescontos);
+        FolhaMensaRequest folhaMensaRequest = new FolhaMensaRequest(dados);
         return folhaRepository.saveFolhaMensal(new FolhaMensal(folhaMensaRequest,empresa));
     }
 
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
+        List<Descontos> descontosASalvar = getDescontos(inssResult, folhaMensal, irResult);
+        folhaMensal.addDescontos(descontosRepository.saveAll(descontosASalvar));
+        folhaRepository.saveFolhaMensal(folhaMensal);
+    }
+
+    private static List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
         Descontos descontoInss = new Descontos(inssResult, folhaMensal);
         List<Descontos> descontosASalvar = new ArrayList<>();
-
         if (irResult.getIrrfCalculado().compareTo(BigDecimal.ZERO) > 0) {
             Descontos descontoIrrf = new Descontos(irResult, folhaMensal);
             descontosASalvar.add(descontoIrrf);
         }
         descontosASalvar.add(descontoInss);
-        folhaMensal.addDescontos(descontosRepository.saveAll(descontosASalvar));
-        folhaRepository.saveFolhaMensal(folhaMensal);
+        return descontosASalvar;
     }
 }

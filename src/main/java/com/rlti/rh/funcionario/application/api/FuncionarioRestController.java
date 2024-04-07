@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.application.api;
 
+import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,4 +48,11 @@ public class FuncionarioRestController implements FuncionarioApi {
     public FuncionarioResponse findFuncionarioByCpf(String cpf) {
         return funcionarioService.findFuncionarioByCpf(cpf);
     }
+
+    @Override
+    public void newContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
+        funcionarioService.newContaPagamento(cpf, contaPagamentoRequest);
+    }
+
+
 }
