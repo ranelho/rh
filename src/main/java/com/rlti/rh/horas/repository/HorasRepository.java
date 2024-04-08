@@ -10,4 +10,5 @@ public interface HorasRepository {
     void salvarHoras(HorasTrabalhadas horasTrabalhadas);
     HorasTrabalhadas findHorasByNumeroMatriculaAndMesReferencia(Matricula matricula, Date mesReferencia);
     List<HorasTrabalhadas> findAllHorasTrue(String competencia);
+    HorasTrabalhadas findHorasByMesCompetenciaAndMatricula(String mesCompetencia, Matricula matricula);
 }

@@ -23,4 +23,9 @@ public class CaculoRestController implements CaculoApi {
     public boolean efetuarCalculo(String mesCompetencia) {
         return calculoService.efetuarCalculo(mesCompetencia);
     }
+
+    @Override
+    public void atualizarStatus(String mesCompetencia, String numeroMatricula, boolean status) {
+        calculoService.atualizarStatus(mesCompetencia, numeroMatricula, status);
+    }
 }

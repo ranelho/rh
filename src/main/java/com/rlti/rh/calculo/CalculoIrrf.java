@@ -30,7 +30,6 @@ public class CalculoIrrf {
             }
         }
         BigDecimal salarioLiquido = salarioComDescontoInss.subtract(irrf);
-
         return new IrResult(codigo, descricao, salarioComDescontoInss, dependentes, irrf, percentualDesconto, salarioLiquido);
     }
 }

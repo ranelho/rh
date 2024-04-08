@@ -25,7 +25,7 @@ public class FolhaMensalInfraRepository implements FolhaMensalRepository {
 
     @Override
     public Optional<FolhaMensal> findFolhaMensalByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno, boolean fechada) {
-        return folhaMensalJPARepository.findByNumeroMatriculaAndMesCompetenciaAndFechada(numeroMatricula, mesAno, fechada);
+        return folhaMensalJPARepository.findByNumeroMatriculaAndMesCompetenciaAndStatus(numeroMatricula, mesAno, fechada);
     }
 
     @Override

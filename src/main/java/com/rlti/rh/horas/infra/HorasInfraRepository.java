@@ -10,6 +10,7 @@ import com.rlti.rh.horas.repository.HorasRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,11 +26,21 @@ public class HorasInfraRepository implements HorasRepository {
     @Override
     public HorasTrabalhadas findHorasByNumeroMatriculaAndMesReferencia(Matricula matricula, Date mesReferencia) {
         return  horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesReferencia.toString())
-                .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Não localizado"));
+                .orElseThrow(responseException());
     }
 
     @Override
     public List<HorasTrabalhadas> findAllHorasTrue(String competencia) {
-        return horasJpaRepository.findAllByMesCompetenciaAndCompetenciaFechada(competencia, true);
+        return horasJpaRepository.findAllByMesCompetenciaAndCompetenciaFechada(competencia, false);
+    }
+
+    @Override
+    public HorasTrabalhadas findHorasByMesCompetenciaAndMatricula(String mesCompetencia, Matricula matricula) {
+        return horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesCompetencia)
+                .orElseThrow(responseException());
+    }
+
+    private static Supplier<APIException> responseException() {
+        return () -> APIException.build(HttpStatus.BAD_REQUEST, "Não localizado");
     }
 }
