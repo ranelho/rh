@@ -53,7 +53,7 @@ public class FolhaMensal {
     private BigDecimal totalVencimentos;
     private BigDecimal totalDescontos;
     private BigDecimal salarioLiquido;
-    private Boolean fechada;
+    private Boolean status;
 
     @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vencimentos> vencimentos;
@@ -88,8 +88,9 @@ public class FolhaMensal {
         this.salarioLiquido = folhaMensaRequest.salarioLiquido();
         this.totalVencimentos = folhaMensaRequest.totalVencimentos();
         this.totalDescontos = folhaMensaRequest.totalDescontos();
-        this.fechada = false;
+        this.status = false;
         this.empresa = empresa;
+        this.tipoFolha = TipoFolha.NORMAL;
     }
 
     public void addDescontos(List<Descontos> descontos) {
@@ -106,6 +107,6 @@ public class FolhaMensal {
         this.salarioLiquido = folhaMensaRequest.salarioLiquido();
         this.totalVencimentos = folhaMensaRequest.totalVencimentos();
         this.totalDescontos = folhaMensaRequest.totalDescontos();
-        this.fechada = false;
+        this.status = false;
     }
 }
