@@ -1,20 +1,24 @@
 package com.rlti.rh.horas.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.rh.folha.domain.Vencimentos;
+import com.rlti.rh.funcionario.domain.Matricula;
+import com.rlti.rh.horas.application.api.HorasRequest;
+import com.rlti.rh.horas.application.api.HorasUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.rlti.rh.funcionario.domain.Matricula;
-import com.rlti.rh.horas.application.api.HorasRequest;
-import com.rlti.rh.horas.application.api.HorasUpdateRequest;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "HORAS_TRABALHADAS")
-public class HorasTrabalhadas {
+@Entity(name = "HORAS")
+public class Horas {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dependente_seq_generator")
     @SequenceGenerator(name="horas_trabalhadas_seq_generator", sequenceName = "horas_trabalhadas_sequence", allocationSize=1)
@@ -29,11 +33,15 @@ public class HorasTrabalhadas {
     private Double horasNoturnas;
     private Boolean competenciaFechada;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Vencimentos> vencimentos;
+
     @OneToOne
     @JoinColumn(name = "matricula_id_matricula")
     private Matricula matricula;
 
-    public HorasTrabalhadas(HorasRequest horasRequest, Matricula matricula) {
+    public Horas(HorasRequest horasRequest, Matricula matricula) {
         this.diasTrabalhados = horasRequest.diasTrabalhados();
         this.faltas = horasRequest.faltas();
         this.faltasJustificadas = horasRequest.faltasJustificadas();

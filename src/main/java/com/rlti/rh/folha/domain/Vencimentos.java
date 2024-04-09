@@ -1,5 +1,7 @@
 package com.rlti.rh.folha.domain;
 
+import com.rlti.rh.codigos.domain.Codigo;
+import com.rlti.rh.folha.application.api.VencimentosRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,18 +22,20 @@ public class Vencimentos {
     @Column(name = "id_vencimento", nullable = false)
     private Long idVencimento;
 
-    private String codigo;
-    private String descricao;
+    @OneToOne
+    @JoinColumn(name = "codigo_id_codigos")
+    private Codigo codigo;
     private BigDecimal valorVencimento;
+    private Boolean dedutivel;
 
     @ManyToOne
     @JoinColumn(name = "folha_mensal_id_folha_mensal")
-    private FolhaMensal folhaMensal;
+    private FolhaMensal  folhaMensal;
 
-    public Vencimentos(BigDecimal salarioFuncionario, FolhaMensal folhaMensal, String codigo, String descricao) {
-        this.valorVencimento = salarioFuncionario;
-        this.folhaMensal = folhaMensal;
+    public Vencimentos(VencimentosRequest vencimentosRequest, Codigo codigo) {
         this.codigo = codigo;
-        this.descricao = descricao;
+        this.valorVencimento = vencimentosRequest.getValorVencimento();
+        this.dedutivel = vencimentosRequest.getDedutivel();
     }
+
 }

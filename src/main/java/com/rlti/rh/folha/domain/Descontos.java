@@ -3,6 +3,7 @@ package com.rlti.rh.folha.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.rh.calculo.process.InssResult;
 import com.rlti.rh.calculo.process.IrResult;
+import com.rlti.rh.codigos.domain.Codigo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,9 @@ public class Descontos {
     @Column(name = "id_desconto", nullable = false)
     private Long idDesconto;
 
-    private String codigo;
-    private String descricao;
+    @OneToOne
+    @JoinColumn(name = "codigo_id_codigos")
+    private Codigo codigo;
     private BigDecimal valorDesconto;
 
     @ManyToOne
@@ -33,15 +35,15 @@ public class Descontos {
     private FolhaMensal folhaMensal;
 
     public Descontos(InssResult inssResult, FolhaMensal folhaMensal) {
-        this.codigo = inssResult.getCodigo();
-        this.descricao = inssResult.getDescricao();
+       /* this.codigo = inssResult.getCodigo();
+        this.descricao = inssResult.getDescricao();*/
         this.valorDesconto = inssResult.getInssCalculado();
         this.folhaMensal = folhaMensal;
     }
 
     public Descontos(IrResult irrf, FolhaMensal folhaMensal) {
-        this.codigo = irrf.getCodigo();
-        this.descricao = irrf.getDescricao();
+     /*   this.codigo = irrf.getCodigo();
+        this.descricao = irrf.getDescricao();*/
         this.valorDesconto = irrf.getIrrfCalculado();
         this.folhaMensal = folhaMensal;
     }

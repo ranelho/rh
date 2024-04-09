@@ -3,11 +3,11 @@ package com.rlti.rh.calculo.service;
 import com.rlti.rh.calculo.process.InssResult;
 import com.rlti.rh.calculo.process.IrResult;
 import com.rlti.rh.contrato.domain.Contrato;
-import com.rlti.rh.horas.domain.HorasTrabalhadas;
+import com.rlti.rh.horas.domain.Horas;
 
 import java.math.BigDecimal;
 
-public record FolhaMensalData(String competencia, HorasTrabalhadas horasTrabalhadas, Contrato contrato,
+public record FolhaMensalData(String competencia, Horas horas, Contrato contrato,
                               IrResult irResult, InssResult inssResult, BigDecimal totalVencimentos,
                               BigDecimal totalDescontos) {
 }

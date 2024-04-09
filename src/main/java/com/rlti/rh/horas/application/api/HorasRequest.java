@@ -1,5 +1,9 @@
 package com.rlti.rh.horas.application.api;
 
+import com.rlti.rh.folha.application.api.VencimentosRequest;
+
+import java.util.List;
+
 public record HorasRequest(
         Integer diasTrabalhados,
         Integer faltas,
@@ -8,6 +12,7 @@ public record HorasRequest(
         Double horasExtras,
         Double horasNoturnas,
         String numeroMatricula,
-        Boolean competenciaFechada
+        Boolean competenciaFechada,
+        List<VencimentosRequest> vencimentos
 ) {
 }
