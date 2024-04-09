@@ -1,7 +1,11 @@
 package com.rlti.rh.utils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Locale;
 import java.util.Random;
 
 public class Utils {
@@ -60,5 +64,10 @@ public class Utils {
     public static int calcularIdade(LocalDate dataNascimento) {
         LocalDate hoje = LocalDate.now(); // Obtém a data atual
         return Period.between(dataNascimento, hoje).getYears(); // Calcula a diferença em anos entre as datas
+    }
+    public static String formatarMoeda(BigDecimal valor) {
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        DecimalFormat formato = new DecimalFormat("R$ #,##0.00", simbolos);
+        return formato.format(valor);
     }
 }

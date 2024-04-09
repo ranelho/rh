@@ -6,7 +6,6 @@ import com.rlti.rh.calculo.application.api.request.SimulacaoInssRequest;
 import com.rlti.rh.calculo.application.api.response.SimulacaoResponse;
 import com.rlti.rh.calculo.repository.DescontosRepository;
 import com.rlti.rh.calculo.repository.VencimentoRepository;
-import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.contrato.repository.ContratoRepository;
 import com.rlti.rh.empresa.application.repository.EmpresaRepository;
 import com.rlti.rh.empresa.domain.Empresa;
@@ -19,6 +18,7 @@ import com.rlti.rh.funcionario.repository.DependenteRepository;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
 import com.rlti.rh.handler.APIException;
 import com.rlti.rh.horas.domain.Horas;
+import com.rlti.rh.horas.repository.CodigoRepository;
 import com.rlti.rh.horas.repository.HorasRepository;
 import com.rlti.rh.imposto.doman.Inss;
 import com.rlti.rh.imposto.doman.Irrf;
@@ -49,6 +49,7 @@ public class CalculoApplicationService implements CalculoService {
     private final EmpresaRepository empresaRepository;
     private final AppConfig appConfig;
     private final VencimentoRepository vencimentosRepository;
+    private final CodigoRepository codigoRepository;
 
     @Override
     public SimulacaoResponse simularCalculoInss(SimulacaoInssRequest request) {
@@ -104,7 +105,6 @@ public class CalculoApplicationService implements CalculoService {
             BigDecimal totalVencimentos = inssResult.getTotalVencimentos();
             //calcular total descontos
             BigDecimal totalDescontos = inssResult.getInssCalculado().add(irResult.getIrrfCalculado());
-
             //salvar folha
             FolhaMensalData dados = new FolhaMensalData(horas, irResult, inssResult, totalVencimentos, totalDescontos);
 
@@ -113,24 +113,30 @@ public class CalculoApplicationService implements CalculoService {
             }
             FolhaMensal folhaMensal = saveFolhaMensal(dados);
             saveDescontos(inssResult, folhaMensal, irResult);
+            saveVencimentos(horas.getVencimentos(), folhaMensal);
         }
     }
 
-    private static List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
-        Descontos descontoInss = new Descontos(inssResult, folhaMensal);
-        List<Descontos> descontosASalvar = new ArrayList<>();
-        if (irResult.getIrrfCalculado().compareTo(BigDecimal.ZERO) > 0) {
-            Descontos descontoIrrf = new Descontos(irResult, folhaMensal);
-            descontosASalvar.add(descontoIrrf);
-        }
-        descontosASalvar.add(descontoInss);
-        return descontosASalvar;
+    private void saveVencimentos(List<Vencimentos> vencimentos, FolhaMensal folhaMensal) {
+        vencimentos.forEach(vencimento -> vencimento.setFolhaMensal(folhaMensal));
+        vencimentosRepository.saveAll(vencimentos);
     }
 
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
         List<Descontos> descontosASalvar = getDescontos(inssResult, folhaMensal, irResult);
         folhaMensal.setDescontos(descontosRepository.saveAll(descontosASalvar));
         folhaRepository.saveFolhaMensal(folhaMensal);
+    }
+
+    private List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
+        Descontos descontoInss = new Descontos(inssResult, folhaMensal, codigoRepository.findByCodigo("003"));
+        List<Descontos> descontosASalvar = new ArrayList<>();
+        if (irResult.getIrrfCalculado().compareTo(BigDecimal.ZERO) > 0) {
+            Descontos descontoIrrf = new Descontos(irResult, folhaMensal, codigoRepository.findByCodigo("004"));
+            descontosASalvar.add(descontoIrrf);
+        }
+        descontosASalvar.add(descontoInss);
+        return descontosASalvar;
     }
 
     private FolhaMensal saveFolhaMensal(FolhaMensalData dados) {
