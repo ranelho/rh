@@ -1,12 +1,10 @@
 package com.rlti.rh.folha.application;
 
 import com.rlti.rh.folha.domain.Descontos;
-import com.rlti.rh.utils.Utils;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import static com.rlti.rh.utils.Utils.*;
+import static com.rlti.rh.utils.Utils.formatarMoeda;
 
 public record DescontosResponse(
         String codigo,

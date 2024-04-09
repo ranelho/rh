@@ -1,7 +1,6 @@
 package com.rlti.rh.folha.domain;
 
 
-import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import jakarta.persistence.*;
@@ -91,7 +90,7 @@ public class FolhaMensal {
         this.totalDescontos = folhaMensaRequest.totalDescontos();
         this.status = false;
         this.empresa = empresa;
-        this.tipoFolha = TipoFolha.NORMAL;
+        this.tipoFolha = folhaMensaRequest.tipoFolha();
     }
 
     public void update(FolhaMensaRequest folhaMensaRequest) {

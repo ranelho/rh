@@ -1,6 +1,7 @@
 package com.rlti.rh.folha.application.api;
 
 import com.rlti.rh.calculo.service.FolhaMensalData;
+import com.rlti.rh.folha.domain.TipoFolha;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -34,7 +35,8 @@ public record FolhaMensaRequest(
         BigDecimal totalDescontos,
         String banco,
         String agencia,
-        String conta
+        String conta,
+        TipoFolha tipoFolha
 ) {
 
     public FolhaMensaRequest(FolhaMensalData data) {
@@ -65,7 +67,8 @@ public record FolhaMensaRequest(
                 data.totalDescontos(),
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getBanco(),
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getAgencia(),
-                data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta()
+                data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta(),
+                TipoFolha.MENSAL
         );
     }
 }

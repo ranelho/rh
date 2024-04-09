@@ -1,7 +1,6 @@
 package com.rlti.rh.folha.application;
 
 import com.rlti.rh.empresa.application.api.EmpresaDetalhadoResponse;
-import com.rlti.rh.empresa.application.api.EmpresaResponse;
 import com.rlti.rh.folha.domain.FolhaMensal;
 
 import java.math.BigDecimal;
