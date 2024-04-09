@@ -1,5 +1,5 @@
 package com.rlti.rh.folha.domain;
 
 public enum TipoFolha {
-    NORMAL, EXTRA
+    MENSAL, EXTRA
 }

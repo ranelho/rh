@@ -1,12 +1,12 @@
 package com.rlti.rh.calculo.service;
 
 import com.rlti.rh.AppConfig;
-import com.rlti.rh.calculo.process.*;
 import com.rlti.rh.calculo.application.api.request.SimulacaoInssRequest;
 import com.rlti.rh.calculo.application.api.response.SimulacaoResponse;
+import com.rlti.rh.calculo.process.InssResult;
+import com.rlti.rh.calculo.process.IrResult;
 import com.rlti.rh.calculo.repository.DescontosRepository;
 import com.rlti.rh.calculo.repository.VencimentoRepository;
-import com.rlti.rh.contrato.repository.ContratoRepository;
 import com.rlti.rh.empresa.application.repository.EmpresaRepository;
 import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
@@ -34,12 +34,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.rlti.rh.calculo.process.CalculoInss.calcularINSS;
+import static com.rlti.rh.calculo.process.CalculoIrrf.calcularImpostoRenda;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CalculoApplicationService implements CalculoService {
 
-    private final ContratoRepository contratoRepository;
     private final ImpostoRepository impostoRepository;
     private final MatriculaRepository matriculaRepository;
     private final DependenteRepository dependenteRepository;
@@ -53,14 +55,6 @@ public class CalculoApplicationService implements CalculoService {
 
     @Override
     public SimulacaoResponse simularCalculoInss(SimulacaoInssRequest request) {
-       /* Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(request.matricula()));
-        List<Inss> inss = impostoRepository.findVigenciaInss(request.mesAno());
-        List<Irrf> irrf = impostoRepository.findVigenciaIrrf(request.mesAno());
-        int dependentes = dependenteRepository.countDependenteFuncionario(contrato.getMatricula().getFuncionario());
-        BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
-        InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
-        IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
-        return new SimulacaoResponse(contrato, inssResult, irResult, request.mesAno(), dependentes);*/
         return null;
     }
 
@@ -81,40 +75,40 @@ public class CalculoApplicationService implements CalculoService {
         List<Horas> horasTrabalhadas = horasRepository.findAllHorasTrue(competencia);
         if (!horasTrabalhadas.isEmpty()) {
             YearMonth competenciaYearMonth = YearMonth.parse(competencia);
-            List<Inss> inss = impostoRepository.findVigenciaInss(competenciaYearMonth);
-            List<Irrf> irrf = impostoRepository.findVigenciaIrrf(competenciaYearMonth);
-            horasTrabalhadas.parallelStream().forEach(horas ->
-                    processarFolhaMensal(competencia, horas, inss, irrf)
-            );
+            horasTrabalhadas.parallelStream().forEach(horas -> processarFolhaMensal(
+                    competencia, horas, impostoRepository.findVigenciaInss(competenciaYearMonth),
+                    impostoRepository.findVigenciaIrrf(competenciaYearMonth)) );
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void processarFolhaMensal(String competencia, Horas horas, List<Inss> inss, List<Irrf> irrf) {
-        //pegar vencimentos
-        Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
-                horas.getMatricula().getNumeroMatricula(), competencia);
+        Optional<FolhaMensal> optionalFolhaMensal =
+                folhaRepository.findByMatriculaAndMesCompetencia(horas.getMatricula().getNumeroMatricula(), competencia);
 
         if (optionalFolhaMensal.isEmpty() || Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
             int dependentes = dependenteRepository.countDependenteFuncionario(horas.getContrato().getMatricula().getFuncionario());
-            //calcular inss
-            InssResult inssResult = CalculoInss.calcularINSS(horas.getVencimentos(), inss);
-            //calcular irrf
-            IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
-            //calcular total vencimentos
-            BigDecimal totalVencimentos = inssResult.getTotalVencimentos();
-            //calcular total descontos
-            BigDecimal totalDescontos = inssResult.getInssCalculado().add(irResult.getIrrfCalculado());
-            //salvar folha
-            FolhaMensalData dados = new FolhaMensalData(horas, irResult, inssResult, totalVencimentos, totalDescontos);
-
+            InssResult inssResult = calcularINSS(horas.getVencimentos(), inss);
+            IrResult irResult = calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
+            FolhaMensalData dados = FolhaMensalData.builder()
+                    .horas(horas)
+                    .irResult(irResult)
+                    .inssResult(inssResult)
+                    .totalVencimentos(inssResult.getTotalVencimentos())
+                    .totalDescontos(inssResult.getInssCalculado().add(irResult.getIrrfCalculado()))
+                    .build();
             if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
                 folhaRepository.delete(optionalFolhaMensal.get());
             }
-            FolhaMensal folhaMensal = saveFolhaMensal(dados);
-            saveDescontos(inssResult, folhaMensal, irResult);
-            saveVencimentos(horas.getVencimentos(), folhaMensal);
+            save(horas, dados, inssResult, irResult);
         }
+    }
+
+    private void save(Horas horas, FolhaMensalData dados, InssResult inssResult, IrResult irResult) {
+        FolhaMensal folhaMensal = saveFolhaMensal(dados);
+        saveDescontos(inssResult, folhaMensal, irResult);
+        saveVencimentos(horas.getVencimentos(), folhaMensal);
     }
 
     private void saveVencimentos(List<Vencimentos> vencimentos, FolhaMensal folhaMensal) {
