@@ -6,14 +6,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record DescontosResponse(
-        String codigo,
-        String descricao,
+        CodigoResponse codigo,
         BigDecimal valorDesconto
 ) {
     public DescontosResponse (Descontos descontos) {
         this(
-                descontos.getCodigo(),
-                descontos.getDescricao(),
+                new CodigoResponse(descontos.getCodigo()),
                 descontos.getValorDesconto()
         );
     }

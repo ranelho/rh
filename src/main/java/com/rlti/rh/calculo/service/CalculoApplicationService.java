@@ -18,7 +18,7 @@ import com.rlti.rh.folha.repository.FolhaMensalRepository;
 import com.rlti.rh.funcionario.repository.DependenteRepository;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
 import com.rlti.rh.handler.APIException;
-import com.rlti.rh.horas.domain.HorasTrabalhadas;
+import com.rlti.rh.horas.domain.Horas;
 import com.rlti.rh.horas.repository.HorasRepository;
 import com.rlti.rh.imposto.doman.Inss;
 import com.rlti.rh.imposto.doman.Irrf;
@@ -32,7 +32,6 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -66,17 +65,17 @@ public class CalculoApplicationService implements CalculoService {
     public void atualizarStatus(String mesCompetencia, String numeroMatricula, boolean status) {
         FolhaMensal folhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(numeroMatricula, mesCompetencia)
                 .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Folha não encontrada"));
-        HorasTrabalhadas horasTrabalhadas = horasRepository.findHorasByMesCompetenciaAndMatricula(mesCompetencia,
+        Horas horas = horasRepository.findHorasByMesCompetenciaAndMatricula(mesCompetencia,
                 matriculaRepository.findByNumeroMatricula(numeroMatricula));
-        horasTrabalhadas.setCompetenciaFechada(status);
+        horas.setCompetenciaFechada(status);
         folhaMensal.setStatus(status);
-        horasRepository.salvarHoras(horasTrabalhadas);
+        horasRepository.salvarHoras(horas);
         folhaRepository.saveFolhaMensal(folhaMensal);
     }
 
     @Override
     public boolean efetuarCalculo(String competencia) {
-        List<HorasTrabalhadas> horasTrabalhadas = horasRepository.findAllHorasTrue(competencia);
+        List<Horas> horasTrabalhadas = horasRepository.findAllHorasTrue(competencia);
         if (!horasTrabalhadas.isEmpty()) {
             YearMonth competenciaYearMonth = YearMonth.parse(competencia);
             List<Inss> inss = impostoRepository.findVigenciaInss(competenciaYearMonth);
@@ -88,8 +87,17 @@ public class CalculoApplicationService implements CalculoService {
         return true;
     }
 
-    private void processarFolhaMensal(String competencia, HorasTrabalhadas horas, List<Inss> inss, List<Irrf> irrf) {
-        Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
+    private void processarFolhaMensal(String competencia, Horas horas, List<Inss> inss, List<Irrf> irrf) {
+        //pegar vencimentos
+        List<Vencimentos> vencimentos = horas.getVencimentos();
+        //calcular inss
+        //calcular irrf
+        //calcular total vencimentos
+        //calcular total descontos
+        //salvar folha
+
+
+       /* Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
                 horas.getMatricula().getNumeroMatricula(), competencia);
 
         if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
@@ -116,16 +124,16 @@ public class CalculoApplicationService implements CalculoService {
             FolhaMensal folhaMensal = saveFolhaMensal(dados);
             saveDescontos(inssResult, folhaMensal, irResult);
             saveVencimentos(folhaMensal, salarioFuncionario, horasExtras);
-        }
+        }*/
     }
 
     private List<Vencimentos> getVencimentos(FolhaMensal folhaMensal, BigDecimal salarioFuncionario, BigDecimal valorExtras) {
-        Vencimentos salario = new Vencimentos(salarioFuncionario, folhaMensal, "001", "SALARIO BASE");
+       // Vencimentos salario = new Vencimentos(salarioFuncionario, folhaMensal, "001", "SALARIO BASE");
         List<Vencimentos> vencimentosASalvar = new ArrayList<>();
-        vencimentosASalvar.add(salario);
+   //     vencimentosASalvar.add(salario);
         if (valorExtras.compareTo(BigDecimal.ZERO) > 0) {
-            Vencimentos extras = new Vencimentos(valorExtras, folhaMensal, "002", "HORA EXTRA");
-            vencimentosASalvar.add(extras);
+     //       Vencimentos extras = new Vencimentos(valorExtras, folhaMensal, "002", "HORA EXTRA");
+     //       vencimentosASalvar.add(extras);
         }
         return vencimentosASalvar;
     }

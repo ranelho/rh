@@ -6,14 +6,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record VencimentosResponse(
-        String codigo,
-        String descricao,
+        CodigoResponse codigo,
         BigDecimal valorVencimento
 ) {
     public VencimentosResponse (Vencimentos vencimentos) {
         this(
-                vencimentos.getCodigo(),
-                vencimentos.getDescricao(),
+                new CodigoResponse(vencimentos.getCodigo()),
                 vencimentos.getValorVencimento()
         );
     }
