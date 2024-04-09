@@ -18,3 +18,5 @@ scheduled:
   birthdayCheck:
     enabled: ${ENABLE_BIRTHDAY_CHECK:false}
     cronExpression: ${CRON_BIRTHDAY_CHECK:0 8 * * * *}
+config:
+  cnpj: ${CNPJ:81436017000198}
