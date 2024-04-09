@@ -28,4 +28,9 @@ public class ContratoRestController implements ContratoApi {
     public void renovacaoContrato(String matricula, Integer prazoTotal) {
         contratoService.renovacaoContrato(matricula, prazoTotal);
     }
+
+    @Override
+    public ContratoResponse findContratoByMatricula(String matricula) {
+        return contratoService.findContratoByMatricula(matricula);
+    }
 }
