@@ -1,6 +1,7 @@
 package com.rlti.rh.folha.domain;
 
 
+import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import jakarta.persistence.*;

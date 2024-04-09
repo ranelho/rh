@@ -1,5 +1,6 @@
 package com.rlti.rh.calculo.process;
 
+import com.rlti.rh.folha.domain.Vencimentos;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import com.rlti.rh.imposto.doman.Inss;
@@ -10,12 +11,22 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CalculoInss {
 
-    public static InssResult calcularINSS(BigDecimal salarioFuncionario, List<Inss> inssList) {
+    public static InssResult calcularINSS(List<Vencimentos> vencimentos, List<Inss> inssList) {
+        BigDecimal salarioBruto = BigDecimal.ZERO;
         BigDecimal inss = BigDecimal.ZERO;
-        BigDecimal salarioBruto = salarioFuncionario;
-        String codigo = "";
-        String descricao = "";
+        BigDecimal valorLiquido = BigDecimal.ZERO;
+        double aliquota = 0;
 
+        // Calcular o total do salário bruto e dos vencimentos
+        BigDecimal totalVencimentos = BigDecimal.ZERO;
+        for (Vencimentos vencimento : vencimentos) {
+            if (Boolean.TRUE.equals(vencimento.getDedutivel())) {
+                salarioBruto = salarioBruto.add(vencimento.getValorVencimento());
+            }
+            totalVencimentos = totalVencimentos.add(vencimento.getValorVencimento());
+        }
+
+        // Iterar sobre as faixas de INSS
         for (Inss inssObj : inssList) {
             if (salarioBruto.compareTo(BigDecimal.valueOf(inssObj.getValorMinimo())) >= 0 &&
                     (inssObj.getValorMaximo() == null || salarioBruto.compareTo(BigDecimal.valueOf(inssObj.getValorMaximo())) <= 0)) {
@@ -30,14 +41,13 @@ public class CalculoInss {
                 valorDesconto = valorDesconto.subtract(BigDecimal.valueOf(inssObj.getDeducao()));
 
                 inss = valorDesconto;
-                salarioBruto = salarioFuncionario.subtract(inss);
-                codigo = inssObj.getCodigo();
-                descricao = inssObj.getDescricao();
+                valorLiquido = salarioBruto.subtract(inss);
+                aliquota = inssObj.getAliquota();
 
                 break;
             }
         }
-        return new InssResult(codigo, descricao, salarioFuncionario, inssList.get(0).getAliquota(), inss, salarioBruto);
+        return new InssResult(totalVencimentos, aliquota, inss, valorLiquido);
     }
 
 }

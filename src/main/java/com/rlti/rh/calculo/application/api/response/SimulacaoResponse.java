@@ -34,12 +34,12 @@ public record SimulacaoResponse(
                 contrato.getCargo().getNomeCargo(),
                 contrato.getSetor().getNomeSetor(),
                 yearMonth.toString(),
-                inssResult.getSalarioBruto(),
+                inssResult.getTotalVencimentos(),
                 quantidadeDependentes,
                 inssResult.getAliquota(),
                 inssResult.getInssCalculado(),
                 irResult.getIrrfCalculado(),
-                inssResult.getSalarioBruto().multiply(BigDecimal.valueOf(0.08)), //fgts 8%
+                inssResult.getTotalVencimentos().multiply(BigDecimal.valueOf(0.08)), //fgts 8%
                 irResult.getSalarioLiquido()
         );
     }
