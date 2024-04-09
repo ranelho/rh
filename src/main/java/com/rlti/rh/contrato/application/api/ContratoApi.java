@@ -23,4 +23,8 @@ public interface ContratoApi {
     @PatchMapping("/renovacao-contrato/{matricula}/{prazoTotal}")
     @ResponseStatus(code = HttpStatus.OK)
     void renovacaoContrato(@PathVariable String matricula, @PathVariable Integer prazoTotal);
+
+    @GetMapping("/{matricula}")
+    @ResponseStatus(code = HttpStatus.OK)
+    ContratoResponse findContratoByMatricula(@PathVariable String matricula);
 }

@@ -1,8 +1,6 @@
 package com.rlti.rh.contrato.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import com.rlti.rh.contrato.application.api.ContratoResponse;
 import com.rlti.rh.contrato.application.request.ContratoDesligamentoRequest;
 import com.rlti.rh.contrato.application.request.ContratoRequest;
 import com.rlti.rh.contrato.application.response.ContratoIdResponse;
@@ -14,6 +12,9 @@ import com.rlti.rh.contrato.repository.ContratoRepository;
 import com.rlti.rh.contrato.repository.SetorRepository;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -50,5 +51,11 @@ public class ContratoApplicationService implements ContratoService {
         Contrato contrato = getContrato(matricula);
         contrato.renovacao(prazoTotal);
         contratoRepository.saveContrato(contrato);
+    }
+
+    @Override
+    public ContratoResponse findContratoByMatricula(String matricula) {
+        Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(matricula));
+        return new ContratoResponse(contrato);
     }
 }
