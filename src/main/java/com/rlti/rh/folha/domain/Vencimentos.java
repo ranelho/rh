@@ -28,4 +28,10 @@ public class Vencimentos {
     @JoinColumn(name = "folha_mensal_id_folha_mensal")
     private FolhaMensal folhaMensal;
 
+    public Vencimentos(BigDecimal salarioFuncionario, FolhaMensal folhaMensal, String codigo, String descricao) {
+        this.valorVencimento = salarioFuncionario;
+        this.folhaMensal = folhaMensal;
+        this.codigo = codigo;
+        this.descricao = descricao;
+    }
 }

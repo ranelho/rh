@@ -1,13 +1,11 @@
 package com.rlti.rh.calculo.service;
 
 import com.rlti.rh.AppConfig;
-import com.rlti.rh.calculo.CalculoInss;
-import com.rlti.rh.calculo.CalculoIrrf;
-import com.rlti.rh.calculo.InssResult;
-import com.rlti.rh.calculo.IrResult;
+import com.rlti.rh.calculo.process.*;
 import com.rlti.rh.calculo.application.api.request.SimulacaoInssRequest;
 import com.rlti.rh.calculo.application.api.response.SimulacaoResponse;
 import com.rlti.rh.calculo.repository.DescontosRepository;
+import com.rlti.rh.calculo.repository.VencimentoRepository;
 import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.contrato.repository.ContratoRepository;
 import com.rlti.rh.empresa.application.repository.EmpresaRepository;
@@ -15,6 +13,7 @@ import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import com.rlti.rh.folha.domain.Descontos;
 import com.rlti.rh.folha.domain.FolhaMensal;
+import com.rlti.rh.folha.domain.Vencimentos;
 import com.rlti.rh.folha.repository.FolhaMensalRepository;
 import com.rlti.rh.funcionario.repository.DependenteRepository;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
@@ -49,6 +48,7 @@ public class CalculoApplicationService implements CalculoService {
     private final DescontosRepository descontosRepository;
     private final EmpresaRepository empresaRepository;
     private final AppConfig appConfig;
+    private final VencimentoRepository vencimentosRepository;
 
     @Override
     public SimulacaoResponse simularCalculoInss(SimulacaoInssRequest request) {
@@ -91,16 +91,21 @@ public class CalculoApplicationService implements CalculoService {
     private void processarFolhaMensal(String competencia, HorasTrabalhadas horas, List<Inss> inss, List<Irrf> irrf) {
         Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
                 horas.getMatricula().getNumeroMatricula(), competencia);
+
         if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
             Contrato contrato = contratoRepository.findByMatricula(
                     matriculaRepository.findByNumeroMatricula(horas.getMatricula().getNumeroMatricula()));
+
             BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
             int dependentes = dependenteRepository.countDependenteFuncionario(contrato.getMatricula().getFuncionario());
             InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
             IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
 
-            BigDecimal extras = BigDecimal.valueOf(horas.getHorasExtras()).multiply(BigDecimal.valueOf(0.25));
-            BigDecimal totalVencimentos = salarioFuncionario.add(extras);
+            BigDecimal horasExtras = BigDecimal.valueOf(0.0);
+            if (horas.getHorasExtras()>0){
+                horasExtras = CalculadoraHoraExtra.calcularValorHorasExtras(salarioFuncionario, horas.getHorasExtras(), horas.getHorasNoturnas());
+            }
+            BigDecimal totalVencimentos = salarioFuncionario.add(horasExtras);
 
             FolhaMensalData dados = new FolhaMensalData(competencia, horas, contrato, irResult, inssResult, totalVencimentos,
                     inssResult.getInssCalculado().add(irResult.getIrrfCalculado()));
@@ -110,7 +115,19 @@ public class CalculoApplicationService implements CalculoService {
             }
             FolhaMensal folhaMensal = saveFolhaMensal(dados);
             saveDescontos(inssResult, folhaMensal, irResult);
+            saveVencimentos(folhaMensal, salarioFuncionario, horasExtras);
         }
+    }
+
+    private List<Vencimentos> getVencimentos(FolhaMensal folhaMensal, BigDecimal salarioFuncionario, BigDecimal valorExtras) {
+        Vencimentos salario = new Vencimentos(salarioFuncionario, folhaMensal, "001", "SALARIO BASE");
+        List<Vencimentos> vencimentosASalvar = new ArrayList<>();
+        vencimentosASalvar.add(salario);
+        if (valorExtras.compareTo(BigDecimal.ZERO) > 0) {
+            Vencimentos extras = new Vencimentos(valorExtras, folhaMensal, "002", "HORA EXTRA");
+            vencimentosASalvar.add(extras);
+        }
+        return vencimentosASalvar;
     }
 
     private static List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
@@ -124,9 +141,15 @@ public class CalculoApplicationService implements CalculoService {
         return descontosASalvar;
     }
 
+    private void saveVencimentos(FolhaMensal folhaMensal, BigDecimal salarioFuncionario, BigDecimal extras) {
+        List<Vencimentos> vencimentosASalvar = getVencimentos(folhaMensal, salarioFuncionario, extras);
+        folhaMensal.setVencimentos(vencimentosRepository.saveAll(vencimentosASalvar));
+        folhaRepository.saveFolhaMensal(folhaMensal);
+    }
+
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
         List<Descontos> descontosASalvar = getDescontos(inssResult, folhaMensal, irResult);
-        folhaMensal.addDescontos(descontosRepository.saveAll(descontosASalvar));
+        folhaMensal.setDescontos(descontosRepository.saveAll(descontosASalvar));
         folhaRepository.saveFolhaMensal(folhaMensal);
     }
 
