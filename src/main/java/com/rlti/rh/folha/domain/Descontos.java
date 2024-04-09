@@ -34,16 +34,14 @@ public class Descontos {
     @JoinColumn(name = "folha_mensal_id_folha_mensal")
     private FolhaMensal folhaMensal;
 
-    public Descontos(InssResult inssResult, FolhaMensal folhaMensal) {
-       /* this.codigo = inssResult.getCodigo();
-        this.descricao = inssResult.getDescricao();*/
+    public Descontos(InssResult inssResult, FolhaMensal folhaMensal, Codigo codigo) {
+        this.codigo = codigo;
         this.valorDesconto = inssResult.getInssCalculado();
         this.folhaMensal = folhaMensal;
     }
 
-    public Descontos(IrResult irrf, FolhaMensal folhaMensal) {
-     /*   this.codigo = irrf.getCodigo();
-        this.descricao = irrf.getDescricao();*/
+    public Descontos(IrResult irrf, FolhaMensal folhaMensal,  Codigo codigo) {
+        this.codigo = codigo;
         this.valorDesconto = irrf.getIrrfCalculado();
         this.folhaMensal = folhaMensal;
     }

@@ -1,18 +1,23 @@
 package com.rlti.rh.folha.application;
 
 import com.rlti.rh.folha.domain.Descontos;
+import com.rlti.rh.utils.Utils;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.rlti.rh.utils.Utils.*;
+
 public record DescontosResponse(
-        CodigoResponse codigo,
-        BigDecimal valorDesconto
+        String codigo,
+        String descricao,
+        String valorDesconto
 ) {
     public DescontosResponse (Descontos descontos) {
         this(
-                new CodigoResponse(descontos.getCodigo()),
-                descontos.getValorDesconto()
+                descontos.getCodigo().getCod(),
+                descontos.getCodigo().getDescricao(),
+                formatarMoeda(descontos.getValorDesconto())
         );
     }
     public static List<DescontosResponse> converte(List<Descontos> descontos) {
