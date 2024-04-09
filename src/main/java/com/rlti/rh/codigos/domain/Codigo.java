@@ -1,5 +1,6 @@
 package com.rlti.rh.codigos.domain;
 
+import com.rlti.rh.codigos.application.api.CodigoRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,8 @@ public class Codigo {
     @Column(unique = true)
     private String descricao;
 
+    public Codigo(CodigoRequest codigoRequest) {
+        this.cod = codigoRequest.cod().toUpperCase();
+        this.descricao = codigoRequest.descricao().toUpperCase();
+    }
 }
