@@ -1,7 +1,7 @@
 package com.rlti.rh.calculo.service;
 
-import com.rlti.rh.calculo.InssResult;
-import com.rlti.rh.calculo.IrResult;
+import com.rlti.rh.calculo.process.InssResult;
+import com.rlti.rh.calculo.process.IrResult;
 import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.horas.domain.HorasTrabalhadas;
 

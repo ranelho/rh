@@ -1,4 +1,4 @@
-package com.rlti.rh.calculo;
+package com.rlti.rh.calculo.process;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

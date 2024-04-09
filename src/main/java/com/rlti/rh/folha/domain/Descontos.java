@@ -1,8 +1,8 @@
 package com.rlti.rh.folha.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rlti.rh.calculo.InssResult;
-import com.rlti.rh.calculo.IrResult;
+import com.rlti.rh.calculo.process.InssResult;
+import com.rlti.rh.calculo.process.IrResult;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
