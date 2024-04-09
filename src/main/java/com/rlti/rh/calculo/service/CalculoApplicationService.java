@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -51,14 +52,15 @@ public class CalculoApplicationService implements CalculoService {
 
     @Override
     public SimulacaoResponse simularCalculoInss(SimulacaoInssRequest request) {
-        Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(request.matricula()));
+       /* Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(request.matricula()));
         List<Inss> inss = impostoRepository.findVigenciaInss(request.mesAno());
         List<Irrf> irrf = impostoRepository.findVigenciaIrrf(request.mesAno());
         int dependentes = dependenteRepository.countDependenteFuncionario(contrato.getMatricula().getFuncionario());
         BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
         InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
         IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
-        return new SimulacaoResponse(contrato, inssResult, irResult, request.mesAno(), dependentes);
+        return new SimulacaoResponse(contrato, inssResult, irResult, request.mesAno(), dependentes);*/
+        return null;
     }
 
     @Override
@@ -89,53 +91,29 @@ public class CalculoApplicationService implements CalculoService {
 
     private void processarFolhaMensal(String competencia, Horas horas, List<Inss> inss, List<Irrf> irrf) {
         //pegar vencimentos
-        List<Vencimentos> vencimentos = horas.getVencimentos();
-        //calcular inss
-        //calcular irrf
-        //calcular total vencimentos
-        //calcular total descontos
-        //salvar folha
-
-
-       /* Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
+        Optional<FolhaMensal> optionalFolhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(
                 horas.getMatricula().getNumeroMatricula(), competencia);
 
-        if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
-            Contrato contrato = contratoRepository.findByMatricula(
-                    matriculaRepository.findByNumeroMatricula(horas.getMatricula().getNumeroMatricula()));
-
-            BigDecimal salarioFuncionario = contrato.getCargo().getSalarioBase().getValorSalario();
-            int dependentes = dependenteRepository.countDependenteFuncionario(contrato.getMatricula().getFuncionario());
-            InssResult inssResult = CalculoInss.calcularINSS(salarioFuncionario, inss);
+        if (optionalFolhaMensal.isEmpty() || Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
+            int dependentes = dependenteRepository.countDependenteFuncionario(horas.getContrato().getMatricula().getFuncionario());
+            //calcular inss
+            InssResult inssResult = CalculoInss.calcularINSS(horas.getVencimentos(), inss);
+            //calcular irrf
             IrResult irResult = CalculoIrrf.calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
+            //calcular total vencimentos
+            BigDecimal totalVencimentos = inssResult.getTotalVencimentos();
+            //calcular total descontos
+            BigDecimal totalDescontos = inssResult.getInssCalculado().add(irResult.getIrrfCalculado());
 
-            BigDecimal horasExtras = BigDecimal.valueOf(0.0);
-            if (horas.getHorasExtras()>0){
-                horasExtras = CalculadoraHoraExtra.calcularValorHorasExtras(salarioFuncionario, horas.getHorasExtras(), horas.getHorasNoturnas());
-            }
-            BigDecimal totalVencimentos = salarioFuncionario.add(horasExtras);
+            //salvar folha
+            FolhaMensalData dados = new FolhaMensalData(horas, irResult, inssResult, totalVencimentos, totalDescontos);
 
-            FolhaMensalData dados = new FolhaMensalData(competencia, horas, contrato, irResult, inssResult, totalVencimentos,
-                    inssResult.getInssCalculado().add(irResult.getIrrfCalculado()));
-
-            if (Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
+            if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
                 folhaRepository.delete(optionalFolhaMensal.get());
             }
             FolhaMensal folhaMensal = saveFolhaMensal(dados);
             saveDescontos(inssResult, folhaMensal, irResult);
-            saveVencimentos(folhaMensal, salarioFuncionario, horasExtras);
-        }*/
-    }
-
-    private List<Vencimentos> getVencimentos(FolhaMensal folhaMensal, BigDecimal salarioFuncionario, BigDecimal valorExtras) {
-       // Vencimentos salario = new Vencimentos(salarioFuncionario, folhaMensal, "001", "SALARIO BASE");
-        List<Vencimentos> vencimentosASalvar = new ArrayList<>();
-   //     vencimentosASalvar.add(salario);
-        if (valorExtras.compareTo(BigDecimal.ZERO) > 0) {
-     //       Vencimentos extras = new Vencimentos(valorExtras, folhaMensal, "002", "HORA EXTRA");
-     //       vencimentosASalvar.add(extras);
         }
-        return vencimentosASalvar;
     }
 
     private static List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
@@ -147,12 +125,6 @@ public class CalculoApplicationService implements CalculoService {
         }
         descontosASalvar.add(descontoInss);
         return descontosASalvar;
-    }
-
-    private void saveVencimentos(FolhaMensal folhaMensal, BigDecimal salarioFuncionario, BigDecimal extras) {
-        List<Vencimentos> vencimentosASalvar = getVencimentos(folhaMensal, salarioFuncionario, extras);
-        folhaMensal.setVencimentos(vencimentosRepository.saveAll(vencimentosASalvar));
-        folhaRepository.saveFolhaMensal(folhaMensal);
     }
 
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {

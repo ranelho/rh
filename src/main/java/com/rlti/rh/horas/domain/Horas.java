@@ -1,6 +1,7 @@
 package com.rlti.rh.horas.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.folha.domain.Vencimentos;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.horas.application.api.HorasRequest;
@@ -41,7 +42,11 @@ public class Horas {
     @JoinColumn(name = "matricula_id_matricula")
     private Matricula matricula;
 
-    public Horas(HorasRequest horasRequest, Matricula matricula) {
+    @OneToOne
+    @JoinColumn(name = "contrato_id_contrato")
+    private Contrato contrato;
+
+    public Horas(HorasRequest horasRequest, Matricula matricula, Contrato contrato) {
         this.diasTrabalhados = horasRequest.diasTrabalhados();
         this.faltas = horasRequest.faltas();
         this.faltasJustificadas = horasRequest.faltasJustificadas();
@@ -50,6 +55,7 @@ public class Horas {
         this.horasNoturnas = horasRequest.horasNoturnas();
         this.competenciaFechada = horasRequest.competenciaFechada();
         this.matricula = matricula;
+        this.contrato = contrato;
     }
 
     public void updateHoras(HorasUpdateRequest horasRequest) {

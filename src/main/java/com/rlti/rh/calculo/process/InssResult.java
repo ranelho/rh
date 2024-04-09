@@ -8,9 +8,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 public class InssResult {
-    private String codigo;
-    private String descricao;
-    private BigDecimal salarioBruto;
+    private BigDecimal totalVencimentos;
     private double aliquota;
     private BigDecimal inssCalculado;
     private BigDecimal valorLiquido;

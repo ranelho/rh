@@ -42,7 +42,7 @@ public class HorasApplicationService implements HorasService {
         // Método para calcular os vencimentos com base nas horas extras e noturnas
         calcularVencimentos(horasRequest, contrato, list);
 
-        Horas horas = new Horas(horasRequest, matricula);
+        Horas horas = new Horas(horasRequest, matricula, contrato);
         horas = horasRepository.salvarHoras(horas);
 
         if (!list.isEmpty()) {
