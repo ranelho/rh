@@ -33,6 +33,7 @@ public class Contrato {
     @Enumerated(EnumType.STRING)  private Prazo prazo;
     private Integer prazoTotalEmMeses;
     LocalDate previsaoFimContrato;
+    private Integer nivel;
 
     @OneToOne
     private Setor setor;
@@ -58,6 +59,7 @@ public class Contrato {
             this.prazoTotalEmMeses = request.prazoTotalEmMeses();
             this.previsaoFimContrato = request.dataAdmissao().plusMonths(request.prazoTotalEmMeses());
        }
+        this.nivel = request.nivel();
     }
 
     public void desligamento(ContratoDesligamentoRequest desligamentoRequest) {

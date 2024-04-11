@@ -5,6 +5,8 @@ import com.rlti.rh.funcionario.domain.ContaPagamento;
 import com.rlti.rh.funcionario.repository.ContaPagamentoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
@@ -42,9 +44,9 @@ public class FuncionarioApplicationService implements FuncionarioService {
     }
 
     @Override
-    public List<FuncionarioResponse> findAllFuncionariosByNome(String nome) {
+    public Page<FuncionarioResponse> findAllFuncionariosByNome(String nome, Pageable pageable) {
         log.info("Buscando funcionario pelo nome {}", nome);
-        return FuncionarioResponse.converte(funcionarioRepository.findAllFuncionariosByNome(nome));
+        return FuncionarioResponse.convertePageable(funcionarioRepository.findAllFuncionariosByNome(nome, pageable));
     }
 
     @Override
@@ -83,14 +85,24 @@ public class FuncionarioApplicationService implements FuncionarioService {
     }
 
     @Override
-    public List<Funcionario> findAllFuncionarios() {
-        return funcionarioRepository.findAllFuncionarios();
+    public Page<Funcionario> findAllFuncionarios(Pageable pageable) {
+        return funcionarioRepository.findAllFuncionarios(pageable);
     }
 
     @Override
     public void newContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
         Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
         ContaPagamento contaPagamento = contaPagamentoRepository.saveContaPagamento(new ContaPagamento(contaPagamentoRequest));
+        funcionario.setContaPagamento(contaPagamento);
+        funcionarioRepository.saveFuncionario(funcionario);
+    }
+
+    @Override
+    public void updateContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
+        ContaPagamento contaPagamento = funcionario.getContaPagamento();
+        contaPagamento.update(contaPagamentoRequest);
+        contaPagamentoRepository.saveContaPagamento(contaPagamento);
         funcionario.setContaPagamento(contaPagamento);
         funcionarioRepository.saveFuncionario(funcionario);
     }

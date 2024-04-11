@@ -16,8 +16,8 @@ public class Codigo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name="codigo_seq_generator", sequenceName = "codigo_sequence", allocationSize=1)
-    @Column(name = "id_codigos", nullable = false)
-    private Long idCodigos;
+    @Column(name = "id_codigo", nullable = false)
+    private Long idCodigo;
 
     @Column(unique = true)
     private String cod;

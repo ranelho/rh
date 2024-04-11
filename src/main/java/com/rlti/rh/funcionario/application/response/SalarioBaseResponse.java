@@ -8,7 +8,7 @@ import java.util.List;
 public record SalarioBaseResponse(
         Long idSalarioBase,
         BigDecimal valorSalarioBase,
-        Long nivel
+        Integer nivel
 ) {
     public SalarioBaseResponse(SalarioBase salarioBase) {
         this(

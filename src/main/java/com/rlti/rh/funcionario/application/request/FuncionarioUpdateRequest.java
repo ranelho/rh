@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.application.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import com.rlti.rh.funcionario.domain.enums.EstadoCivil;
@@ -21,6 +22,8 @@ public record FuncionarioUpdateRequest(
         @NotNull
         Sexo sexo,
         @NotNull
-        EstadoCivil estadoCivil
+        EstadoCivil estadoCivil,
+        @Email
+        String emailCorporativo
 ) {
 }

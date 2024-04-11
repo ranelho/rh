@@ -95,6 +95,7 @@ public class Funcionario {
         this.nomePai = request.nomePai();
         this.nomeMae = request.nomeMae();
         this.contato = new Contato(request.contatoRequest());
+        this.emailCooporativo = request.emailCorporativo();
     }
 
     public void update(FuncionarioUpdateRequest request) {
@@ -106,6 +107,7 @@ public class Funcionario {
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
         this.estadoCivil = request.estadoCivil();
+        this.emailCooporativo = request.emailCorporativo();
     }
 
     public void addMatricula(Matricula matricula) {

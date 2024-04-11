@@ -6,17 +6,18 @@ import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
 import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
 import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface FuncionarioService {
     FuncionarioIdResponse newFuncionario(FuncionarioRequest request);
     FuncionarioResponse findFuncionarioById(Long idFuncionario);
-    List<FuncionarioResponse> findAllFuncionariosByNome(String nome);
+    Page<FuncionarioResponse> findAllFuncionariosByNome(String nome, Pageable pageable);
     void updateFuncionario(Long id, FuncionarioUpdateRequest request);
     FuncionarioResponse findFuncionarioByMatricula(String matricula);
     FuncionarioResponse findFuncionarioByCpf(String cpf);
     void verificaAniversarioBath();
-    List<Funcionario> findAllFuncionarios();
+    Page<Funcionario> findAllFuncionarios(Pageable pageable);
     void newContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest);
+    void updateContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest);
 }

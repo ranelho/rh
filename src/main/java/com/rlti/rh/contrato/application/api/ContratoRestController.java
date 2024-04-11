@@ -15,7 +15,7 @@ public class ContratoRestController implements ContratoApi {
     private final ContratoService contratoService;
 
     @Override
-    public ContratoIdResponse newContratoFuncionario(ContratoRequest request) {
+    public ContratoResponse newContratoFuncionario(ContratoRequest request) {
         return contratoService.newContratoFuncionario(request);
     }
 
@@ -30,7 +30,7 @@ public class ContratoRestController implements ContratoApi {
     }
 
     @Override
-    public ContratoResponse findContratoByMatricula(String matricula) {
+    public com.rlti.rh.contrato.application.api.ContratoResponse findContratoByMatricula(String matricula) {
         return contratoService.findContratoByMatricula(matricula);
     }
 }

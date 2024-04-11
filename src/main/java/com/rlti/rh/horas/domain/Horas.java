@@ -5,13 +5,13 @@ import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.folha.domain.Vencimentos;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.horas.application.api.HorasRequest;
-import com.rlti.rh.horas.application.api.HorasUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -33,6 +33,7 @@ public class Horas {
     private Double horasExtras;
     private Double horasNoturnas;
     private Boolean competenciaFechada;
+    private BigDecimal salarioBase;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
@@ -46,24 +47,25 @@ public class Horas {
     @JoinColumn(name = "contrato_id_contrato")
     private Contrato contrato;
 
-    public Horas(HorasRequest horasRequest, Matricula matricula, Contrato contrato) {
-        this.diasTrabalhados = horasRequest.diasTrabalhados();
-        this.faltas = horasRequest.faltas();
-        this.faltasJustificadas = horasRequest.faltasJustificadas();
-        this.mesCompetencia = horasRequest.mesCompetencia();
-        this.horasExtras = horasRequest.horasExtras();
-        this.horasNoturnas = horasRequest.horasNoturnas();
-        this.competenciaFechada = horasRequest.competenciaFechada();
+    public Horas(HorasRequest horasRequest, Matricula matricula, Contrato contrato, BigDecimal salarioBase, String mesCompetencia) {
+        this.diasTrabalhados = horasRequest.getDiasTrabalhados();
+        this.faltas = horasRequest.getFaltas();
+        this.faltasJustificadas = horasRequest.getFaltasJustificadas();
+        this.mesCompetencia = mesCompetencia;
+        this.horasExtras = horasRequest.getHorasExtras();
+        this.horasNoturnas = horasRequest.getHorasNoturnas();
+        this.competenciaFechada = horasRequest.getCompetenciaFechada();
         this.matricula = matricula;
         this.contrato = contrato;
+        this.salarioBase = salarioBase;
     }
 
-    public void updateHoras(HorasUpdateRequest horasRequest) {
-        this.diasTrabalhados = horasRequest.diasTrabalhados();
-        this.faltas = horasRequest.faltas();
-        this.faltasJustificadas = horasRequest.faltasJustificadas();
-        this.horasExtras = horasRequest.horasExtras();
-        this.horasNoturnas = horasRequest.horasNoturnas();
-        this.competenciaFechada = horasRequest.competenciaFechada();
+    public void updateHoras(HorasRequest horasRequest) {
+        this.diasTrabalhados = horasRequest.getDiasTrabalhados();
+        this.faltas = horasRequest.getFaltas();
+        this.faltasJustificadas = horasRequest.getFaltasJustificadas();
+        this.horasExtras = horasRequest.getHorasExtras();
+        this.horasNoturnas = horasRequest.getHorasNoturnas();
+        this.competenciaFechada = horasRequest.getCompetenciaFechada();
     }
 }

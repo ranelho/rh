@@ -34,8 +34,8 @@ public class Matricula {
     @JsonIgnore
     private Funcionario funcionario;
 
-    public Matricula(Funcionario funcionario) {
-        this.numeroMatricula = Utils.gerarMatricula();
+    public Matricula(Funcionario funcionario, String matricula) {
+        this.numeroMatricula = matricula;
         this.funcionario = funcionario;
     }
 }

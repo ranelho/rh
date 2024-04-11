@@ -1,40 +1,35 @@
 package com.rlti.rh.utils;
 
+import com.rlti.rh.funcionario.repository.MatriculaRepository;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Locale;
-import java.util.Random;
 
+@Component
+@RequiredArgsConstructor
 public class Utils {
 
-    private static final Random random = new Random();
+    private final MatriculaRepository matriculaRepository; // Injetando o MatriculaRepository
 
-    // Private constructor to hide the implicit public one
-    private Utils() {
-        throw new AssertionError(); // This prevents instantiation even from within the class
-    }
+    public String gerarMatricula() {
+        int lastMatricula = matriculaRepository.lastMatricula();
+        int novaMatricula = lastMatricula + 1;
 
-    // Method to generate a registration number
-    public static String gerarMatricula() {
-        // Define the length of the desired registration number
-        int tamanhoMatricula = 6;
+        String novaMatriculaStr = String.valueOf(novaMatricula);
 
-        // Create a StringBuilder to store the generated registration number
-        StringBuilder matricula = new StringBuilder();
-
-        // Generate each digit of the registration number
-        for (int i = 0; i < tamanhoMatricula; i++) {
-            // Generate a random number between 0 and 9
-            int digito = random.nextInt(10);
-            // Add the digit to the registration number
-            matricula.append(digito);
+        // Certifique-se de que a nova matrícula tenha 6 dígitos preenchendo com zeros à esquerda, se necessário
+        if (novaMatriculaStr.length() < 6) {
+            novaMatriculaStr = StringUtils.leftPad(novaMatriculaStr, 6, "0");
         }
 
-        // Return the generated registration number as a string
-        return matricula.toString();
+        return novaMatriculaStr;
     }
 
 

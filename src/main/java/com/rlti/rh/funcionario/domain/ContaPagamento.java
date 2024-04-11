@@ -31,4 +31,11 @@ public class ContaPagamento {
         this.numeroConta = contaPagamentoRequest.numeroConta();
         this.tipoConta = contaPagamentoRequest.tipoConta();
     }
+
+    public void update(ContaPagamentoRequest contaPagamentoRequest) {
+        this.banco = contaPagamentoRequest.banco();
+        this.agencia = contaPagamentoRequest.agencia();
+        this.numeroConta = contaPagamentoRequest.numeroConta();
+        this.tipoConta = contaPagamentoRequest.tipoConta();
+    }
 }
