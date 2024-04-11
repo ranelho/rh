@@ -10,6 +10,7 @@ import com.rlti.rh.horas.repository.HorasRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @Repository
@@ -24,8 +25,8 @@ public class HorasInfraRepository implements HorasRepository {
     }
 
     @Override
-    public Horas findHorasByNumeroMatriculaAndMesReferencia(Matricula matricula, Date mesReferencia) {
-        return  horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesReferencia.toString())
+    public Horas findHorasByNumeroMatriculaAndMesReferencia(Matricula matricula, String mesReferencia) {
+        return  horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesReferencia)
                 .orElseThrow(responseException());
     }
 
@@ -38,6 +39,16 @@ public class HorasInfraRepository implements HorasRepository {
     public Horas findHorasByMesCompetenciaAndMatricula(String mesCompetencia, Matricula matricula) {
         return horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesCompetencia)
                 .orElseThrow(responseException());
+    }
+
+    @Override
+    public void deletarHoras(Horas horas) {
+        horasJpaRepository.delete(horas);
+    }
+
+    @Override
+    public Optional<Horas> findHorasByNumeroMatriculaAndMesReferencia2(Matricula matricula, String mesCompetencia) {
+        return horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesCompetencia);
     }
 
     private static Supplier<APIException> responseException() {

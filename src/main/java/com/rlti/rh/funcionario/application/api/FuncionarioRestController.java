@@ -1,16 +1,17 @@
 package com.rlti.rh.funcionario.application.api;
 
 import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RestController;
 import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
 import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
 import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
+import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.service.FuncionarioService;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
@@ -30,8 +31,14 @@ public class FuncionarioRestController implements FuncionarioApi {
     }
 
     @Override
-    public List<FuncionarioResponse> findAllFuncionariosByNome(String nome) {
-        return funcionarioService.findAllFuncionariosByNome(nome);
+    public Page<FuncionarioResponse> findAllFuncionariosByNome(String nome, Pageable pageable) {
+        return funcionarioService.findAllFuncionariosByNome(nome, pageable);
+    }
+
+    @Override
+    public Page<FuncionarioResponse> findAllFuncionarios(Pageable pageable) {
+        Page<Funcionario> funcionarios = funcionarioService.findAllFuncionarios(pageable);
+        return FuncionarioResponse.convertePageable(funcionarios);
     }
 
     @Override
@@ -52,6 +59,11 @@ public class FuncionarioRestController implements FuncionarioApi {
     @Override
     public void newContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
         funcionarioService.newContaPagamento(cpf, contaPagamentoRequest);
+    }
+
+    @Override
+    public void updateContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
+        funcionarioService.updateContaPagamento(cpf, contaPagamentoRequest);
     }
 
 

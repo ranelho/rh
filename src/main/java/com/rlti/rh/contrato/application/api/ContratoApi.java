@@ -14,7 +14,7 @@ public interface ContratoApi {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    ContratoIdResponse newContratoFuncionario(@Valid @RequestBody ContratoRequest request);
+    ContratoResponse newContratoFuncionario(@Valid @RequestBody ContratoRequest request);
 
     @PatchMapping("/desligamento/{matricula}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -26,5 +26,5 @@ public interface ContratoApi {
 
     @GetMapping("/{matricula}")
     @ResponseStatus(code = HttpStatus.OK)
-    ContratoResponse findContratoByMatricula(@PathVariable String matricula);
+    com.rlti.rh.contrato.application.api.ContratoResponse findContratoByMatricula(@PathVariable String matricula);
 }

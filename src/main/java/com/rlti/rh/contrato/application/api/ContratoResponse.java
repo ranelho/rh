@@ -14,7 +14,8 @@ public record ContratoResponse(
        String motivoDesligamento,
        String observacao,
        int prazoTotalEmMeses,
-       LocalDate previsaoFimContrato
+       LocalDate previsaoFimContrato,
+       String numeroMatricula
 ) {
     public ContratoResponse(Contrato contrato) {
         this(
@@ -26,7 +27,8 @@ public record ContratoResponse(
                 contrato.getMotivoDesligamento() != null ? contrato.getMotivoDesligamento().toString() : null,
                 contrato.getObservacao(),
                 contrato.getPrazoTotalEmMeses(),
-                contrato.getPrevisaoFimContrato()
+                contrato.getPrevisaoFimContrato(),
+                contrato.getMatricula().getNumeroMatricula()
         );
     }
 }

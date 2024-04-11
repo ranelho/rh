@@ -109,6 +109,8 @@ public class CalculoApplicationService implements CalculoService {
         FolhaMensal folhaMensal = saveFolhaMensal(dados);
         saveDescontos(inssResult, folhaMensal, irResult);
         saveVencimentos(horas.getVencimentos(), folhaMensal);
+        horas.setCompetenciaFechada(true);
+        horasRepository.salvarHoras(horas);
     }
 
     private void saveVencimentos(List<Vencimentos> vencimentos, FolhaMensal folhaMensal) {

@@ -56,7 +56,7 @@ public record FolhaMensaRequest(
                 data.horas().getHorasExtras(),
                 data.horas().getFaltas(),
                 data.horas().getHorasNoturnas(),
-                data.horas().getContrato().getCargo().getSalarioBase().getValorSalario(),
+                data.horas().getSalarioBase(),
                 data.inssResult().getInssCalculado(),
                 data.inssResult().getAliquota(),
                 data.irResult().getIrrfCalculado(),
@@ -68,7 +68,7 @@ public record FolhaMensaRequest(
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getBanco(),
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getAgencia(),
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta(),
-                TipoFolha.MENSAL
+                TipoFolha.NORMAL
         );
     }
 }

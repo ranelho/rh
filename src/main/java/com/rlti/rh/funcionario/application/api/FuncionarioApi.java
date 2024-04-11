@@ -1,16 +1,16 @@
 package com.rlti.rh.funcionario.application.api;
 
 import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
 import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
 import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
-
-import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Funcionário", description = "API de Funcionário")
 @RequestMapping("/v1/funcionarios")
@@ -26,7 +26,11 @@ public interface FuncionarioApi {
 
     @GetMapping("/nome/{nome}")
     @ResponseStatus(code = HttpStatus.OK)
-    List<FuncionarioResponse> findAllFuncionariosByNome(@PathVariable("nome") String nome);
+    Page<FuncionarioResponse> findAllFuncionariosByNome(@PathVariable("nome") String nome, Pageable pageable);
+
+    @GetMapping("/all-funcionarios")
+    @ResponseStatus(code = HttpStatus.OK)
+    Page<FuncionarioResponse> findAllFuncionarios(Pageable pageable);
 
     @PatchMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -43,4 +47,8 @@ public interface FuncionarioApi {
     @PostMapping("conta-pagamento/{cpf}")
     @ResponseStatus(code = HttpStatus.CREATED)
     void newContaPagamento(@PathVariable("cpf") String cpf, @Valid @RequestBody ContaPagamentoRequest contaPagamentoRequest);
+
+    @PutMapping("conta-pagamento/{cpf}")
+    @ResponseStatus(code = HttpStatus.OK)
+    void updateContaPagamento(@PathVariable("cpf") String cpf, @Valid @RequestBody ContaPagamentoRequest contaPagamentoRequest);
 }

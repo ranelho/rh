@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.application.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.hibernate.validator.constraints.br.CPF;
@@ -30,6 +31,8 @@ public record FuncionarioRequest(
         EstadoCivil estadoCivil,
         String nomePai,
         String nomeMae,
-        ContatoRequest contatoRequest
+        ContatoRequest contatoRequest,
+        @Email
+        String emailCorporativo
 ) {
 }
