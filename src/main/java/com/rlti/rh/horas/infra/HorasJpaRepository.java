@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface HorasJpaRepository extends JpaRepository<Horas, Long> {
     Optional<Horas> findByMatriculaAndMesCompetencia(Matricula matricula, String mesCompetencia);
     List<Horas> findAllByMesCompetenciaAndCompetenciaFechada(String competencia, boolean b);
+    Optional<Horas> findByMatriculaAndMesCompetenciaAndCompetenciaFechada(Matricula matricula, String mesCompetencia, boolean b);
 }

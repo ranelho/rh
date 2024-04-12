@@ -2,6 +2,7 @@ package com.rlti.rh.folha.domain;
 
 import com.rlti.rh.codigos.domain.Codigo;
 import com.rlti.rh.folha.application.api.VencimentosRequest;
+import com.rlti.rh.horas.domain.Horas;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public class Vencimentos {
     @ManyToOne
     @JoinColumn(name = "folha_mensal_id_folha_mensal")
     private FolhaMensal  folhaMensal;
+
+    @ManyToOne
+    @JoinColumn(name = "horas_id_horas_trabalhadas")
+    private Horas horas;
 
     public Vencimentos(VencimentosRequest vencimentosRequest, Codigo codigo) {
         this.codigo = codigo;

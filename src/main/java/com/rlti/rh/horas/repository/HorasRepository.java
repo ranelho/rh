@@ -13,6 +13,5 @@ public interface HorasRepository {
     List<Horas> findAllHorasTrue(String competencia);
     Horas findHorasByMesCompetenciaAndMatricula(String mesCompetencia, Matricula matricula);
     void deletarHoras(Horas horas);
-
     Optional<Horas> findHorasByNumeroMatriculaAndMesReferencia2(Matricula matricula, String mesCompetencia);
 }
