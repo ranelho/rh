@@ -56,7 +56,7 @@ public class FolhaMensal {
     private Boolean status;
 
     @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL)
-    private List<Vencimentos> vencimentos;
+    private List<VencimentosFolha> vencimentos;
 
     @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL)
     private List<Descontos> descontos;

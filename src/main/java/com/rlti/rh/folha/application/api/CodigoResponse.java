@@ -1,4 +1,4 @@
-package com.rlti.rh.folha.application;
+package com.rlti.rh.folha.application.api;
 
 import com.rlti.rh.codigos.domain.Codigo;
 

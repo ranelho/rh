@@ -32,4 +32,9 @@ public class FolhaMensalInfraRepository implements FolhaMensalRepository {
     public void delete(FolhaMensal folhaMensal) {
         folhaMensalJPARepository.delete(folhaMensal);
     }
+
+    @Override
+    public Optional<FolhaMensal> findByMatriculaAndMesCompetenciaAndStatus(String numeroMatricula, String mesCompetencia, boolean status) {
+        return folhaMensalJPARepository.findByNumeroMatriculaAndMesCompetenciaAndStatus(numeroMatricula, mesCompetencia, status);
+    }
 }

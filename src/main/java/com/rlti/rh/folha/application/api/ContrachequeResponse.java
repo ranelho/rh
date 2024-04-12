@@ -1,4 +1,4 @@
-package com.rlti.rh.folha.application;
+package com.rlti.rh.folha.application.api;
 
 import com.rlti.rh.empresa.application.api.EmpresaDetalhadoResponse;
 import com.rlti.rh.folha.domain.FolhaMensal;
@@ -35,7 +35,7 @@ public record ContrachequeResponse(
         BigDecimal totalVencimentos,
         BigDecimal totalDescontos,
         BigDecimal salarioLiquido,
-        List<VencimentosResponse> vencimentos,
+        List<VencimentosFolhaResponse> vencimentos,
         List<DescontosResponse> descontos,
         EmpresaDetalhadoResponse empresa
 ) {
@@ -68,7 +68,7 @@ public record ContrachequeResponse(
                 folhaMensal.getTotalVencimentos(),
                 folhaMensal.getTotalDescontos(),
                 folhaMensal.getSalarioLiquido(),
-                folhaMensal.getVencimentos().stream().map(VencimentosResponse::new).toList(),
+                folhaMensal.getVencimentos().stream().map(VencimentosFolhaResponse::new).toList(),
                 folhaMensal.getDescontos().stream().map(DescontosResponse::new).toList(),
                 new EmpresaDetalhadoResponse(folhaMensal.getEmpresa())
         );

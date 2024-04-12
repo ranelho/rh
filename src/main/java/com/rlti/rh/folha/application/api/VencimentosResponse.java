@@ -1,9 +1,7 @@
-package com.rlti.rh.folha.application;
+package com.rlti.rh.folha.application.api;
 
 import com.rlti.rh.folha.domain.Vencimentos;
-import com.rlti.rh.utils.Utils;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.rlti.rh.utils.Utils.*;
@@ -20,8 +18,8 @@ public record VencimentosResponse(
                 formatarMoeda(vencimentos.getValorVencimento())
         );
     }
-    public static List<VencimentosResponse> converte(List<Vencimentos> descontos) {
-        return descontos
+    public static List<VencimentosResponse> converte(List<Vencimentos> vencimentos) {
+        return vencimentos
                 .stream()
                 .map(VencimentosResponse::new)
                 .toList();
