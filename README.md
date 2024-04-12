@@ -50,7 +50,8 @@ https://github.com/ranelho/rh.git
 ```
 http://localhost:8080/rh/api/public/swagger-ui/index.html# 
 ```
-
+# Banco de Dados
+<img src="banco_dados.png" width=650><br><sub>Banco de Dados</sub>
 #### UC01
 - [CRUD Funcionário](./uc01-crud-funcionario/README.md)
 - CRUD Dependente
