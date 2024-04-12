@@ -1,18 +1,18 @@
 package com.rlti.rh.calculo.service;
 
 import com.rlti.rh.AppConfig;
-import com.rlti.rh.calculo.application.api.request.SimulacaoInssRequest;
-import com.rlti.rh.calculo.application.api.response.SimulacaoResponse;
 import com.rlti.rh.calculo.process.InssResult;
 import com.rlti.rh.calculo.process.IrResult;
 import com.rlti.rh.calculo.repository.DescontosRepository;
-import com.rlti.rh.calculo.repository.VencimentoRepository;
+import com.rlti.rh.calculo.repository.VencimentosFolhaRepository;
 import com.rlti.rh.empresa.application.repository.EmpresaRepository;
 import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
 import com.rlti.rh.folha.domain.Descontos;
 import com.rlti.rh.folha.domain.FolhaMensal;
 import com.rlti.rh.folha.domain.Vencimentos;
+import com.rlti.rh.folha.domain.VencimentosFolha;
+import com.rlti.rh.folha.infra.FolhaMensalJPARepository;
 import com.rlti.rh.folha.repository.FolhaMensalRepository;
 import com.rlti.rh.funcionario.repository.DependenteRepository;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
@@ -41,6 +41,7 @@ import static com.rlti.rh.calculo.process.CalculoIrrf.calcularImpostoRenda;
 @Slf4j
 @RequiredArgsConstructor
 public class CalculoApplicationService implements CalculoService {
+    private final FolhaMensalJPARepository folhaMensalJPARepository;
 
     private final ImpostoRepository impostoRepository;
     private final MatriculaRepository matriculaRepository;
@@ -50,13 +51,8 @@ public class CalculoApplicationService implements CalculoService {
     private final DescontosRepository descontosRepository;
     private final EmpresaRepository empresaRepository;
     private final AppConfig appConfig;
-    private final VencimentoRepository vencimentosRepository;
     private final CodigoRepository codigoRepository;
-
-    @Override
-    public SimulacaoResponse simularCalculoInss(SimulacaoInssRequest request) {
-        return null;
-    }
+    private final VencimentosFolhaRepository vencimentosFolhaRepository;
 
     @Override
     public void atualizarStatus(String mesCompetencia, String numeroMatricula, boolean status) {
@@ -68,6 +64,15 @@ public class CalculoApplicationService implements CalculoService {
         folhaMensal.setStatus(status);
         horasRepository.salvarHoras(horas);
         folhaRepository.saveFolhaMensal(folhaMensal);
+    }
+
+    @Override
+    public void deleteFolha(String mesCompetencia, String numeroMatricula) {
+        Optional<FolhaMensal> folhaMensal = folhaRepository.findByMatriculaAndMesCompetenciaAndStatus(numeroMatricula, mesCompetencia, false);
+        folhaMensal.ifPresentOrElse(
+                folhaMensalJPARepository::delete,
+                () -> { throw APIException.build(HttpStatus.BAD_REQUEST, "Folha não encontrada"); }
+        );
     }
 
     @Override
@@ -114,8 +119,17 @@ public class CalculoApplicationService implements CalculoService {
     }
 
     private void saveVencimentos(List<Vencimentos> vencimentos, FolhaMensal folhaMensal) {
-        vencimentos.forEach(vencimento -> vencimento.setFolhaMensal(folhaMensal));
-        vencimentosRepository.saveAll(vencimentos);
+        List<VencimentosFolha> vencimentosFolha = vencimentos.stream()
+                .map(vencimento -> {
+                    VencimentosFolha vencimentoFolha = new VencimentosFolha();
+                    vencimentoFolha.setCodigo(vencimento.getCodigo());
+                    vencimentoFolha.setValorVencimento(vencimento.getValorVencimento());
+                    vencimentoFolha.setDedutivel(vencimento.getDedutivel());
+                    vencimentoFolha.setFolhaMensal(folhaMensal);
+                    return vencimentoFolha;
+                })
+                .toList();
+        vencimentosFolhaRepository.saveAll(vencimentosFolha);
     }
 
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {

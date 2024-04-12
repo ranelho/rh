@@ -1,7 +1,7 @@
 package com.rlti.rh.folha.service;
 
-import com.rlti.rh.folha.application.ContrachequeRequest;
-import com.rlti.rh.folha.application.ContrachequeResponse;
+import com.rlti.rh.folha.application.api.ContrachequeRequest;
+import com.rlti.rh.folha.application.api.ContrachequeResponse;
 import com.rlti.rh.folha.domain.FolhaMensal;
 import com.rlti.rh.folha.repository.FolhaMensalRepository;
 import com.rlti.rh.funcionario.domain.Matricula;

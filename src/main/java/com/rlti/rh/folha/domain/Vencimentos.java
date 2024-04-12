@@ -30,10 +30,6 @@ public class Vencimentos {
     private Boolean dedutivel;
 
     @ManyToOne
-    @JoinColumn(name = "folha_mensal_id_folha_mensal")
-    private FolhaMensal  folhaMensal;
-
-    @ManyToOne
     @JoinColumn(name = "horas_id_horas_trabalhadas")
     private Horas horas;
 

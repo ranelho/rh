@@ -9,4 +9,5 @@ public interface FolhaMensalRepository {
     Optional<FolhaMensal> findByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno);
     Optional<FolhaMensal> findFolhaMensalByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno, boolean aberta);
     void delete(FolhaMensal folhaMensal);
+    Optional<FolhaMensal> findByMatriculaAndMesCompetenciaAndStatus(String numeroMatricula, String mesCompetencia, boolean b);
 }
