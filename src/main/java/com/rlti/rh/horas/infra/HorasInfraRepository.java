@@ -1,5 +1,6 @@
 package com.rlti.rh.horas.infra;
 
+import com.rlti.rh.calculo.repository.VencimentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,7 @@ import java.util.function.Supplier;
 public class HorasInfraRepository implements HorasRepository {
 
     private final HorasJpaRepository horasJpaRepository;
+    private final VencimentoRepository vencimentoRepository;
 
     @Override
     public Horas salvarHoras(Horas horas) {
@@ -48,7 +50,7 @@ public class HorasInfraRepository implements HorasRepository {
 
     @Override
     public Optional<Horas> findHorasByNumeroMatriculaAndMesReferencia2(Matricula matricula, String mesCompetencia) {
-        return horasJpaRepository.findByMatriculaAndMesCompetencia(matricula, mesCompetencia);
+        return horasJpaRepository.findByMatriculaAndMesCompetenciaAndCompetenciaFechada(matricula, mesCompetencia, false);
     }
 
     private static Supplier<APIException> responseException() {

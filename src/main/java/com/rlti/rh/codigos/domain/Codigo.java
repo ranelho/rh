@@ -21,7 +21,6 @@ public class Codigo {
 
     @Column(unique = true)
     private String cod;
-    @Column(unique = true)
     private String descricao;
 
     public Codigo(CodigoRequest codigoRequest) {

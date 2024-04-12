@@ -37,40 +37,50 @@ public class HorasApplicationService implements HorasService {
     private final ContratoRepository contratoRepository;
 
     @Override
-    public void regristrarHoras(String numeroMatricula, String mesCompetencia,HorasRequest horasRequest) {
+    public void regristrarHoras(String numeroMatricula, String mesCompetencia, HorasRequest horasRequest) {
         List<Vencimentos> list = new ArrayList<>();
         Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
         Contrato contrato = contratoRepository.findByMatricula(matricula);
-
         BigDecimal salarioBase = calcularVencimentos(horasRequest, contrato, list, mesCompetencia);
-
         Horas horas = new Horas(horasRequest, matricula, contrato, salarioBase, mesCompetencia);
         horas = horasRepository.salvarHoras(horas);
-
         if (!list.isEmpty()) {
-            horas.setVencimentos(vencimentosRepository.saveAll(list));
+            List<Vencimentos> vencimentos = vencimentosRepository.saveAll(list);
+            horas.setVencimentos(vencimentos);
             horasRepository.salvarHoras(horas);
+            for (Vencimentos vencimento : vencimentos) {
+                vencimento.setHoras(horas);
+                vencimentosRepository.save(vencimento);
+            }
         }
     }
 
     @Override
-    public void addVencimentos(String numeroMatricula, String mesReferencia, List<VencimentosRequest> list) {
+    public void addVencimentos(String numeroMatricula, String mesReferencia, List<VencimentosRequest> listRequest) {
         Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
         Horas horas = horasRepository.findHorasByNumeroMatriculaAndMesReferencia(matricula, mesReferencia);
         List<Vencimentos> vencimentos = new ArrayList<>();
-        for (VencimentosRequest vencimentoRequest : list) {
-            Codigo codigo = codigoRepository.findByCodigo(vencimentoRequest.getCodigo());
-            if (codigo != null) {
-                vencimentos.add(new Vencimentos(vencimentoRequest, codigo));
-            }
+        addVencimentosToList(listRequest, vencimentos);
+        for (Vencimentos vencimento : vencimentos) {
+            vencimento.setHoras(horas);
+            vencimentosRepository.save(vencimento);
         }
         horas.setVencimentos(vencimentos);
         horasRepository.salvarHoras(horas);
     }
 
-    private BigDecimal calcularVencimentos(HorasRequest horasRequest, Contrato contrato, List<Vencimentos> vencimentos, String mesCompetencia) {
+    @Override
+    public void deleHoras(String numeroMatricula, String mesReferencia) {
+        Horas horas = horasRepository.findHorasByNumeroMatriculaAndMesReferencia2(matriculaRepository.findByNumeroMatricula(numeroMatricula), mesReferencia)
+                .orElseThrow(()-> APIException.build(HttpStatus.BAD_REQUEST, "Horas não localizado"));
+            vencimentosRepository.deleteVencimentosByHoras(horas);
+            horasRepository.deletarHoras(horas);
 
+    }
+
+    private BigDecimal calcularVencimentos(HorasRequest horasRequest, Contrato contrato, List<Vencimentos> vencimentos, String mesCompetencia) {
         Optional<Horas> horasOptional = horasRepository.findHorasByNumeroMatriculaAndMesReferencia2(contrato.getMatricula(), mesCompetencia);
+        horasOptional.ifPresent(vencimentosRepository::deleteVencimentosByHoras);
         horasOptional.ifPresent(horasRepository::deletarHoras);
 
         SalarioBase salarioFuncionario = contrato.getCargo().getSalarios().stream()
@@ -78,21 +88,27 @@ public class HorasApplicationService implements HorasService {
                 .findFirst()
                 .orElse(null);
         validaNivel(salarioFuncionario);
+        if (horasRequest.getHorasNoturnas() > 0 || horasRequest.getHorasExtras() > 0)
+            montarECalcularHorasExtras(horasRequest, salarioFuncionario);
 
-        if (horasRequest.getHorasNoturnas() > 0 || horasRequest.getHorasExtras() > 0) {
-            BigDecimal valorVencimento = calcularValorHorasExtras(salarioFuncionario.getValorSalario(), horasRequest.getHorasExtras(), horasRequest.getHorasNoturnas());
-            montarVencimentos(horasRequest, valorVencimento, "002");
-        }
         montarVencimentos(horasRequest, salarioFuncionario.getValorSalario(), "001");
+        addVencimentosToList(horasRequest.getVencimentos(), vencimentos);
+        return salarioFuncionario.getValorSalario();
+    }
 
-        for (VencimentosRequest vencimentoRequest : horasRequest.getVencimentos()) {
+    private static void montarECalcularHorasExtras(HorasRequest horasRequest, SalarioBase salarioFuncionario) {
+        BigDecimal valorVencimento = calcularValorHorasExtras(salarioFuncionario.getValorSalario(),
+                horasRequest.getHorasExtras(), horasRequest.getHorasNoturnas());
+        montarVencimentos(horasRequest, valorVencimento, "002");
+    }
+
+    private void addVencimentosToList(List<VencimentosRequest> horasRequest, List<Vencimentos> vencimentos) {
+        for (VencimentosRequest vencimentoRequest : horasRequest) {
             Codigo codigo = codigoRepository.findByCodigo(vencimentoRequest.getCodigo());
             if (codigo != null) {
                 vencimentos.add(new Vencimentos(vencimentoRequest, codigo));
             }
         }
-
-        return salarioFuncionario.getValorSalario();
     }
 
     private static void montarVencimentos(HorasRequest horasRequest, BigDecimal valorVencimento, String codigo) {
@@ -105,15 +121,9 @@ public class HorasApplicationService implements HorasService {
 
     private static void validaNivel(SalarioBase salarioFuncionario) {
         if (salarioFuncionario == null) {
-            throw APIException.build(HttpStatus.BAD_REQUEST,"Salário do funcionário não encontrado para o nível do contrato.");
+            throw APIException.build(HttpStatus.BAD_REQUEST, "Salário do funcionário não encontrado para o nível do contrato.");
         }
     }
 
-    @Override
-    public void deleHoras(String numeroMatricula, String mesReferencia) {
-        Horas horas = horasRepository.findHorasByNumeroMatriculaAndMesReferencia(matriculaRepository.findByNumeroMatricula(numeroMatricula), mesReferencia);
-        if (Boolean.FALSE.equals(horas.getCompetenciaFechada())){
-            horasRepository.deletarHoras(horas);
-        }
-    }
+
 }
