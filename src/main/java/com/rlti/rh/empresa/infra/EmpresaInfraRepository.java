@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Supplier;
+
 @Repository
 @Log4j2
 @RequiredArgsConstructor
 public class EmpresaInfraRepository implements EmpresaRepository {
+
     private final EmpresaSpringDataJPARepository jpaRepository;
 
     @Override
@@ -27,34 +30,28 @@ public class EmpresaInfraRepository implements EmpresaRepository {
         log.info("[finaliza] EmpresaInfraRepository - saveEmpresa");
         return empresa;
     }
+
     @Override
     public List<Empresa> getAllEmpresas() {
-        log.info("[inicia] EmpresaInfraRepository - getAllEmpresas");
-        List<Empresa> todasEmpresas = jpaRepository.findAll();
-        log.info("[finaliza] EmpresaInfraRepository - getAllEmpresas");
-        return todasEmpresas;
+        return jpaRepository.findAll();
     }
+
     @Override
     public Empresa getOneEmpresa(Long idEmpresa) {
-        log.info("[inicia] EmpresaInfraRepository - getOneEmpresa");
-        Empresa empresa = jpaRepository.findById(idEmpresa)
-                .orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Empresa não encontrado"));
-        log.info("[finaliza] EmpresaInfraRepository - getOneEmpresa");
-        return empresa;
+        return jpaRepository.findById(idEmpresa).orElseThrow(getApiExceptionSupplier());
     }
+
     @Override
     public Empresa getByCnpj(String cnpj) {
-        log.info("[inicia] EmpresaInfraRepository - getByCnpj");
-        Empresa empresa = jpaRepository.findByCnpj(cnpj)
-                .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST,
-                "Empresa não encontrada!"));
-        log.info("[finaliza] EmpresaInfraRepository - getByCnpj");
-        return empresa;
+        return jpaRepository.findByCnpj(cnpj).orElseThrow(getApiExceptionSupplier());
     }
+
     @Override
     public void deleteEmpresa(Long idEmpresa) {
-        log.info("[inicia] EmpresaInfraRepository - deleteEmpresa");
         jpaRepository.deleteById(idEmpresa);
-        log.info("[finaliza] EmpresaInfraRepository - deleteEmpresa");
+    }
+
+    private static Supplier<APIException> getApiExceptionSupplier() {
+        return () -> APIException.build(HttpStatus.BAD_REQUEST, "Empresa não encontrada!");
     }
 }
