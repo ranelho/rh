@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.repository;
 
+import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,5 @@ public interface FuncionarioRepository {
     Funcionario findFuncionarioByCpf(String cpf);
     Page<Funcionario> findAllFuncionarios(Pageable pageable);
     List<Funcionario> findAllByAniversario(int mesAtual, int diaAtual);
+    List<Funcionario> findAllFuncionariosComFormacao();
 }

@@ -1,20 +1,24 @@
 package com.rlti.rh.funcionario.service;
 
 import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.request.FormacaoRequest;
+import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
+import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
+import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
+import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
+import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
 import com.rlti.rh.funcionario.domain.ContaPagamento;
+import com.rlti.rh.funcionario.domain.Formacao;
+import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.repository.ContaPagamentoRepository;
+import com.rlti.rh.funcionario.repository.FormacaoRepository;
+import com.rlti.rh.funcionario.repository.FuncionarioRepository;
+import com.rlti.rh.utils.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
-import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
-import com.rlti.rh.funcionario.domain.Funcionario;
-import com.rlti.rh.funcionario.repository.FuncionarioRepository;
-import com.rlti.rh.utils.email.EmailService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +30,7 @@ import static com.rlti.rh.utils.AniversarioChecker.verificarAniversario;
 @Slf4j
 @RequiredArgsConstructor
 public class FuncionarioApplicationService implements FuncionarioService {
-
+    private final FormacaoRepository formacaoRepository;
     private final FuncionarioRepository funcionarioRepository;
     private final EmailService emailService;
     private final ContaPagamentoRepository contaPagamentoRepository;
@@ -50,8 +54,8 @@ public class FuncionarioApplicationService implements FuncionarioService {
     }
 
     @Override
-    public void updateFuncionario(Long id, FuncionarioUpdateRequest request) {
-        Funcionario funcionario = funcionarioRepository.findFuncionarioById(id);
+    public void updateFuncionario(String cpf, FuncionarioUpdateRequest request) {
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
         funcionario.update(request);
         funcionarioRepository.saveFuncionario(funcionario);
     }
@@ -78,7 +82,7 @@ public class FuncionarioApplicationService implements FuncionarioService {
             if (!detalhesFuncionario.isEmpty() && detalhesFuncionario.get("email") != null) {
                 emailService.enviarEmail(detalhesFuncionario.get("nomeCompleto"), detalhesFuncionario.get("email"),
                         detalhesFuncionario.get("mensagem"));
-            }else {
+            } else {
                 log.warn("Funcionario não possui email cadastrado: {}", funcionario.getNomeCompleto());
             }
         }
@@ -105,5 +109,19 @@ public class FuncionarioApplicationService implements FuncionarioService {
         contaPagamentoRepository.saveContaPagamento(contaPagamento);
         funcionario.setContaPagamento(contaPagamento);
         funcionarioRepository.saveFuncionario(funcionario);
+    }
+
+    @Override
+    public void addFormacao(String cpf, FormacaoRequest formacaoRequest) {
+        Funcionario funcionario = funcionarioRepository.findFuncionarioByCpf(cpf);
+        Formacao formacao = formacaoRepository.newFormacao(new Formacao(formacaoRequest, funcionario));
+        funcionario.addFormacao(formacao);
+        funcionarioRepository.saveFuncionario(funcionario);
+    }
+
+    @Override
+    public List<FuncionarioComFormacaoResponse> findAllFuncionariosComFormacao() {
+        List<Funcionario> funcionarios = funcionarioRepository.findAllFuncionariosComFormacao();
+        return FuncionarioComFormacaoResponse.converte(funcionarios);
     }
 }

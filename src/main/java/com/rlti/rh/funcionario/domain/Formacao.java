@@ -1,13 +1,17 @@
 package com.rlti.rh.funcionario.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.rh.funcionario.application.request.FormacaoRequest;
+import com.rlti.rh.funcionario.domain.enums.SituacaoCurso;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.rlti.rh.funcionario.domain.enums.SituacaoCurso;
 
-import java.time.LocalDate;
+import java.time.Year;
+
+import static com.rlti.rh.utils.Utils.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +27,22 @@ public class Formacao {
 
     private String curso;
     private String instituicao;
-    private LocalDate dataConclusao;
+    private Year anoInicio;
+    private Year anoTermino;
     @Enumerated(EnumType.STRING)
     private SituacaoCurso situacaoCurso;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "funcionario_id_funcionario")
+    @JsonIgnore
+    private Funcionario funcionario;
+
+    public Formacao(FormacaoRequest formacaoRequest, Funcionario funcionario) {
+        this.curso = formatText(formacaoRequest.curso());
+        this.instituicao = formatText(formacaoRequest.instituicao());
+        this.anoInicio = formacaoRequest.anoInicio();
+        this.anoTermino = formacaoRequest.anoTermino();
+        this.situacaoCurso = formacaoRequest.situacaoCurso();
+        this.funcionario = funcionario;
+    }
 }
