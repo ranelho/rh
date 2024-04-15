@@ -34,27 +34,22 @@ public class Utils {
 
 
     public static String formatText(String name) {
-        // Verifica se o nome é vazio ou nulo
         if (name == null || name.isEmpty()) {
             return "";
         }
-        // Divide o nome em palavras
         String[] words = name.split("\\s+");
         StringBuilder formattedName = new StringBuilder();
-
         for (String word : words) {
-            // Verifica se a palavra é um dos artigos "da", "do"
-            if (!word.equalsIgnoreCase("da") && !word.equalsIgnoreCase("do")
-                    && !word.equalsIgnoreCase("dos")) {
-                // Converte a primeira letra para maiúscula e as demais para minúscula
+            String lowerCaseWord = word.toLowerCase();
+            if (!lowerCaseWord.equals("da") && !lowerCaseWord.equals("do")
+                    && !lowerCaseWord.equals("das") && !lowerCaseWord.equals("dos")) {
                 word = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
             }
-            // Adiciona a palavra ao nome formatado
             formattedName.append(word).append(" ");
         }
-        // Remove o espaço em branco extra no final e retorna o nome formatado
         return formattedName.toString().trim();
     }
+
 
     public static int calcularIdade(LocalDate dataNascimento) {
         LocalDate hoje = LocalDate.now(); // Obtém a data atual

@@ -24,6 +24,7 @@ public record FuncionarioRequest(
         LocalDate dataEmissaoRg,
         String ctps,
         String pis,
+        @NotNull
         GrauDeInstrucao grauDeInstrucao,
         @NotNull
         Sexo sexo,

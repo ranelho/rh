@@ -1,15 +1,13 @@
 package com.rlti.rh.horas.infra;
 
-import com.rlti.rh.calculo.repository.VencimentoRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.handler.APIException;
 import com.rlti.rh.horas.domain.Horas;
 import com.rlti.rh.horas.repository.HorasRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -19,7 +17,6 @@ import java.util.function.Supplier;
 public class HorasInfraRepository implements HorasRepository {
 
     private final HorasJpaRepository horasJpaRepository;
-    private final VencimentoRepository vencimentoRepository;
 
     @Override
     public Horas salvarHoras(Horas horas) {
