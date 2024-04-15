@@ -1,6 +1,6 @@
 package com.rlti.rh.calculo.service;
 
-import com.rlti.rh.AppConfig;
+import com.rlti.rh.config.AppConfig;
 import com.rlti.rh.calculo.process.InssResult;
 import com.rlti.rh.calculo.process.IrResult;
 import com.rlti.rh.calculo.repository.DescontosRepository;
@@ -41,8 +41,8 @@ import static com.rlti.rh.calculo.process.CalculoIrrf.calcularImpostoRenda;
 @Slf4j
 @RequiredArgsConstructor
 public class CalculoApplicationService implements CalculoService {
-    private final FolhaMensalJPARepository folhaMensalJPARepository;
 
+    private final FolhaMensalJPARepository folhaMensalJPARepository;
     private final ImpostoRepository impostoRepository;
     private final MatriculaRepository matriculaRepository;
     private final DependenteRepository dependenteRepository;
@@ -56,6 +56,7 @@ public class CalculoApplicationService implements CalculoService {
 
     @Override
     public void atualizarStatus(String mesCompetencia, String numeroMatricula, boolean status) {
+        log.info("[start] - atualizarStatus - Service");
         FolhaMensal folhaMensal = folhaRepository.findByMatriculaAndMesCompetencia(numeroMatricula, mesCompetencia)
                 .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Folha não encontrada"));
         Horas horas = horasRepository.findHorasByMesCompetenciaAndMatricula(mesCompetencia,
@@ -64,31 +65,40 @@ public class CalculoApplicationService implements CalculoService {
         folhaMensal.setStatus(status);
         horasRepository.salvarHoras(horas);
         folhaRepository.saveFolhaMensal(folhaMensal);
+        log.info("[end] - atualizarStatus - Service");
     }
 
     @Override
     public void deleteFolha(String mesCompetencia, String numeroMatricula) {
+        log.info("[start] - deleteFolha - Service");
         Optional<FolhaMensal> folhaMensal = folhaRepository.findByMatriculaAndMesCompetenciaAndStatus(numeroMatricula, mesCompetencia, false);
         folhaMensal.ifPresentOrElse(
                 folhaMensalJPARepository::delete,
-                () -> { throw APIException.build(HttpStatus.BAD_REQUEST, "Folha não encontrada"); }
+                () -> {
+                    throw APIException.build(HttpStatus.BAD_REQUEST, "Folha não encontrada");
+                }
         );
+        log.info("[end] - deleteFolha - Service");
     }
 
     @Override
     public boolean efetuarCalculo(String competencia) {
+        log.info("[start] - efetuarCalculo - Service");
         List<Horas> horasTrabalhadas = horasRepository.findAllHorasTrue(competencia);
         if (!horasTrabalhadas.isEmpty()) {
             YearMonth competenciaYearMonth = YearMonth.parse(competencia);
             horasTrabalhadas.parallelStream().forEach(horas -> processarFolhaMensal(
                     competencia, horas, impostoRepository.findVigenciaInss(competenciaYearMonth),
-                    impostoRepository.findVigenciaIrrf(competenciaYearMonth)) );
+                    impostoRepository.findVigenciaIrrf(competenciaYearMonth)));
+            log.info("[end] - efetuarCalculo - Service");
             return true;
         }
+        log.info("[end] - efetuarCalculo - Service");
         return false;
     }
 
     private void processarFolhaMensal(String competencia, Horas horas, List<Inss> inss, List<Irrf> irrf) {
+        log.info("[start] - processarFolhaMensal - Service");
         Optional<FolhaMensal> optionalFolhaMensal =
                 folhaRepository.findByMatriculaAndMesCompetencia(horas.getMatricula().getNumeroMatricula(), competencia);
 
@@ -106,11 +116,13 @@ public class CalculoApplicationService implements CalculoService {
             if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
                 folhaRepository.delete(optionalFolhaMensal.get());
             }
-            save(horas, dados, inssResult, irResult);
+            log.info("[save] - processarFolhaMensal - Service");
+            saveFolha(horas, dados, inssResult, irResult);
         }
+        log.info("[end] - processarFolhaMensal - Service");
     }
 
-    private void save(Horas horas, FolhaMensalData dados, InssResult inssResult, IrResult irResult) {
+    private void saveFolha(Horas horas, FolhaMensalData dados, InssResult inssResult, IrResult irResult) {
         FolhaMensal folhaMensal = saveFolhaMensal(dados);
         saveDescontos(inssResult, folhaMensal, irResult);
         saveVencimentos(horas.getVencimentos(), folhaMensal);
@@ -119,6 +131,7 @@ public class CalculoApplicationService implements CalculoService {
     }
 
     private void saveVencimentos(List<Vencimentos> vencimentos, FolhaMensal folhaMensal) {
+        log.info("[start] - saveVencimentos - Service");
         List<VencimentosFolha> vencimentosFolha = vencimentos.stream()
                 .map(vencimento -> {
                     VencimentosFolha vencimentoFolha = new VencimentosFolha();
@@ -130,15 +143,19 @@ public class CalculoApplicationService implements CalculoService {
                 })
                 .toList();
         vencimentosFolhaRepository.saveAll(vencimentosFolha);
+        log.info("[end] - saveVencimentos - Service");
     }
 
     private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
+        log.info("[start] - saveDescontos - Service");
         List<Descontos> descontosASalvar = getDescontos(inssResult, folhaMensal, irResult);
         folhaMensal.setDescontos(descontosRepository.saveAll(descontosASalvar));
         folhaRepository.saveFolhaMensal(folhaMensal);
+        log.info("[end] - saveDescontos - Service");
     }
 
     private List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
+        log.info("[start] - getDescontos - Service");
         Descontos descontoInss = new Descontos(inssResult, folhaMensal, codigoRepository.findByCodigo("003"));
         List<Descontos> descontosASalvar = new ArrayList<>();
         if (irResult.getIrrfCalculado().compareTo(BigDecimal.ZERO) > 0) {
@@ -146,6 +163,7 @@ public class CalculoApplicationService implements CalculoService {
             descontosASalvar.add(descontoIrrf);
         }
         descontosASalvar.add(descontoInss);
+        log.info("[end] - getDescontos - Service");
         return descontosASalvar;
     }
 

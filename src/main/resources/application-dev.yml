@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/RH
-    username: rlti
-    password: Dev@8524*
+    url: jdbc:postgresql://localhost:5433/RH #criar banco rh
+    username: postgres #usuario local
+    password: 852456 #senha local
   jpa:
     generate-ddl: true
     properties:
