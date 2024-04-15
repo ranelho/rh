@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.infra;
 
+import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.repository.FuncionarioRepository;
 import com.rlti.rh.handler.APIException;
@@ -66,6 +67,11 @@ public class FuncionarioInfraRepository implements FuncionarioRepository {
     @Override
     public List<Funcionario> findAllByAniversario(int mesAtual, int diaAtual) {
         return funcionarioJpaRepository.findAllByAniversario(mesAtual, diaAtual);
+    }
+
+    @Override
+    public List<Funcionario> findAllFuncionariosComFormacao() {
+        return funcionarioJpaRepository.findAllByFormacaoIsNotNull();
     }
 
     private static Supplier<APIException> getApiExceptionSupplier() {

@@ -1,8 +1,10 @@
 package com.rlti.rh.funcionario.application.api;
 
 import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.request.FormacaoRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
 import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
+import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
 import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
 import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
@@ -12,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -26,11 +30,6 @@ public class FuncionarioRestController implements FuncionarioApi {
     }
 
     @Override
-    public FuncionarioResponse findFuncionarioById(Long idFuncionario) {
-        return funcionarioService.findFuncionarioById(idFuncionario);
-    }
-
-    @Override
     public Page<FuncionarioResponse> findAllFuncionariosByNome(String nome, Pageable pageable) {
         return funcionarioService.findAllFuncionariosByNome(nome, pageable);
     }
@@ -42,8 +41,8 @@ public class FuncionarioRestController implements FuncionarioApi {
     }
 
     @Override
-    public void updateFuncionario(Long id, FuncionarioUpdateRequest request) {
-        funcionarioService.updateFuncionario(id, request);
+    public void updateFuncionario(String cpf, FuncionarioUpdateRequest request) {
+        funcionarioService.updateFuncionario(cpf, request);
     }
 
     @Override
@@ -64,6 +63,16 @@ public class FuncionarioRestController implements FuncionarioApi {
     @Override
     public void updateContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest) {
         funcionarioService.updateContaPagamento(cpf, contaPagamentoRequest);
+    }
+
+    @Override
+    public void addFormacao(String cpf, FormacaoRequest formacaoRequest) {
+        funcionarioService.addFormacao(cpf, formacaoRequest);
+    }
+
+    @Override
+    public List<FuncionarioComFormacaoResponse> findAllFuncionariosComFormacao() {
+        return funcionarioService.findAllFuncionariosComFormacao();
     }
 
 

@@ -1,12 +1,12 @@
 package com.rlti.rh.funcionario.infra;
 
+import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import com.rlti.rh.funcionario.domain.Funcionario;
 
-import java.text.Normalizer;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +21,6 @@ public interface FuncionarioJpaRepository extends JpaRepository<Funcionario, Lon
     List<Funcionario> findAllByAniversario(int mesAtual, int diaAtual);
 
     Page<Funcionario> findByNomeCompletoContainingIgnoreCase(String nome, Pageable pageableWithFixedSort);
+
+    List<Funcionario> findAllByFormacaoIsNotNull();
 }
