@@ -4,5 +4,6 @@ public enum SituacaoCurso {
     CONCLUIDO,
     EM_ANDAMENTO,
     TRANCADO,
+    INCOMPLETO,
     CANCELADO;
 }
