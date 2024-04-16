@@ -20,7 +20,7 @@ import java.util.List;
 @Entity(name = "FOLHA_MENSAL")
 public class FolhaMensal {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "folha_mensal_seq_generator")
     @SequenceGenerator(name="folha_mensal_seq_generator", sequenceName = "folha_mensal_sequence", allocationSize=1 )
     @Column(name = "id_folha_mensal", nullable = false)
     private Long idFolhaMensal;

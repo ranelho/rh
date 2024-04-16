@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Entity(name = "DESCONTOS")
 public class Descontos {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "descontos_seq_generator")
     @SequenceGenerator(name = "descontos_seq_generator", sequenceName = "descontos_sequence", allocationSize = 1)
     @Column(name = "id_desconto", nullable = false)
     private Long idDesconto;

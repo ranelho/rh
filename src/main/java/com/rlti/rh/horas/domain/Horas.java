@@ -21,7 +21,7 @@ import java.util.List;
 @Entity(name = "HORAS")
 public class Horas {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dependente_seq_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "horas_trabalhadas_seq_generator")
     @SequenceGenerator(name="horas_trabalhadas_seq_generator", sequenceName = "horas_trabalhadas_sequence", allocationSize=1)
     @Column(name = "id_horas_trabalhadas", nullable = false)
     private Long idHorasTrabalhadas;
