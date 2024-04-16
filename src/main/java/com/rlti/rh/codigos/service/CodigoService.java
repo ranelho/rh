@@ -8,4 +8,5 @@ import java.util.List;
 public interface CodigoService {
     CodigoResponse newCodigo(CodigoRequest codigoRequest);
     List<CodigoResponse> getAllCodigos();
+    List<CodigoResponse> newCodigos(List<CodigoRequest> codigoRequest);
 }

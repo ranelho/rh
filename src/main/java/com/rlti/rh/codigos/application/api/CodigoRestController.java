@@ -19,4 +19,9 @@ public class CodigoRestController implements CodigoApi {
     @Override
     public List<CodigoResponse> getAllCodigos() {
         return codigoService.getAllCodigos();    }
+
+    @Override
+    public List<CodigoResponse> newCodigos(List<CodigoRequest> codigoRequest) {
+        return codigoService.newCodigos(codigoRequest);
+    }
 }

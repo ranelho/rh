@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,5 +37,16 @@ public class CodigoApplicationsService implements CodigoService {
     @Override
     public List<CodigoResponse> getAllCodigos() {
         return codigoRepository.findAll().stream().map(CodigoResponse::new).toList();
+    }
+
+    @Override
+    public List<CodigoResponse> newCodigos(List<CodigoRequest> requests) {
+        List<Codigo> codigos = new ArrayList<>();
+        for (CodigoRequest request : requests){
+            Codigo codigo = new Codigo(request);
+            codigos.add(codigo);
+        }
+        codigos = codigoRepository.saveAll(codigos);
+        return codigos.stream().map(CodigoResponse::new).toList();
     }
 }
