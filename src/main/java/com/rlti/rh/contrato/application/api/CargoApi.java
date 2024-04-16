@@ -19,4 +19,6 @@ public interface CargoApi {
     @GetMapping("/nome-cargo/{nomeCargo}")
     @ResponseStatus(code = HttpStatus.OK)
     CargoResponse findByNomeCargo(@PathVariable String nomeCargo);
+
+
 }

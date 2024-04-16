@@ -3,10 +3,12 @@ package com.rlti.rh.contrato.service;
 import com.rlti.rh.contrato.application.api.ContratoResponse;
 import com.rlti.rh.contrato.application.request.ContratoDesligamentoRequest;
 import com.rlti.rh.contrato.application.request.ContratoRequest;
-import com.rlti.rh.contrato.application.response.ContratoIdResponse;
+import com.rlti.rh.contrato.application.response.ContratosAtivosResponse;
+import com.rlti.rh.contrato.domain.AuxilioTransporte;
 import com.rlti.rh.contrato.domain.Cargo;
 import com.rlti.rh.contrato.domain.Contrato;
 import com.rlti.rh.contrato.domain.Setor;
+import com.rlti.rh.contrato.repository.AuxilioTransporteRepository;
 import com.rlti.rh.contrato.repository.CargoRepository;
 import com.rlti.rh.contrato.repository.ContratoRepository;
 import com.rlti.rh.contrato.repository.SetorRepository;
@@ -19,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class ContratoApplicationService implements ContratoService {
     private final CargoRepository cargoRepository;
     private final FuncionarioRepository funcionarioRepository;
     private final Utils utils;
+    private  final AuxilioTransporteRepository auxilioTransporteRepository;
 
     @Override
     public ContratoResponse newContratoFuncionario(ContratoRequest request) {
@@ -63,5 +68,19 @@ public class ContratoApplicationService implements ContratoService {
     public ContratoResponse findContratoByMatricula(String matricula) {
         Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(matricula));
         return new com.rlti.rh.contrato.application.api.ContratoResponse(contrato);
+    }
+
+    @Override
+    public void addValeTransporte(String matricula, Integer quantidade, Long idAuxilioTransporte) {
+        Contrato contrato = contratoRepository.findByMatricula(matriculaRepository.findByNumeroMatricula(matricula));
+        AuxilioTransporte auxilioTransporte = auxilioTransporteRepository.findById(idAuxilioTransporte);
+        contrato.addValeTransporte(quantidade, auxilioTransporte);
+        contratoRepository.saveContrato(contrato);
+    }
+
+    @Override
+    public List<ContratosAtivosResponse> findContratosAtivos() {
+        List<Contrato> contratos = contratoRepository.findContratosAtivos();
+        return ContratosAtivosResponse.convert(contratos);
     }
 }
