@@ -32,4 +32,9 @@ public class CodigoInfraRepository implements CodigoRepository {
     public Optional<Codigo> findByCodigoOrDescricao(String cod, String descricao) {
         return codigoJpaRepository.findByCodOrDescricao(cod, descricao);
     }
+
+    @Override
+    public List<Codigo> saveAll(List<Codigo> codigos) {
+        return codigoJpaRepository.saveAll(codigos);
+    }
 }

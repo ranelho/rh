@@ -18,4 +18,9 @@ public interface CodigoApi {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     List<CodigoResponse> getAllCodigos();
+
+    @PostMapping("/varios")
+    @ResponseStatus(HttpStatus.CREATED)
+    List<CodigoResponse> newCodigos(@RequestBody List<CodigoRequest> codigoRequest);
+
 }

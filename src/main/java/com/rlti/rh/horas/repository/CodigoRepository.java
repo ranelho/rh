@@ -10,4 +10,5 @@ public interface CodigoRepository {
     Codigo save(Codigo codigo);
     List<Codigo> findAll();
     Optional<Codigo> findByCodigoOrDescricao(String cod, String descricao);
+    List<Codigo> saveAll(List<Codigo> codigos);
 }
