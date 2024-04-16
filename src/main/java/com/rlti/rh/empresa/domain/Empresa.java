@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 public class Empresa {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dependente_seq_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empresa_seq_generator")
     @SequenceGenerator(name="empresa_seq_generator", sequenceName = "empresa_sequence", allocationSize=1)
     Long idEmpresa;
     @NotBlank

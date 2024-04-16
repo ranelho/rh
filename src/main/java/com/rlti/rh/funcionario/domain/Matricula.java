@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 @Entity(name = "MATRICULA")
 public class Matricula {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "matricula_seq_generator")
+    @SequenceGenerator(name="matricula_seq_generator", sequenceName = "matricula_sequence", allocationSize=1)
     @Column(name = "id_matricula", nullable = false)
     private Long idMatricula;
 

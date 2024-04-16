@@ -15,7 +15,7 @@ import com.rlti.rh.funcionario.domain.enums.TipoConta;
 @Entity(name = "CONTA_PAGAMENTO")
 public class ContaPagamento {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "conta_pagamento_seq_generator")
     @SequenceGenerator(name="conta_pagamento_seq_generator", sequenceName = "conta_pagamento_sequence", allocationSize=1)
     @Column(name = "id_conta_pagamento", nullable = false)
     private Long idContaPagamento;
