@@ -1,5 +1,6 @@
 package com.rlti.rh.contrato.application.api;
 
+import com.rlti.rh.contrato.application.response.ContratosAtivosResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +8,8 @@ import com.rlti.rh.contrato.application.request.ContratoDesligamentoRequest;
 import com.rlti.rh.contrato.application.request.ContratoRequest;
 import com.rlti.rh.contrato.application.response.ContratoIdResponse;
 import com.rlti.rh.contrato.service.ContratoService;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -32,5 +35,15 @@ public class ContratoRestController implements ContratoApi {
     @Override
     public com.rlti.rh.contrato.application.api.ContratoResponse findContratoByMatricula(String matricula) {
         return contratoService.findContratoByMatricula(matricula);
+    }
+
+    @Override
+    public void addValeTransporte(String matricula, Integer quantidade, Long idAuxilioTransporte) {
+        contratoService.addValeTransporte(matricula, quantidade, idAuxilioTransporte);
+    }
+
+    @Override
+    public List<ContratosAtivosResponse> findContratosAtivos() {
+        return contratoService.findContratosAtivos();
     }
 }
