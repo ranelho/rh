@@ -53,6 +53,7 @@ public class FolhaMensal {
     private BigDecimal totalVencimentos;
     private BigDecimal totalDescontos;
     private BigDecimal salarioLiquido;
+    private BigDecimal valorAuxilioTransporte;
     private Boolean status;
 
     @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL)
@@ -91,6 +92,7 @@ public class FolhaMensal {
         this.status = false;
         this.empresa = empresa;
         this.tipoFolha = folhaMensaRequest.tipoFolha();
+        this.valorAuxilioTransporte = folhaMensaRequest.valorAuxilioTransporte();
     }
 
     public void update(FolhaMensaRequest folhaMensaRequest) {

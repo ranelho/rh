@@ -36,7 +36,8 @@ public record FolhaMensaRequest(
         String banco,
         String agencia,
         String conta,
-        TipoFolha tipoFolha
+        TipoFolha tipoFolha,
+        BigDecimal valorAuxilioTransporte
 ) {
 
     public FolhaMensaRequest(FolhaMensalData data) {
@@ -68,7 +69,8 @@ public record FolhaMensaRequest(
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getBanco(),
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getAgencia(),
                 data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta(),
-                TipoFolha.NORMAL
+                TipoFolha.NORMAL,
+                data.valorAuxilioTransporte()
         );
     }
 }

@@ -59,8 +59,8 @@ public class Contrato {
         this.periodoAvaliacao = request.dataAdmissao().plusDays(90);
         this.dataAssinaturaContrato = request.dataAssinaturaContrato();
         this.observacao = request.observacao();
+        this.prazo  = request.prazo();
         if (request.prazo() == Prazo.DETERMINADO){
-            this.prazo = request.prazo();
             this.prazoTotalEmMeses = request.prazoTotalEmMeses();
             this.previsaoFimContrato = request.dataAdmissao().plusMonths(request.prazoTotalEmMeses());
        }
