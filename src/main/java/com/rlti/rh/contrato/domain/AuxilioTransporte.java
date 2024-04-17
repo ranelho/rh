@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,9 +22,20 @@ public class AuxilioTransporte {
     private Long idAuxilioTransporte;
     private Double valorUnitario;
     private String descricao;
+    private LocalDate inicioVigencia;
+    private LocalDate fimVigencia;
 
     public AuxilioTransporte(AuxilioTransporteRequest request) {
         this.valorUnitario = request.valorUnitario();
         this.descricao = request.descricao();
+        this.inicioVigencia = request.inicioVigencia();
+        this.fimVigencia = request.fimVigencia();
+    }
+
+    public void update(AuxilioTransporteRequest request) {
+        this.valorUnitario = request.valorUnitario() == null ? this.valorUnitario : request.valorUnitario();
+        this.descricao = request.descricao() == null ? this.descricao : request.descricao();
+        this.inicioVigencia = request.inicioVigencia();
+        this.fimVigencia = request.fimVigencia();
     }
 }
