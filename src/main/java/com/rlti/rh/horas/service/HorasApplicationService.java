@@ -72,34 +72,50 @@ public class HorasApplicationService implements HorasService {
     @Override
     public void deleHoras(String numeroMatricula, String mesReferencia) {
         Horas horas = horasRepository.findHorasByNumeroMatriculaAndMesReferencia2(matriculaRepository.findByNumeroMatricula(numeroMatricula), mesReferencia)
-                .orElseThrow(()-> APIException.build(HttpStatus.BAD_REQUEST, "Horas não localizado"));
-            vencimentosRepository.deleteVencimentosByHoras(horas);
-            horasRepository.deletarHoras(horas);
+                .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Horas não localizado"));
+        vencimentosRepository.deleteVencimentosByHoras(horas);
+        horasRepository.deletarHoras(horas);
 
     }
 
     private BigDecimal calcularVencimentos(HorasRequest horasRequest, Contrato contrato, List<Vencimentos> vencimentos, String mesCompetencia) {
-        Optional<Horas> horasOptional = horasRepository.findHorasByNumeroMatriculaAndMesReferencia2(contrato.getMatricula(), mesCompetencia);
-        horasOptional.ifPresent(vencimentosRepository::deleteVencimentosByHoras);
-        horasOptional.ifPresent(horasRepository::deletarHoras);
-
-        SalarioBase salarioFuncionario = contrato.getCargo().getSalarios().stream()
-                .filter(salario -> Objects.equals(salario.getNivel(), contrato.getNivel()))
-                .findFirst()
-                .orElse(null);
+        deletarHorasEVencimentosRelacionados(contrato, mesCompetencia);
+        SalarioBase salarioFuncionario = getSalarioBase(contrato);
         validaNivel(salarioFuncionario);
+        montarVencimentoPrincipalEHorasExtrasETransporte(horasRequest, contrato, salarioFuncionario);
+        addVencimentosToList(horasRequest.getVencimentos(), vencimentos);
+        return salarioFuncionario.getValorSalario();
+    }
+
+    private static void montarVencimentoPrincipalEHorasExtrasETransporte(HorasRequest horasRequest, Contrato contrato, SalarioBase salarioFuncionario) {
+        montarVencimentos(horasRequest, salarioFuncionario.getValorSalario(), "001", true);
+
         if (horasRequest.getHorasNoturnas() > 0 || horasRequest.getHorasExtras() > 0)
             montarECalcularHorasExtras(horasRequest, salarioFuncionario);
 
-        montarVencimentos(horasRequest, salarioFuncionario.getValorSalario(), "001");
-        addVencimentosToList(horasRequest.getVencimentos(), vencimentos);
-        return salarioFuncionario.getValorSalario();
+        if (contrato.getAuxilioTransporte() != null)
+            montarVencimentos(horasRequest,
+                    BigDecimal.valueOf(contrato.getAuxilioTransporte().getValorUnitario()
+                            * contrato.getQuantidadeValeTransporte()), "007", false);
+    }
+
+    private static SalarioBase getSalarioBase(Contrato contrato) {
+        return contrato.getCargo().getSalarios().stream()
+                .filter(salario -> Objects.equals(salario.getNivel(), contrato.getNivel()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private void deletarHorasEVencimentosRelacionados(Contrato contrato, String mesCompetencia) {
+        Optional<Horas> horasOptional = horasRepository.findHorasByNumeroMatriculaAndMesReferencia2(contrato.getMatricula(), mesCompetencia);
+        horasOptional.ifPresent(vencimentosRepository::deleteVencimentosByHoras);
+        horasOptional.ifPresent(horasRepository::deletarHoras);
     }
 
     private static void montarECalcularHorasExtras(HorasRequest horasRequest, SalarioBase salarioFuncionario) {
         BigDecimal valorVencimento = calcularValorHorasExtras(salarioFuncionario.getValorSalario(),
                 horasRequest.getHorasExtras(), horasRequest.getHorasNoturnas());
-        montarVencimentos(horasRequest, valorVencimento, "002");
+        montarVencimentos(horasRequest, valorVencimento, "002", true);
     }
 
     private void addVencimentosToList(List<VencimentosRequest> horasRequest, List<Vencimentos> vencimentos) {
@@ -111,11 +127,11 @@ public class HorasApplicationService implements HorasService {
         }
     }
 
-    private static void montarVencimentos(HorasRequest horasRequest, BigDecimal valorVencimento, String codigo) {
+    private static void montarVencimentos(HorasRequest horasRequest, BigDecimal valorVencimento, String codigo, boolean dedutivel) {
         VencimentosRequest vencimento = new VencimentosRequest();
         vencimento.setCodigo(codigo);
         vencimento.setValorVencimento(valorVencimento);
-        vencimento.setDedutivel(true);
+        vencimento.setDedutivel(dedutivel);
         horasRequest.getVencimentos().add(vencimento);
     }
 
@@ -124,6 +140,5 @@ public class HorasApplicationService implements HorasService {
             throw APIException.build(HttpStatus.BAD_REQUEST, "Salário do funcionário não encontrado para o nível do contrato.");
         }
     }
-
 
 }

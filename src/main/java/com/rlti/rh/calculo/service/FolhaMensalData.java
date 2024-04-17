@@ -13,6 +13,7 @@ public record FolhaMensalData(
         IrResult irResult,
         InssResult inssResult,
         BigDecimal totalVencimentos,
-        BigDecimal totalDescontos
+        BigDecimal totalDescontos,
+        BigDecimal valorAuxilioTransporte
 )
 {}

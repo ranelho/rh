@@ -26,8 +26,8 @@ public record ContratoResponse(
                 contrato.getDataDesligamento(),
                 contrato.getMotivoDesligamento() != null ? contrato.getMotivoDesligamento().toString() : null,
                 contrato.getObservacao(),
-                contrato.getPrazoTotalEmMeses(),
-                contrato.getPrevisaoFimContrato(),
+                contrato.getPrazoTotalEmMeses() != null ? contrato.getPrazoTotalEmMeses() : 0,
+                contrato.getPrevisaoFimContrato() != null ? contrato.getPrevisaoFimContrato() : null,
                 contrato.getMatricula().getNumeroMatricula()
         );
     }

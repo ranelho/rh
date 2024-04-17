@@ -45,4 +45,9 @@ public class Descontos {
         this.valorDesconto = irrf.getIrrfCalculado();
         this.folhaMensal = folhaMensal;
     }
+    public Descontos(BigDecimal valorDesconto, FolhaMensal folhaMensal, Codigo codigo) {
+        this.codigo = codigo;
+        this.valorDesconto = valorDesconto;
+        this.folhaMensal = folhaMensal;
+    }
 }
