@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import com.rlti.rh.contrato.application.request.CargoRequest;
 import com.rlti.rh.contrato.application.response.CargoIdResponse;
 
+import java.util.List;
+
 @Tag(name = "Cargo", description = "API de Cargo")
 @RequestMapping("/v1/cargo")
 public interface CargoApi {
@@ -19,6 +21,10 @@ public interface CargoApi {
     @GetMapping("/nome-cargo/{nomeCargo}")
     @ResponseStatus(code = HttpStatus.OK)
     CargoResponse findByNomeCargo(@PathVariable String nomeCargo);
+
+    @GetMapping("/all")
+    @ResponseStatus(code = HttpStatus.OK)
+    List<CargoResponse> findAllCargos();
 
 
 }

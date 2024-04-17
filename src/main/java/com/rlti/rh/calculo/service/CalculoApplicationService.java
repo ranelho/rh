@@ -1,10 +1,10 @@
 package com.rlti.rh.calculo.service;
 
-import com.rlti.rh.config.AppConfig;
 import com.rlti.rh.calculo.process.InssResult;
 import com.rlti.rh.calculo.process.IrResult;
 import com.rlti.rh.calculo.repository.DescontosRepository;
 import com.rlti.rh.calculo.repository.VencimentosFolhaRepository;
+import com.rlti.rh.config.AppConfig;
 import com.rlti.rh.empresa.application.repository.EmpresaRepository;
 import com.rlti.rh.empresa.domain.Empresa;
 import com.rlti.rh.folha.application.api.FolhaMensaRequest;
@@ -106,25 +106,32 @@ public class CalculoApplicationService implements CalculoService {
             int dependentes = dependenteRepository.countDependenteFuncionario(horas.getContrato().getMatricula().getFuncionario());
             InssResult inssResult = calcularINSS(horas.getVencimentos(), inss);
             IrResult irResult = calcularImpostoRenda(inssResult.getValorLiquido(), irrf, dependentes);
+            BigDecimal auxilioTransporte = BigDecimal.ZERO;
+            BigDecimal descontoAuxilioTransporte = BigDecimal.ZERO;
+            if (horas.getContrato().getAuxilioTransporte() != null) {
+                auxilioTransporte = BigDecimal.valueOf(horas.getContrato().getAuxilioTransporte().getValorUnitario() * horas.getContrato().getQuantidadeValeTransporte());
+                descontoAuxilioTransporte = horas.getSalarioBase().multiply(BigDecimal.valueOf(0.06));
+            }
             FolhaMensalData dados = FolhaMensalData.builder()
                     .horas(horas)
                     .irResult(irResult)
                     .inssResult(inssResult)
                     .totalVencimentos(inssResult.getTotalVencimentos())
-                    .totalDescontos(inssResult.getInssCalculado().add(irResult.getIrrfCalculado()))
+                    .totalDescontos(inssResult.getInssCalculado().add(irResult.getIrrfCalculado().add(descontoAuxilioTransporte)))
+                    .valorAuxilioTransporte(auxilioTransporte)
                     .build();
             if (optionalFolhaMensal.isPresent() && Boolean.FALSE.equals(optionalFolhaMensal.get().getStatus())) {
                 folhaRepository.delete(optionalFolhaMensal.get());
             }
             log.info("[save] - processarFolhaMensal - Service");
-            saveFolha(horas, dados, inssResult, irResult);
+            saveFolha(horas, dados, inssResult, irResult, descontoAuxilioTransporte);
         }
         log.info("[end] - processarFolhaMensal - Service");
     }
 
-    private void saveFolha(Horas horas, FolhaMensalData dados, InssResult inssResult, IrResult irResult) {
+    private void saveFolha(Horas horas, FolhaMensalData dados, InssResult inssResult, IrResult irResult, BigDecimal descontoAuxilioTransporte) {
         FolhaMensal folhaMensal = saveFolhaMensal(dados);
-        saveDescontos(inssResult, folhaMensal, irResult);
+        saveDescontos(inssResult, folhaMensal, irResult, descontoAuxilioTransporte);
         saveVencimentos(horas.getVencimentos(), folhaMensal);
         horas.setCompetenciaFechada(true);
         horasRepository.salvarHoras(horas);
@@ -146,21 +153,25 @@ public class CalculoApplicationService implements CalculoService {
         log.info("[end] - saveVencimentos - Service");
     }
 
-    private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
+    private void saveDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult, BigDecimal descontoAuxilioTransporte) {
         log.info("[start] - saveDescontos - Service");
-        List<Descontos> descontosASalvar = getDescontos(inssResult, folhaMensal, irResult);
+        List<Descontos> descontosASalvar = getDescontos(inssResult, folhaMensal, irResult, descontoAuxilioTransporte);
         folhaMensal.setDescontos(descontosRepository.saveAll(descontosASalvar));
         folhaRepository.saveFolhaMensal(folhaMensal);
         log.info("[end] - saveDescontos - Service");
     }
 
-    private List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult) {
+    private List<Descontos> getDescontos(InssResult inssResult, FolhaMensal folhaMensal, IrResult irResult, BigDecimal descontoAuxilioTransporte) {
         log.info("[start] - getDescontos - Service");
         Descontos descontoInss = new Descontos(inssResult, folhaMensal, codigoRepository.findByCodigo("003"));
         List<Descontos> descontosASalvar = new ArrayList<>();
         if (irResult.getIrrfCalculado().compareTo(BigDecimal.ZERO) > 0) {
             Descontos descontoIrrf = new Descontos(irResult, folhaMensal, codigoRepository.findByCodigo("004"));
             descontosASalvar.add(descontoIrrf);
+        }
+        if (descontoAuxilioTransporte.compareTo(BigDecimal.ZERO) > 0) {
+            Descontos descontoTransporte = new Descontos(descontoAuxilioTransporte, folhaMensal, codigoRepository.findByCodigo("016"));
+            descontosASalvar.add(descontoTransporte);
         }
         descontosASalvar.add(descontoInss);
         log.info("[end] - getDescontos - Service");

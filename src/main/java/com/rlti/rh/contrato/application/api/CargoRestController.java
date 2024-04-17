@@ -8,6 +8,8 @@ import com.rlti.rh.contrato.application.response.CargoIdResponse;
 import com.rlti.rh.contrato.application.response.CargoResponse;
 import com.rlti.rh.contrato.service.CargoService;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -24,5 +26,10 @@ public class CargoRestController implements CargoApi {
     public CargoResponse findByNomeCargo(String nomeCargo) {
         log.info("CargoRestController.findByNomeCargo");
         return cargoService.findByNomeCargo(nomeCargo);
+    }
+
+    @Override
+    public List<CargoResponse> findAllCargos() {
+        return cargoService.findAllCargos();
     }
 }
