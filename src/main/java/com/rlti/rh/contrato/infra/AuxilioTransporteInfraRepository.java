@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class AuxilioTransporteInfraRepository implements AuxilioTransporteRepository {
@@ -22,5 +24,10 @@ public class AuxilioTransporteInfraRepository implements AuxilioTransporteReposi
         return auxilioTransporteJpaRepository.findById(idAuxilioTransporte).orElseThrow(
                 () -> APIException.build(HttpStatus.BAD_REQUEST, "Auxilio de Transporte não encontrado")
         );
+    }
+
+    @Override
+    public List<AuxilioTransporte> findAllAuxilioTransportes() {
+        return auxilioTransporteJpaRepository.findAll();
     }
 }
