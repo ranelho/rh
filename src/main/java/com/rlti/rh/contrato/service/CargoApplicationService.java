@@ -38,4 +38,9 @@ public class CargoApplicationService implements CargoService {
         Cargo cargo = cargoRepository.findByNomeCargo(nomeCargo);
         return new CargoResponse(cargo);
     }
+
+    @Override
+    public List<CargoResponse> findAllCargos() {
+        return cargoRepository.findAllCargos().stream().map(CargoResponse::new).toList();
+    }
 }
