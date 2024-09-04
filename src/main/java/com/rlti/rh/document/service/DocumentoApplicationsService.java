@@ -23,9 +23,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,46 +34,26 @@ public class DocumentoApplicationsService implements DocumentoService {
 
     private final DocumentoRepository documentoRepository;
     private final MatriculaRepository matriculaRepository;
+    private final AmazonS3 s3Client;
 
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
-    private final AmazonS3 s3Client;
-
     @Override
     @Transactional
     public FileUploadResponse uploadFile(String numeroMatricula, MultipartFile file) {
-        FileUploadResponse fileUploadResponse = new FileUploadResponse();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String todayDate = dateTimeFormatter.format(LocalDate.now());
-        String filePath = "";
+        FileUploadResponse fileUploadResponse;
+        String filePath;
         try {
             Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
-            if (matricula == null) {
-                throw APIException.build(HttpStatus.NOT_FOUND, "Matrícula não encontrada");
-            }
-
-            String originalFilename = file.getOriginalFilename();
-            String fileExtension = originalFilename != null && originalFilename.contains(".")
-                    ? originalFilename.substring(originalFilename.lastIndexOf('.'))
-                    : "";
-            filePath = String.format("%s/%s-%s%s", todayDate, UUID.randomUUID(), System.currentTimeMillis(), fileExtension);
-
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(file.getContentType());
-            objectMetadata.setContentLength(file.getSize());
-
+            filePath = getFilePath(file);
+            ObjectMetadata objectMetadata = getObjectMetadata(file);
             s3Client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
-
             String fileUrl = String.format("https://%s.s3.amazonaws.com/%s", bucketName, filePath);
 
             FileReference fileReference = new FileReference(matricula, filePath, fileUrl);
             documentoRepository.save(fileReference);
-
-            fileUploadResponse.setFilePath(filePath);
-            fileUploadResponse.setFileUrl(fileUrl);
-            fileUploadResponse.setDateTime(LocalDateTime.now());
-
+            fileUploadResponse = new FileUploadResponse(fileReference);
         } catch (IOException e) {
             log.error("Erro ao acessar o arquivo: ", e);
             throw APIException.build(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao acessar o arquivo");
@@ -87,16 +64,30 @@ public class DocumentoApplicationsService implements DocumentoService {
         return fileUploadResponse;
     }
 
+    private static ObjectMetadata getObjectMetadata(MultipartFile file) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(file.getContentType());
+        objectMetadata.setContentLength(file.getSize());
+        return objectMetadata;
+    }
+
+    private static String getFilePath(MultipartFile file) {
+        String filePath;
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename != null && originalFilename.contains(".")
+                ? originalFilename.substring(originalFilename.lastIndexOf('.'))
+                : "";
+        filePath = String.format("%s/%s-%s%s", LocalDate.now(), UUID.randomUUID(), System.currentTimeMillis(), fileExtension);
+        return filePath;
+    }
+
     @Override
-    @Transactional
     public byte[] downloadFile(String filePath) {
         try {
             GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, filePath);
             S3Object s3Object = s3Client.getObject(getObjectRequest);
-
             try (InputStream inputStream = s3Object.getObjectContent();
                  ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -112,14 +103,10 @@ public class DocumentoApplicationsService implements DocumentoService {
 
     @Override
     public List<FileResponse> getAllDocumentsByMatricula(String numeroMatricula) {
+        log.info("DocumentoApplicationsService::getAllDocumentsByMatricula");
         Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
-        List<FileReference> fileReferences = new ArrayList<>();
-        if (matricula != null) {
-            fileReferences = documentoRepository.findByMatricula(matricula);
-        }
-        return FileResponse.convert(fileReferences);
+        return FileResponse.convert(documentoRepository.findByMatricula(matricula));
     }
-
 
 }
 
