@@ -9,6 +9,7 @@ import com.rlti.rh.contrato.repository.ContratoRepository;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.handler.APIException;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @Repository
@@ -32,6 +33,11 @@ public class ContratoInfraRepository implements ContratoRepository {
     public Contrato findByMatricula(Matricula matricula) {
         return contratoJpaRepository.findByMatricula(matricula)
                 .orElseThrow(getContratoNaoEncontrado());
+    }
+
+    @Override
+    public List<Contrato> findContratosAtivos() {
+        return contratoJpaRepository.findAllByDataDesligamentoIsNull();
     }
 
     private static Supplier<APIException> getContratoNaoEncontrado() {

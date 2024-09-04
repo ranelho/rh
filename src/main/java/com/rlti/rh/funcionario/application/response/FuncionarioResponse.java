@@ -2,6 +2,7 @@ package com.rlti.rh.funcionario.application.response;
 
 import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.utils.Utils;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,5 +30,8 @@ public record FuncionarioResponse(
                 .stream()
                 .map(FuncionarioResponse::new)
                 .toList();
+    }
+    public static Page<FuncionarioResponse> convertePageable(Page<Funcionario> clientes) {
+        return clientes.map(FuncionarioResponse::new);
     }
 }

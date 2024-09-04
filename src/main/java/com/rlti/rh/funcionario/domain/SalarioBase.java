@@ -1,5 +1,6 @@
 package com.rlti.rh.funcionario.domain;
 
+import com.rlti.rh.contrato.domain.Cargo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import com.rlti.rh.funcionario.application.request.SalarioBaseRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,14 +28,24 @@ public class SalarioBase {
     private Long idSalarioBase;
 
     private BigDecimal valorSalario;
-    private Long nivel;
+    private Integer nivel;
 
     @CreatedDate
     LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "cargo_id_cargo")
+    private Cargo cargo;
+
     public SalarioBase(SalarioBaseRequest salarioBaseRequest) {
         this.valorSalario = salarioBaseRequest.valorSalario();
         this.nivel = salarioBaseRequest.nivel();
+    }
+
+    public SalarioBase(SalarioBaseRequest request, Cargo cargo) {
+        this.valorSalario = request.valorSalario();
+        this.nivel = request.nivel();
+        this.cargo = cargo;
     }
 }
 

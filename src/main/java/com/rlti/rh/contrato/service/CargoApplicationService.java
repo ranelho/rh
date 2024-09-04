@@ -11,6 +11,8 @@ import com.rlti.rh.funcionario.domain.SalarioBase;
 import com.rlti.rh.contrato.repository.CargoRepository;
 import com.rlti.rh.funcionario.service.SalarioBaseService;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -21,19 +23,24 @@ public class CargoApplicationService implements CargoService {
 
     @Override
     public CargoIdResponse newCargo(CargoRequest request) {
-        log.info("CargoApplicationService.novoCargo");
-        SalarioBase salarioBase = request.salarioBase().idSalarioBase() == null ?
-                salarioBaseService.findById(salarioBaseService.saveSalarioBase(request.salarioBase()).getIdSalarioBase()) :
-                salarioBaseService.findById(request.salarioBase().idSalarioBase());
-
-        Cargo cargo = cargoRepository.saveCargo(new Cargo(request, salarioBase));
+        log.info("CargoApplicationService.newCargo");
+        Cargo cargo = cargoRepository.saveCargo(new Cargo(request));
+        List<SalarioBase> salarios = salarioBaseService.saveAll(request.salarios(), cargo);
+        cargo.setSalarios(salarios);
+        cargo = cargoRepository.saveCargo(cargo);
         return CargoIdResponse.builder().idCargo(cargo.getIdCargo()).build();
     }
+
 
     @Override
     public CargoResponse findByNomeCargo(String nomeCargo) {
         log.info("CargoApplicationService.findByNomeCargo");
         Cargo cargo = cargoRepository.findByNomeCargo(nomeCargo);
         return new CargoResponse(cargo);
+    }
+
+    @Override
+    public List<CargoResponse> findAllCargos() {
+        return cargoRepository.findAllCargos().stream().map(CargoResponse::new).toList();
     }
 }

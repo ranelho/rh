@@ -24,4 +24,13 @@ public class MatriculaInfraRepository implements MatriculaRepository {
     public Matricula novaMatricula(Matricula matricula) {
         return matriculaJpaRepository.save(matricula);
     }
+
+    @Override
+    public int lastMatricula() {
+        log.info("lastMatricula");
+        if (matriculaJpaRepository.count() == 0) {
+            return 0;
+        }
+        return matriculaJpaRepository.findByLastIdMatricula();
+    }
 }

@@ -28,11 +28,13 @@ public class Contrato {
     private LocalDate periodoAvaliacao;
     private LocalDateTime dataAssinaturaContrato;
     private LocalDate dataDesligamento;
-    @Enumerated(EnumType.STRING)  private MotivoDesligamento motivoDesligamento;
     private String observacao;
-    @Enumerated(EnumType.STRING)  private Prazo prazo;
     private Integer prazoTotalEmMeses;
-    LocalDate previsaoFimContrato;
+    private LocalDate previsaoFimContrato;
+    private Integer nivel;
+    @Enumerated(EnumType.STRING)  private MotivoDesligamento motivoDesligamento;
+    @Enumerated(EnumType.STRING)  private Prazo prazo;
+    private Integer quantidadeValeTransporte;
 
     @OneToOne
     private Setor setor;
@@ -45,6 +47,10 @@ public class Contrato {
     @JoinColumn(name = "matricula_id_matricula")
     private Matricula matricula;
 
+    @OneToOne
+    @JoinColumn(name = "vale_transporte_id_vale_transporte")
+    private AuxilioTransporte auxilioTransporte;
+
     public Contrato(Matricula matricula, Setor setor, Cargo cargo, ContratoRequest request) {
         this.matricula = matricula;
         this.setor = setor;
@@ -53,11 +59,12 @@ public class Contrato {
         this.periodoAvaliacao = request.dataAdmissao().plusDays(90);
         this.dataAssinaturaContrato = request.dataAssinaturaContrato();
         this.observacao = request.observacao();
+        this.prazo  = request.prazo();
         if (request.prazo() == Prazo.DETERMINADO){
-            this.prazo = request.prazo();
             this.prazoTotalEmMeses = request.prazoTotalEmMeses();
             this.previsaoFimContrato = request.dataAdmissao().plusMonths(request.prazoTotalEmMeses());
        }
+        this.nivel = request.nivel();
     }
 
     public void desligamento(ContratoDesligamentoRequest desligamentoRequest) {
@@ -69,5 +76,10 @@ public class Contrato {
     public void renovacao(Integer prazoTotalEmMeses) {
         this.prazoTotalEmMeses += prazoTotalEmMeses;
         this.previsaoFimContrato =  this.previsaoFimContrato.plusMonths(prazoTotalEmMeses);
+    }
+
+    public void addValeTransporte(Integer quantidade, AuxilioTransporte auxilioTransporte) {
+        this.quantidadeValeTransporte = quantidade;
+        this.auxilioTransporte = auxilioTransporte;
     }
 }

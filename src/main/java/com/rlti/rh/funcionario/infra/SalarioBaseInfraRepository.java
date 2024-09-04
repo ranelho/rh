@@ -8,6 +8,8 @@ import com.rlti.rh.funcionario.domain.SalarioBase;
 import com.rlti.rh.funcionario.repository.SalarioBaseRepository;
 import com.rlti.rh.handler.APIException;
 
+import java.util.List;
+
 @Repository
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +25,11 @@ public class SalarioBaseInfraRepository implements SalarioBaseRepository {
     @Override
     public SalarioBase saveSalarioBase(SalarioBase salarioBase) {
         return salarioBaseJpaRepository.save(salarioBase);
+    }
+
+    @Override
+    public List<SalarioBase> saveAll(List<SalarioBase> salarios) {
+        return salarioBaseJpaRepository.saveAll(salarios);
     }
 
 }

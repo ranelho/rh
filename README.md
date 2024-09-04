@@ -42,7 +42,7 @@ O sistema de RH terá as seguintes funcionalidades básicas:
 
 Contribuições são bem-vindas! Se você tiver sugestões de melhorias, novas funcionalidades ou correções de bugs, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
-``` 
+```git 
 https://github.com/ranelho/rh.git 
 ```
 
@@ -50,6 +50,8 @@ https://github.com/ranelho/rh.git
 ```
 http://localhost:8080/rh/api/public/swagger-ui/index.html# 
 ```
+# Banco de Dados
+<img src="banco_dados.png" width=650><br><sub>Banco de Dados</sub>
 
 #### UC01
 - [CRUD Funcionário](./uc01-crud-funcionario/README.md)

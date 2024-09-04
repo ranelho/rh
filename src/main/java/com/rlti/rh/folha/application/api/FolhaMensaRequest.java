@@ -1,6 +1,7 @@
 package com.rlti.rh.folha.application.api;
 
 import com.rlti.rh.calculo.service.FolhaMensalData;
+import com.rlti.rh.folha.domain.TipoFolha;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -34,27 +35,29 @@ public record FolhaMensaRequest(
         BigDecimal totalDescontos,
         String banco,
         String agencia,
-        String conta
+        String conta,
+        TipoFolha tipoFolha,
+        BigDecimal valorAuxilioTransporte
 ) {
 
     public FolhaMensaRequest(FolhaMensalData data) {
         this(
-                data.contrato().getIdContrato(),
-                data.contrato().getMatricula().getFuncionario().getIdFuncionario(),
-                data.contrato().getMatricula().getFuncionario().getCtps(),
-                data.contrato().getMatricula().getFuncionario().getPis(),
-                data.contrato().getMatricula().getFuncionario().getNomeCompleto(),
-                data.contrato().getMatricula().getFuncionario().getCpf(),
-                data.contrato().getMatricula().getNumeroMatricula(),
-                data.contrato().getDataAdmissao(),
-                data.contrato().getCargo().getNomeCargo(),
-                data.contrato().getSetor().getNomeSetor(),
-                data.competencia(),
-                data.horasTrabalhadas().getDiasTrabalhados(),
-                data.horasTrabalhadas().getHorasExtras(),
-                data.horasTrabalhadas().getFaltas(),
-                data.horasTrabalhadas().getHorasNoturnas(),
-                data.contrato().getCargo().getSalarioBase().getValorSalario(),
+                data.horas().getContrato().getIdContrato(),
+                data.horas().getContrato().getMatricula().getFuncionario().getIdFuncionario(),
+                data.horas().getContrato().getMatricula().getFuncionario().getCtps(),
+                data.horas().getContrato().getMatricula().getFuncionario().getPis(),
+                data.horas().getContrato().getMatricula().getFuncionario().getNomeCompleto(),
+                data.horas().getContrato().getMatricula().getFuncionario().getCpf(),
+                data.horas().getContrato().getMatricula().getNumeroMatricula(),
+                data.horas().getContrato().getDataAdmissao(),
+                data.horas().getContrato().getCargo().getNomeCargo(),
+                data.horas().getContrato().getSetor().getNomeSetor(),
+                data.horas().getMesCompetencia(),
+                data.horas().getDiasTrabalhados(),
+                data.horas().getHorasExtras(),
+                data.horas().getFaltas(),
+                data.horas().getHorasNoturnas(),
+                data.horas().getSalarioBase(),
                 data.inssResult().getInssCalculado(),
                 data.inssResult().getAliquota(),
                 data.irResult().getIrrfCalculado(),
@@ -63,9 +66,11 @@ public record FolhaMensaRequest(
                 data.irResult().getSalarioLiquido(),
                 data.totalVencimentos(),
                 data.totalDescontos(),
-                data.contrato().getMatricula().getFuncionario().getContaPagamento().getBanco(),
-                data.contrato().getMatricula().getFuncionario().getContaPagamento().getAgencia(),
-                data.contrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta()
+                data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getBanco(),
+                data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getAgencia(),
+                data.horas().getContrato().getMatricula().getFuncionario().getContaPagamento().getNumeroConta(),
+                TipoFolha.NORMAL,
+                data.valorAuxilioTransporte()
         );
     }
 }

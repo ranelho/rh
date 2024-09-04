@@ -45,6 +45,7 @@ public class Funcionario {
     private LocalDate dataNascimento;
     private String rg;
     private LocalDate dataEmissaoRg;
+    @Column(unique = true)
     private String ctps;
     private String pis;
     private String nomePai;
@@ -76,9 +77,8 @@ public class Funcionario {
     @JsonIgnore
     private List<Dependente> dependentes;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "funcionario")
     @JsonIgnore
-    @JoinColumn(name = "formacao_id_formacao")
     private List<Formacao> formacao;
 
     public Funcionario(FuncionarioRequest request) {
@@ -95,6 +95,7 @@ public class Funcionario {
         this.nomePai = request.nomePai();
         this.nomeMae = request.nomeMae();
         this.contato = new Contato(request.contatoRequest());
+        this.emailCooporativo = request.emailCorporativo();
     }
 
     public void update(FuncionarioUpdateRequest request) {
@@ -106,6 +107,7 @@ public class Funcionario {
         this.grauDeInstrucao = request.grauDeInstrucao();
         this.sexo = request.sexo();
         this.estadoCivil = request.estadoCivil();
+        this.emailCooporativo = request.emailCorporativo();
     }
 
     public void addMatricula(Matricula matricula) {
@@ -118,5 +120,9 @@ public class Funcionario {
 
     public void addContato(Contato contato) {
         this.contato = contato;
+    }
+
+    public void addFormacao(Formacao formacao) {
+        this.formacao.add(formacao);
     }
 }

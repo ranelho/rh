@@ -1,7 +1,3 @@
-# Configuração para deploy em produção
-# DB_HOST_PROD url para o banco ex: jdbc:postgresql://localhost:5432/act
-# DB_USERNAME_PROD usuário do banco
-# DB_PASSWORD_PROD senha do banco
 spring:
   datasource:
     driverClassName: org.postgresql.Driver

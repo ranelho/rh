@@ -11,7 +11,7 @@ public record CargoResponse(
         String grauDeInstrucao,
         String descricaoCargo,
         Integer quantidadeDeHorasSemanais,
-        SalarioBaseResponse salarioBase
+        List<SalarioBaseResponse> salarios
 ) {
     public CargoResponse(Cargo cargo) {
         this(
@@ -20,7 +20,8 @@ public record CargoResponse(
                 cargo.getGrauDeInstrucao().getDescricao(),
                 cargo.getDescricaoCargo(),
                 cargo.getQuantidadeDeHorasSemanais(),
-                new SalarioBaseResponse(cargo.getSalarioBase()));
+                SalarioBaseResponse.converter(cargo.getSalarios())
+                );
     }
     public static List<CargoResponse> of(List<Cargo> cargos) {
         return cargos.stream().map(CargoResponse::new).toList();
