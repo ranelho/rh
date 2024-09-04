@@ -72,6 +72,13 @@
 			<version>6.17.0</version>
 		</dependency>
 
+		<!-- Dependências AWS -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.770</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
