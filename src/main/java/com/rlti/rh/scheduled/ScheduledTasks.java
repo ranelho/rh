@@ -1,4 +1,4 @@
-package com.rlti.rh.baths;
+package com.rlti.rh.scheduled;
 
 import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;

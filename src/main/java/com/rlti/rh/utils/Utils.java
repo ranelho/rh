@@ -16,7 +16,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class Utils {
 
-    private final MatriculaRepository matriculaRepository; // Injetando o MatriculaRepository
+    private final MatriculaRepository matriculaRepository;
 
     public String gerarMatricula() {
         int lastMatricula = matriculaRepository.lastMatricula();
@@ -24,7 +24,6 @@ public class Utils {
 
         String novaMatriculaStr = String.valueOf(novaMatricula);
 
-        // Certifique-se de que a nova matrícula tenha 6 dígitos preenchendo com zeros à esquerda, se necessário
         if (novaMatriculaStr.length() < 6) {
             novaMatriculaStr = StringUtils.leftPad(novaMatriculaStr, 6, "0");
         }
@@ -50,11 +49,11 @@ public class Utils {
         return formattedName.toString().trim();
     }
 
-
     public static int calcularIdade(LocalDate dataNascimento) {
-        LocalDate hoje = LocalDate.now(); // Obtém a data atual
-        return Period.between(dataNascimento, hoje).getYears(); // Calcula a diferença em anos entre as datas
+        LocalDate hoje = LocalDate.now();
+        return Period.between(dataNascimento, hoje).getYears();
     }
+
     public static String formatarMoeda(BigDecimal valor) {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols(new Locale("pt", "BR"));
         DecimalFormat formato = new DecimalFormat("R$ #,##0.00", simbolos);
