@@ -1,7 +1,10 @@
 package com.rlti.rh.document.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
+import com.rlti.rh.document.api.response.FileResponse;
 import com.rlti.rh.document.api.response.FileUploadResponse;
 import com.rlti.rh.document.domain.FileReference;
 import com.rlti.rh.document.repository.DocumentoRepository;
@@ -16,10 +19,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -34,7 +41,7 @@ public class DocumentoApplicationsService implements DocumentoService {
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
-    private AmazonS3 s3Client;
+    private final AmazonS3 s3Client;
 
     @Override
     @Transactional
@@ -44,35 +51,28 @@ public class DocumentoApplicationsService implements DocumentoService {
         String todayDate = dateTimeFormatter.format(LocalDate.now());
         String filePath = "";
         try {
-            // Busca a matrícula
             Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
             if (matricula == null) {
                 throw APIException.build(HttpStatus.NOT_FOUND, "Matrícula não encontrada");
             }
 
-            // Gera o caminho do arquivo
             String originalFilename = file.getOriginalFilename();
             String fileExtension = originalFilename != null && originalFilename.contains(".")
                     ? originalFilename.substring(originalFilename.lastIndexOf('.'))
                     : "";
             filePath = String.format("%s/%s-%s%s", todayDate, UUID.randomUUID(), System.currentTimeMillis(), fileExtension);
 
-            // Configura metadados do arquivo
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
             objectMetadata.setContentLength(file.getSize());
 
-            // Faz o upload para o S3
             s3Client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
 
-            // Gera a URL do arquivo
             String fileUrl = String.format("https://%s.s3.amazonaws.com/%s", bucketName, filePath);
 
-            // Salva a referência ao arquivo no banco de dados
             FileReference fileReference = new FileReference(matricula, filePath, fileUrl);
             documentoRepository.save(fileReference);
 
-            // Configura a resposta
             fileUploadResponse.setFilePath(filePath);
             fileUploadResponse.setFileUrl(fileUrl);
             fileUploadResponse.setDateTime(LocalDateTime.now());
@@ -84,9 +84,42 @@ public class DocumentoApplicationsService implements DocumentoService {
             log.error("Erro ao fazer upload do arquivo: ", e);
             throw APIException.build(HttpStatus.BAD_REQUEST, "Erro ao fazer upload do arquivo");
         }
-
         return fileUploadResponse;
     }
+
+    @Override
+    @Transactional
+    public byte[] downloadFile(String filePath) {
+        try {
+            GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, filePath);
+            S3Object s3Object = s3Client.getObject(getObjectRequest);
+
+            try (InputStream inputStream = s3Object.getObjectContent();
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+                }
+                return byteArrayOutputStream.toByteArray();
+            }
+        } catch (IOException e) {
+            log.error("Erro ao baixar o arquivo: ", e);
+            throw APIException.build(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao baixar o arquivo");
+        }
+    }
+
+    @Override
+    public List<FileResponse> getAllDocumentsByMatricula(String numeroMatricula) {
+        Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
+        List<FileReference> fileReferences = new ArrayList<>();
+        if (matricula != null) {
+            fileReferences = documentoRepository.findByMatricula(matricula);
+        }
+        return FileResponse.convert(fileReferences);
+    }
+
 
 }
 

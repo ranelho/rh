@@ -2,12 +2,16 @@ package com.rlti.rh.document.domain;
 
 import com.rlti.rh.funcionario.domain.Matricula;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "file_reference")
 public class FileReference {
 
