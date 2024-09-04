@@ -23,4 +23,9 @@ public class DocumentoInfraRepository implements DocumentoRepository {
     public List<FileReference> findByMatricula(Matricula matricula) {
         return documentoJpaRepository.findAllByMatricula(matricula);
     }
+
+    @Override
+    public void deleteByKey(String filePath) {
+        documentoJpaRepository.deleteByKey(filePath);
+    }
 }

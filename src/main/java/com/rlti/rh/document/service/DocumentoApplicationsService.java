@@ -108,6 +108,13 @@ public class DocumentoApplicationsService implements DocumentoService {
         return FileResponse.convert(documentoRepository.findByMatricula(matricula));
     }
 
+    @Override
+    @Transactional
+    public void deleteFile(String filePath) {
+        s3Client.deleteObject(bucketName, filePath);
+        documentoRepository.deleteByKey(filePath);
+    }
+
 }
 
 

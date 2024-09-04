@@ -25,4 +25,8 @@ public interface DocumentoApi {
     @GetMapping("/allDocuments/{numeroMatricula}")
     @ResponseStatus(code = HttpStatus.OK)
     List<FileResponse> getAllDocumentsByMatricula(@PathVariable String numeroMatricula);
+
+    @DeleteMapping("/delete")
+    @ResponseStatus(code = HttpStatus.OK)
+    void deleteFile(@RequestParam String filePath);
 }

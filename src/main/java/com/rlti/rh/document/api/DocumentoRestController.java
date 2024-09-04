@@ -42,4 +42,9 @@ public class DocumentoRestController implements DocumentoApi {
         return documentoService.getAllDocumentsByMatricula(numeroMatricula);
     }
 
+    @Override
+    public void deleteFile(String filePath) {
+        documentoService.deleteFile(filePath);
+    }
+
 }

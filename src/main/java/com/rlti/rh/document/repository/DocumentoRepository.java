@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface DocumentoRepository {
     void save(FileReference fileReference);
+
     List<FileReference> findByMatricula(Matricula matricula);
+
+    void deleteByKey(String filePath);
 }

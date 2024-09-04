@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface DocumentoService {
     FileUploadResponse uploadFile(String numeroMatricula, MultipartFile file);
+
     byte[] downloadFile(String filePath);
+
     List<FileResponse> getAllDocumentsByMatricula(String numeroMatricula);
+
+    void deleteFile(String filePath);
 }
