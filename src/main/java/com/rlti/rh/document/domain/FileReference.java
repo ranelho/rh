@@ -21,8 +21,8 @@ public class FileReference {
     @Column(nullable = false)
     private String url;
 
-    @OneToOne
-    @JoinColumn(name = "matricula_id_matricula")
+    @ManyToOne
+    @JoinColumn(name = "matricula_id", nullable = false)
     private Matricula matricula;
 
     public FileReference(Matricula matricula, String key, String fileUrl) {
