@@ -8,6 +8,8 @@ import com.rlti.rh.contrato.domain.Cargo;
 import com.rlti.rh.contrato.repository.CargoRepository;
 import com.rlti.rh.handler.APIException;
 
+import java.util.List;
+
 @Repository
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +33,11 @@ public class CargoInfraRepository implements CargoRepository {
     public Cargo findCargoById(Long idCargo) {
         return cargoJpaRepository.findById(idCargo)
                 .orElseThrow(()-> APIException.build(HttpStatus.BAD_REQUEST, "Cargo não encontrado"));
+    }
+
+    @Override
+    public List<Cargo> findAllCargos() {
+        return cargoJpaRepository.findAll();
     }
 
 }

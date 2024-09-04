@@ -21,6 +21,7 @@ public class Setor {
     @Column(name = "id_setor", nullable = false)
     private Long idSetor;
 
+    @Column(unique = true)
     private String nomeSetor;
 
     public Setor(SetorRequest request) {

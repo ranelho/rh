@@ -20,7 +20,7 @@ import java.util.List;
 @Entity(name = "FOLHA_MENSAL")
 public class FolhaMensal {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "folha_mensal_seq_generator")
     @SequenceGenerator(name="folha_mensal_seq_generator", sequenceName = "folha_mensal_sequence", allocationSize=1 )
     @Column(name = "id_folha_mensal", nullable = false)
     private Long idFolhaMensal;
@@ -53,12 +53,13 @@ public class FolhaMensal {
     private BigDecimal totalVencimentos;
     private BigDecimal totalDescontos;
     private BigDecimal salarioLiquido;
+    private BigDecimal valorAuxilioTransporte;
     private Boolean status;
 
-    @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vencimentos> vencimentos;
+    @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL)
+    private List<VencimentosFolha> vencimentos;
 
-    @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "folhaMensal", cascade = CascadeType.ALL)
     private List<Descontos> descontos;
 
     @OneToOne
@@ -90,11 +91,8 @@ public class FolhaMensal {
         this.totalDescontos = folhaMensaRequest.totalDescontos();
         this.status = false;
         this.empresa = empresa;
-        this.tipoFolha = TipoFolha.NORMAL;
-    }
-
-    public void addDescontos(List<Descontos> descontos) {
-        this.descontos = descontos;
+        this.tipoFolha = folhaMensaRequest.tipoFolha();
+        this.valorAuxilioTransporte = folhaMensaRequest.valorAuxilioTransporte();
     }
 
     public void update(FolhaMensaRequest folhaMensaRequest) {

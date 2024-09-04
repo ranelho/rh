@@ -1,64 +1,62 @@
 package com.rlti.rh.utils;
 
+import com.rlti.rh.funcionario.repository.MatriculaRepository;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Random;
+import java.util.Locale;
 
+@Component
+@RequiredArgsConstructor
 public class Utils {
 
-    private static final Random random = new Random();
+    private final MatriculaRepository matriculaRepository;
 
-    // Private constructor to hide the implicit public one
-    private Utils() {
-        throw new AssertionError(); // This prevents instantiation even from within the class
-    }
+    public String gerarMatricula() {
+        int lastMatricula = matriculaRepository.lastMatricula();
+        int novaMatricula = lastMatricula + 1;
 
-    // Method to generate a registration number
-    public static String gerarMatricula() {
-        // Define the length of the desired registration number
-        int tamanhoMatricula = 6;
+        String novaMatriculaStr = String.valueOf(novaMatricula);
 
-        // Create a StringBuilder to store the generated registration number
-        StringBuilder matricula = new StringBuilder();
-
-        // Generate each digit of the registration number
-        for (int i = 0; i < tamanhoMatricula; i++) {
-            // Generate a random number between 0 and 9
-            int digito = random.nextInt(10);
-            // Add the digit to the registration number
-            matricula.append(digito);
+        if (novaMatriculaStr.length() < 6) {
+            novaMatriculaStr = StringUtils.leftPad(novaMatriculaStr, 6, "0");
         }
 
-        // Return the generated registration number as a string
-        return matricula.toString();
+        return novaMatriculaStr;
     }
 
 
     public static String formatText(String name) {
-        // Verifica se o nome é vazio ou nulo
         if (name == null || name.isEmpty()) {
             return "";
         }
-        // Divide o nome em palavras
         String[] words = name.split("\\s+");
         StringBuilder formattedName = new StringBuilder();
-
         for (String word : words) {
-            // Verifica se a palavra é um dos artigos "da", "do"
-            if (!word.equalsIgnoreCase("da") && !word.equalsIgnoreCase("do")
-                    && !word.equalsIgnoreCase("dos")) {
-                // Converte a primeira letra para maiúscula e as demais para minúscula
+            String lowerCaseWord = word.toLowerCase();
+            if (!lowerCaseWord.equals("da") && !lowerCaseWord.equals("do")
+                    && !lowerCaseWord.equals("das") && !lowerCaseWord.equals("dos")) {
                 word = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
             }
-            // Adiciona a palavra ao nome formatado
             formattedName.append(word).append(" ");
         }
-        // Remove o espaço em branco extra no final e retorna o nome formatado
         return formattedName.toString().trim();
     }
 
     public static int calcularIdade(LocalDate dataNascimento) {
-        LocalDate hoje = LocalDate.now(); // Obtém a data atual
-        return Period.between(dataNascimento, hoje).getYears(); // Calcula a diferença em anos entre as datas
+        LocalDate hoje = LocalDate.now();
+        return Period.between(dataNascimento, hoje).getYears();
+    }
+
+    public static String formatarMoeda(BigDecimal valor) {
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        DecimalFormat formato = new DecimalFormat("R$ #,##0.00", simbolos);
+        return formato.format(valor);
     }
 }

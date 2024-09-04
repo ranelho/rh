@@ -8,6 +8,8 @@ import com.rlti.rh.contrato.domain.Setor;
 import com.rlti.rh.contrato.repository.SetorRepository;
 import com.rlti.rh.handler.APIException;
 
+import java.util.List;
+
 @Repository
 @Slf4j
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class SetorInfraRepository implements SetorRepository {
     @Override
     public Setor saveSetor(Setor setor) {
         return  setorJpaRepository.save(setor);
+    }
+
+    @Override
+    public List<Setor> getAllSetores() {
+        return setorJpaRepository.findAll();
     }
 }

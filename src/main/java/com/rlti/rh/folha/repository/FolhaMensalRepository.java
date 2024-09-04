@@ -8,6 +8,6 @@ public interface FolhaMensalRepository {
     FolhaMensal saveFolhaMensal(FolhaMensal folhaMensal);
     Optional<FolhaMensal> findByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno);
     Optional<FolhaMensal> findFolhaMensalByMatriculaAndMesCompetencia(String numeroMatricula, String mesAno, boolean aberta);
-
     void delete(FolhaMensal folhaMensal);
+    Optional<FolhaMensal> findByMatriculaAndMesCompetenciaAndStatus(String numeroMatricula, String mesCompetencia, boolean b);
 }
