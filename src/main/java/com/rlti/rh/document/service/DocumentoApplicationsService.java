@@ -1,9 +1,6 @@
 package com.rlti.rh.document.service;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.rlti.rh.document.api.response.FileUploadResponse;
 import com.rlti.rh.document.domain.FileReference;
@@ -11,7 +8,6 @@ import com.rlti.rh.document.repository.DocumentoRepository;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
 import com.rlti.rh.handler.APIException;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,22 +30,11 @@ public class DocumentoApplicationsService implements DocumentoService {
 
     private final DocumentoRepository documentoRepository;
     private final MatriculaRepository matriculaRepository;
-    private AmazonS3 s3client;
 
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
-    @Value("${aws.s3.accessKey}")
-    private String accessKey;
-
-    @Value("${aws.s3.secretKey}")
-    private String secretKey;
-
-    @PostConstruct
-    private void initialize() {
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.s3client = new AmazonS3Client(credentials);
-    }
+    private AmazonS3 s3Client;
 
     @Override
     @Transactional
@@ -77,7 +62,8 @@ public class DocumentoApplicationsService implements DocumentoService {
             objectMetadata.setContentType(file.getContentType());
             objectMetadata.setContentLength(file.getSize());
 
-            s3client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
+            // Faz o upload para o S3
+            s3Client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
 
             // Gera a URL do arquivo
             String fileUrl = String.format("https://%s.s3.amazonaws.com/%s", bucketName, filePath);
