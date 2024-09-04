@@ -21,7 +21,6 @@ public class AniversarioChecker {
             int anos = dataAtual.getYear() - funcionario.getDataNascimento().getYear();
             detalhesFuncionario.put("nomeCompleto", funcionario.getNomeCompleto());
             detalhesFuncionario.put("dataNascimento", funcionario.getDataNascimento().toString());
-            // Verifica se o objeto de contato não é nulo antes de acessar o método getEmail()
             detalhesFuncionario.put("email", funcionario.getContato() != null ? funcionario.getContato().getEmail() : null);
             detalhesFuncionario.put("mensagem", "Parabéns, " + funcionario.getNomeCompleto() + "! Hoje é o seu aniversário e você está fazendo " + anos + " anos!");
         }
