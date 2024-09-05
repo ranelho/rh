@@ -20,3 +20,7 @@ scheduled:
     cronExpression: ${CRON_BIRTHDAY_CHECK:0 8 * * * *}
 config:
   cnpj: ${CNPJ:81436017000198}
+
+aws:
+  s3:
+    endpoint: ""  # Usar o endpoint padrão da AWS (deixe vazio para produção)

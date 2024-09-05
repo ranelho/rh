@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,12 +40,12 @@ public class DocumentoApplicationsService implements DocumentoService {
 
     @Override
     @Transactional
-    public FileUploadResponse uploadFile(String numeroMatricula, String descricao,MultipartFile file) {
+    public FileUploadResponse uploadFile(String numeroMatricula, String descricao, MultipartFile file) {
         FileUploadResponse fileUploadResponse;
         String filePath;
         try {
             Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
-            filePath = getFilePath("F"+numeroMatricula,file);
+            filePath = getFilePath("F" + numeroMatricula, file);
             ObjectMetadata objectMetadata = getObjectMetadata(file);
             s3Client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
             String fileUrl = String.format("https://%s.s3.amazonaws.com/%s", bucketName, filePath);
@@ -82,12 +81,12 @@ public class DocumentoApplicationsService implements DocumentoService {
     }
 
     @Override
-    public byte[] downloadFile(String filePath) {
+    public byte[] downloadFile(String objectKey) {
         try {
-            GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, filePath);
+            GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, objectKey);
             S3Object s3Object = s3Client.getObject(getObjectRequest);
             try (InputStream inputStream = s3Object.getObjectContent();
-                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -110,9 +109,9 @@ public class DocumentoApplicationsService implements DocumentoService {
 
     @Override
     @Transactional
-    public void deleteFile(String filePath) {
-        s3Client.deleteObject(bucketName, filePath);
-        documentoRepository.deleteByKey(filePath);
+    public void deleteFile(String objectKey) {
+        s3Client.deleteObject(bucketName, objectKey);
+        documentoRepository.deleteByKey(objectKey);
     }
 
 }
