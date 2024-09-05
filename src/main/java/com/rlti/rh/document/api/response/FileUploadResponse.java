@@ -9,11 +9,13 @@ import java.time.LocalDateTime;
 public class FileUploadResponse {
     private String filePath;
     private String fileUrl;
+    private String descricao;
     private LocalDateTime dateTime;
 
     public FileUploadResponse(FileReference fileReference) {
         filePath = fileReference.getKey();
         fileUrl =  fileReference.getUrl();
+        descricao = fileReference.getDescricao();
         dateTime = LocalDateTime.now();
     }
 }

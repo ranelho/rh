@@ -41,17 +41,17 @@ public class DocumentoApplicationsService implements DocumentoService {
 
     @Override
     @Transactional
-    public FileUploadResponse uploadFile(String numeroMatricula, MultipartFile file) {
+    public FileUploadResponse uploadFile(String numeroMatricula, String descricao,MultipartFile file) {
         FileUploadResponse fileUploadResponse;
         String filePath;
         try {
             Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
-            filePath = getFilePath(file);
+            filePath = getFilePath("F"+numeroMatricula,file);
             ObjectMetadata objectMetadata = getObjectMetadata(file);
             s3Client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
             String fileUrl = String.format("https://%s.s3.amazonaws.com/%s", bucketName, filePath);
 
-            FileReference fileReference = new FileReference(matricula, filePath, fileUrl);
+            FileReference fileReference = new FileReference(matricula, filePath, fileUrl, descricao);
             documentoRepository.save(fileReference);
             fileUploadResponse = new FileUploadResponse(fileReference);
         } catch (IOException e) {
@@ -71,13 +71,13 @@ public class DocumentoApplicationsService implements DocumentoService {
         return objectMetadata;
     }
 
-    private static String getFilePath(MultipartFile file) {
+    private static String getFilePath(String numeroMatricula, MultipartFile file) {
         String filePath;
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename != null && originalFilename.contains(".")
                 ? originalFilename.substring(originalFilename.lastIndexOf('.'))
                 : "";
-        filePath = String.format("%s/%s-%s%s", LocalDate.now(), UUID.randomUUID(), System.currentTimeMillis(), fileExtension);
+        filePath = String.format("%s/%s-%s%s", numeroMatricula, UUID.randomUUID(), System.currentTimeMillis(), fileExtension);
         return filePath;
     }
 

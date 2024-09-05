@@ -25,14 +25,17 @@ public class FileReference {
     @Column(nullable = false)
     private String url;
 
+    private String descricao;
+
     @ManyToOne
     @JoinColumn(name = "matricula_id", nullable = false)
     private Matricula matricula;
 
-    public FileReference(Matricula matricula, String key, String fileUrl) {
+    public FileReference(Matricula matricula, String key, String fileUrl, String descricao) {
         this.matricula = matricula;
         this.key = key;
         this.url = fileUrl;
+        this.descricao = descricao;
     }
 }
 

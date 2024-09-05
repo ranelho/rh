@@ -11,10 +11,12 @@ import java.util.List;
 public class FileResponse {
     private String filePath;
     private String fileUrl;
+    private String descricao;
 
     public FileResponse(FileReference fileReference) {
         this.filePath = fileReference.getKey();
         this.fileUrl = fileReference.getUrl();
+        this.descricao = fileReference.getDescricao();
     }
 
     public static List<FileResponse> convert(List<FileReference> fileReferences) {

@@ -67,6 +67,23 @@ http://localhost:8080/rh/api/public/swagger-ui/index.html#
 - INSS
 - IRPF
 
+### AWS
+#### S3 - Permissão visualização de arquivo
+````json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::nome-do-bucket/*"
+        }
+    ]
+}
+````
+
+
 ## Autor
 
 Este projeto foi desenvolvido por [Ranelho Lacerda].

@@ -21,8 +21,8 @@ public class DocumentoRestController implements DocumentoApi {
     private final DocumentoService documentoService;
 
     @Override
-    public FileUploadResponse uploadFile(String numeroMatricula, MultipartFile file) {
-        return documentoService.uploadFile(numeroMatricula, file);
+    public FileUploadResponse uploadFile(String numeroMatricula, String descricao, MultipartFile file) {
+        return documentoService.uploadFile(numeroMatricula,descricao, file);
     }
 
     @Override
