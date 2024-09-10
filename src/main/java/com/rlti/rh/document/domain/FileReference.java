@@ -31,6 +31,10 @@ public class FileReference {
     @JoinColumn(name = "matricula_id", nullable = false)
     private Matricula matricula;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_type_id")
+    private DocumentType documentType;
+
     public FileReference(Matricula matricula, String key, String fileUrl, String descricao) {
         this.matricula = matricula;
         this.key = key;

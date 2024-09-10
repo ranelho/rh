@@ -1,5 +1,7 @@
 package com.rlti.rh.document.api;
 
+import com.rlti.rh.document.api.request.DocumentoTypeRequest;
+import com.rlti.rh.document.api.response.DocumentoTypeResponse;
 import com.rlti.rh.document.api.response.FileResponse;
 import com.rlti.rh.document.api.response.FileUploadResponse;
 import com.rlti.rh.document.service.DocumentoService;
@@ -45,6 +47,11 @@ public class DocumentoRestController implements DocumentoApi {
     @Override
     public void deleteFile(String filePath) {
         documentoService.deleteFile(filePath);
+    }
+
+    @Override
+    public DocumentoTypeResponse createDocumentoType(DocumentoTypeRequest request) {
+        return documentoService.createDocumentoType(request);
     }
 
 }

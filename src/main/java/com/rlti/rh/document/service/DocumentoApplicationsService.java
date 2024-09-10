@@ -4,8 +4,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+import com.rlti.rh.document.api.request.DocumentoTypeRequest;
+import com.rlti.rh.document.api.response.DocumentoTypeResponse;
 import com.rlti.rh.document.api.response.FileResponse;
 import com.rlti.rh.document.api.response.FileUploadResponse;
+import com.rlti.rh.document.domain.DocumentType;
 import com.rlti.rh.document.domain.FileReference;
 import com.rlti.rh.document.repository.DocumentoRepository;
 import com.rlti.rh.funcionario.domain.Matricula;
@@ -112,6 +115,13 @@ public class DocumentoApplicationsService implements DocumentoService {
     public void deleteFile(String objectKey) {
         s3Client.deleteObject(bucketName, objectKey);
         documentoRepository.deleteByKey(objectKey);
+    }
+
+    @Override
+    public DocumentoTypeResponse createDocumentoType(DocumentoTypeRequest request) {
+        log.info("DocumentoApplicationsService::createDocumentoType");
+        DocumentType documentType = documentoRepository.salvar(new DocumentType(request));
+        return new DocumentoTypeResponse(documentType);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.rlti.rh.document.api;
 
+import com.rlti.rh.document.api.request.DocumentoTypeRequest;
+import com.rlti.rh.document.api.response.DocumentoTypeResponse;
 import com.rlti.rh.document.api.response.FileResponse;
 import com.rlti.rh.document.api.response.FileUploadResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,4 +31,8 @@ public interface DocumentoApi {
     @DeleteMapping("/delete")
     @ResponseStatus(code = HttpStatus.OK)
     void deleteFile(@RequestParam String filePath);
+
+    @PostMapping("/documento-type")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    DocumentoTypeResponse createDocumentoType(@RequestBody DocumentoTypeRequest request);
 }

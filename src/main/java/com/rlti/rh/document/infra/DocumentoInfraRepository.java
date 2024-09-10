@@ -1,5 +1,6 @@
 package com.rlti.rh.document.infra;
 
+import com.rlti.rh.document.domain.DocumentType;
 import com.rlti.rh.document.domain.FileReference;
 import com.rlti.rh.document.repository.DocumentoRepository;
 import com.rlti.rh.funcionario.domain.Matricula;
@@ -13,6 +14,7 @@ import java.util.List;
 public class DocumentoInfraRepository implements DocumentoRepository {
 
     private final DocumentoJpaRepository documentoJpaRepository;
+    private final DocumentTypeJpaRepository documentTypeJpaRepository;
 
     @Override
     public void save(FileReference fileReference) {
@@ -27,5 +29,10 @@ public class DocumentoInfraRepository implements DocumentoRepository {
     @Override
     public void deleteByKey(String filePath) {
         documentoJpaRepository.deleteByKey(filePath);
+    }
+
+    @Override
+    public DocumentType salvar(DocumentType documentType) {
+        return documentTypeJpaRepository.save(documentType);
     }
 }
