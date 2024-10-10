@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,5 +35,10 @@ public class DocumentoInfraRepository implements DocumentoRepository {
     @Override
     public DocumentType salvar(DocumentType documentType) {
         return documentTypeJpaRepository.save(documentType);
+    }
+
+    @Override
+    public Optional<DocumentType> findById(Long idDocument) {
+        return documentTypeJpaRepository.findById(idDocument);
     }
 }

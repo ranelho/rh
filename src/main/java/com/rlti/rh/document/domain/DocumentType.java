@@ -1,6 +1,5 @@
 package com.rlti.rh.document.domain;
 
-import com.rlti.rh.contrato.domain.Cargo;
 import com.rlti.rh.document.api.request.DocumentoTypeRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,15 +22,12 @@ public class DocumentType {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String descricao;
 
-    private Boolean obrigatorio;
-
-    @OneToMany(mappedBy = "documentType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<FileReference> fileReferences;
+    @OneToMany(mappedBy = "documentType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CargoDocument> cargoDocuments;
 
     public DocumentType(DocumentoTypeRequest request) {
-        this.name = request.name().toUpperCase();
-        this.obrigatorio = request.obrigatorio();
+        this.descricao = request.descricao().toUpperCase();
     }
 }

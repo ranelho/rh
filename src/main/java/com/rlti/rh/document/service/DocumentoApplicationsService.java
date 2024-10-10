@@ -123,7 +123,4 @@ public class DocumentoApplicationsService implements DocumentoService {
         DocumentType documentType = documentoRepository.salvar(new DocumentType(request));
         return new DocumentoTypeResponse(documentType);
     }
-
 }
-
-

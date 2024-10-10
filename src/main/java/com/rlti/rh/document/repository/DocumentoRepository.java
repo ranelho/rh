@@ -5,6 +5,7 @@ import com.rlti.rh.document.domain.FileReference;
 import com.rlti.rh.funcionario.domain.Matricula;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DocumentoRepository {
     void save(FileReference fileReference);
@@ -14,4 +15,6 @@ public interface DocumentoRepository {
     void deleteByKey(String filePath);
 
     DocumentType salvar(DocumentType documentType);
+
+    Optional<DocumentType> findById(Long idDocument);
 }
