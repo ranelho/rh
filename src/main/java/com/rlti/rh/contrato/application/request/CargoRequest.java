@@ -13,7 +13,6 @@ public record CargoRequest(
         Boolean exigeCursoSuperior,
         String descricaoCargo,
         Integer quantidadeDeHorasSemanais,
-        List<SalarioBaseRequest> salarios,
-        Set<DocumentType> documentTypes
+        List<SalarioBaseRequest> salarios
 ) {
 }

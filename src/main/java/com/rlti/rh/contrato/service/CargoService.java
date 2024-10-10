@@ -10,4 +10,5 @@ public interface CargoService {
     CargoIdResponse newCargo(CargoRequest request);
     CargoResponse findByNomeCargo(String nomeCargo);
     List<CargoResponse> findAllCargos();
+
 }

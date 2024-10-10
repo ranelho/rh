@@ -2,7 +2,7 @@ package com.rlti.rh.contrato.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.rh.contrato.application.request.CargoRequest;
-import com.rlti.rh.document.domain.DocumentType;
+import com.rlti.rh.document.domain.DocumentCargo;
 import com.rlti.rh.funcionario.domain.SalarioBase;
 import com.rlti.rh.funcionario.domain.enums.GrauDeInstrucao;
 import jakarta.persistence.*;
@@ -39,13 +39,8 @@ public class Cargo {
     @JsonIgnore
     private List<SalarioBase> salarios;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "cargo_document_type",
-            joinColumns = @JoinColumn(name = "cargo_id"),
-            inverseJoinColumns = @JoinColumn(name = "document_type_id")
-    )
-    private Set<DocumentType> documentTypes;
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cargo")
+    private Set<DocumentCargo> documentCargos;
 
     public Cargo(CargoRequest request) {
         this.nomeCargo = formatText(request.nomeCargo());
@@ -53,6 +48,5 @@ public class Cargo {
         this.descricaoCargo = request.descricaoCargo();
         this.quantidadeDeHorasSemanais = request.quantidadeDeHorasSemanais();
         this.exigeCursoSuperior = request.exigeCursoSuperior();
-        this.documentTypes = request.documentTypes();
     }
 }

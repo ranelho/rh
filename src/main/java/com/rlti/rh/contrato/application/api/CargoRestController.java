@@ -32,4 +32,6 @@ public class CargoRestController implements CargoApi {
     public List<CargoResponse> findAllCargos() {
         return cargoService.findAllCargos();
     }
+
+
 }

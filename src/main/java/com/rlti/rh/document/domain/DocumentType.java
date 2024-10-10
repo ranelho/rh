@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class DocumentType {
     private String descricao;
 
     @OneToMany(mappedBy = "documentType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CargoDocument> cargoDocuments;
+    private Set<DocumentCargo> documentCargos = new HashSet<>();
 
     public DocumentType(DocumentoTypeRequest request) {
         this.descricao = request.descricao().toUpperCase();

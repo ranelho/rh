@@ -9,6 +9,7 @@ import com.rlti.rh.contrato.repository.CargoRepository;
 import com.rlti.rh.handler.APIException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -38,6 +39,11 @@ public class CargoInfraRepository implements CargoRepository {
     @Override
     public List<Cargo> findAllCargos() {
         return cargoJpaRepository.findAll();
+    }
+
+    @Override
+    public Optional<Cargo> findById(Long idCargo) {
+        return cargoJpaRepository.findById(idCargo);
     }
 
 }

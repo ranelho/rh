@@ -1,6 +1,7 @@
 package com.rlti.rh.contrato.application.response;
 
 import com.rlti.rh.contrato.domain.Cargo;
+import com.rlti.rh.document.api.response.CargoDocumentResponse;
 import com.rlti.rh.funcionario.application.response.SalarioBaseResponse;
 
 import java.util.List;
@@ -11,7 +12,8 @@ public record CargoResponse(
         String grauDeInstrucao,
         String descricaoCargo,
         Integer quantidadeDeHorasSemanais,
-        List<SalarioBaseResponse> salarios
+        List<SalarioBaseResponse> salarios,
+        List<CargoDocumentResponse> documents
 ) {
     public CargoResponse(Cargo cargo) {
         this(
@@ -20,10 +22,11 @@ public record CargoResponse(
                 cargo.getGrauDeInstrucao().getDescricao(),
                 cargo.getDescricaoCargo(),
                 cargo.getQuantidadeDeHorasSemanais(),
-                SalarioBaseResponse.converter(cargo.getSalarios())
+                SalarioBaseResponse.converter(cargo.getSalarios()),
+                CargoDocumentResponse.converter(cargo.getDocumentCargos())
                 );
     }
-    public static List<CargoResponse> of(List<Cargo> cargos) {
+    public static List<CargoResponse> convert(List<Cargo> cargos) {
         return cargos.stream().map(CargoResponse::new).toList();
     }
 }

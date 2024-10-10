@@ -43,4 +43,6 @@ public class CargoApplicationService implements CargoService {
     public List<CargoResponse> findAllCargos() {
         return cargoRepository.findAllCargos().stream().map(CargoResponse::new).toList();
     }
+
+
 }
