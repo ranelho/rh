@@ -1,5 +1,6 @@
 package com.rlti.rh.contrato.application.api;
 
+import com.rlti.rh.contrato.application.response.CargoDocResponse;
 import com.rlti.rh.contrato.application.response.CargoResponse;
 import com.rlti.rh.document.api.response.CargoDocumentResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,6 @@ public interface CargoApi {
     @ResponseStatus(code = HttpStatus.OK)
     List<CargoResponse> findAllCargos();
 
-  /*  @GetMapping("/document/{idCargo}")
-    CargoResponse getCargoDocument(@PathVariable Long idCargo);*/
+    @GetMapping("/document/{idCargo}")
+    CargoDocResponse getCargoDocuments(@PathVariable Long idCargo);
 }

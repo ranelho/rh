@@ -14,4 +14,5 @@ public interface CargoRepository {
     List<Cargo> findAllCargos();
 
     Optional<Cargo> findById(Long idCargo);
+
 }

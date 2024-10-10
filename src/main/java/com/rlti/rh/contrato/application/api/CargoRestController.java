@@ -1,5 +1,7 @@
 package com.rlti.rh.contrato.application.api;
 
+import com.rlti.rh.contrato.application.response.CargoDocResponse;
+import com.rlti.rh.document.api.response.CargoDocumentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +35,9 @@ public class CargoRestController implements CargoApi {
         return cargoService.findAllCargos();
     }
 
+    @Override
+    public CargoDocResponse getCargoDocuments(Long idCargo) {
+        return cargoService.getCargoDocument(idCargo);
+    }
 
 }

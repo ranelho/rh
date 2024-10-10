@@ -1,5 +1,6 @@
 package com.rlti.rh.document.api.response;
 
+import com.rlti.rh.contrato.domain.Cargo;
 import com.rlti.rh.document.domain.DocumentCargo;
 
 import java.util.List;
