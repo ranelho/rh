@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.rlti.rh.funcionario.application.request.ContatoRequest;
+import com.rlti.rh.funcionario.application.api.request.ContatoRequest;
 
 @AllArgsConstructor
 @NoArgsConstructor

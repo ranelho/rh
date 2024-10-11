@@ -1,4 +1,4 @@
-package com.rlti.rh.funcionario.application.request;
+package com.rlti.rh.funcionario.application.api.request;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.rlti.rh.funcionario.application.response;
+package com.rlti.rh.funcionario.application.api.response;
 
 import com.rlti.rh.funcionario.domain.Matricula;
 

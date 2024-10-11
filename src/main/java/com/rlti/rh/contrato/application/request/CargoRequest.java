@@ -1,11 +1,9 @@
 package com.rlti.rh.contrato.application.request;
 
-import com.rlti.rh.document.domain.DocumentType;
-import com.rlti.rh.funcionario.application.request.SalarioBaseRequest;
+import com.rlti.rh.funcionario.application.api.request.SalarioBaseRequest;
 import com.rlti.rh.funcionario.domain.enums.GrauDeInstrucao;
 
 import java.util.List;
-import java.util.Set;
 
 public record CargoRequest(
         String nomeCargo,

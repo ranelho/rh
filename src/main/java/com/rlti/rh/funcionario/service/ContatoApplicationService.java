@@ -2,7 +2,7 @@ package com.rlti.rh.funcionario.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.rlti.rh.funcionario.application.request.ContatoRequest;
+import com.rlti.rh.funcionario.application.api.request.ContatoRequest;
 import com.rlti.rh.funcionario.domain.Contato;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.repository.ContatoRepository;

@@ -2,7 +2,7 @@ package com.rlti.rh.funcionario.application.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
-import com.rlti.rh.funcionario.application.request.DependenteRequest;
+import com.rlti.rh.funcionario.application.api.request.DependenteRequest;
 import com.rlti.rh.funcionario.service.DependenteService;
 
 @RestController

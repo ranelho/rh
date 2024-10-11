@@ -1,12 +1,13 @@
 package com.rlti.rh.funcionario.service;
 
-import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
-import com.rlti.rh.funcionario.application.request.FormacaoRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
-import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.api.request.FormacaoRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioUpdateRequest;
+import com.rlti.rh.funcionario.application.api.response.DocumentsFuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioComFormacaoResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioIdResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,5 @@ public interface FuncionarioService {
     void updateContaPagamento(String cpf, ContaPagamentoRequest contaPagamentoRequest);
     void addFormacao(String cpf, FormacaoRequest formacaoRequest);
     List<FuncionarioComFormacaoResponse> findAllFuncionariosComFormacao();
+    DocumentsFuncionarioResponse findDocumentsByFuncionario(String matricula);
 }

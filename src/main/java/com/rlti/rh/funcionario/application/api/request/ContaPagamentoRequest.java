@@ -1,4 +1,4 @@
-package com.rlti.rh.funcionario.application.request;
+package com.rlti.rh.funcionario.application.api.request;
 
 import com.rlti.rh.funcionario.domain.enums.TipoConta;
 import jakarta.validation.constraints.NotNull;

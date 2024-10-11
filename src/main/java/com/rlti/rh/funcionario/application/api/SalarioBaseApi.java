@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import com.rlti.rh.funcionario.application.request.SalarioBaseRequest;
-import com.rlti.rh.funcionario.application.response.SalarioBaseIdResponse;
+import com.rlti.rh.funcionario.application.api.request.SalarioBaseRequest;
+import com.rlti.rh.funcionario.application.api.response.SalarioBaseIdResponse;
 
 @Tag(name = "Salário Base", description = "API de Salário Base")
 @RequestMapping("/v1/salario-base")

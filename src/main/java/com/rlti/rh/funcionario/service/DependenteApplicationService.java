@@ -2,7 +2,7 @@ package com.rlti.rh.funcionario.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.rlti.rh.funcionario.application.request.DependenteRequest;
+import com.rlti.rh.funcionario.application.api.request.DependenteRequest;
 import com.rlti.rh.funcionario.domain.Dependente;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.repository.DependenteRepository;

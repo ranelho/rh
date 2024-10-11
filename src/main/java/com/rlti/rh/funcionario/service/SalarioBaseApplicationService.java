@@ -4,8 +4,8 @@ import com.rlti.rh.contrato.domain.Cargo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.rlti.rh.funcionario.application.request.SalarioBaseRequest;
-import com.rlti.rh.funcionario.application.response.SalarioBaseIdResponse;
+import com.rlti.rh.funcionario.application.api.request.SalarioBaseRequest;
+import com.rlti.rh.funcionario.application.api.response.SalarioBaseIdResponse;
 import com.rlti.rh.funcionario.domain.SalarioBase;
 import com.rlti.rh.funcionario.repository.SalarioBaseRepository;
 

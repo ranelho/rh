@@ -3,8 +3,8 @@ package com.rlti.rh.funcionario.application.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
-import com.rlti.rh.funcionario.application.request.SalarioBaseRequest;
-import com.rlti.rh.funcionario.application.response.SalarioBaseIdResponse;
+import com.rlti.rh.funcionario.application.api.request.SalarioBaseRequest;
+import com.rlti.rh.funcionario.application.api.response.SalarioBaseIdResponse;
 import com.rlti.rh.funcionario.service.SalarioBaseService;
 
 @RestController

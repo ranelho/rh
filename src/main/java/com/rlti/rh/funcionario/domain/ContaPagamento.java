@@ -1,6 +1,6 @@
 package com.rlti.rh.funcionario.domain;
 
-import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.api.request.ContaPagamentoRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,5 @@
 package com.rlti.rh.funcionario.infra;
 
-import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.repository.FuncionarioRepository;
 import com.rlti.rh.handler.APIException;

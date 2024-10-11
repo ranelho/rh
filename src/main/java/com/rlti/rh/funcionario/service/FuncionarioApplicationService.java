@@ -1,18 +1,25 @@
 package com.rlti.rh.funcionario.service;
 
-import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
-import com.rlti.rh.funcionario.application.request.FormacaoRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
-import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
+import com.rlti.rh.contrato.domain.Contrato;
+import com.rlti.rh.contrato.repository.ContratoRepository;
+import com.rlti.rh.document.domain.FileReference;
+import com.rlti.rh.document.repository.DocumentoRepository;
+import com.rlti.rh.funcionario.application.api.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.api.request.FormacaoRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioUpdateRequest;
+import com.rlti.rh.funcionario.application.api.response.DocumentsFuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioComFormacaoResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioIdResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioResponse;
 import com.rlti.rh.funcionario.domain.ContaPagamento;
 import com.rlti.rh.funcionario.domain.Formacao;
 import com.rlti.rh.funcionario.domain.Funcionario;
+import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.funcionario.repository.ContaPagamentoRepository;
 import com.rlti.rh.funcionario.repository.FormacaoRepository;
 import com.rlti.rh.funcionario.repository.FuncionarioRepository;
+import com.rlti.rh.funcionario.repository.MatriculaRepository;
 import com.rlti.rh.utils.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +41,9 @@ public class FuncionarioApplicationService implements FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
     private final EmailService emailService;
     private final ContaPagamentoRepository contaPagamentoRepository;
+    private final MatriculaRepository matriculaRepository;
+    private final ContratoRepository contratoRepository;
+    private final DocumentoRepository documentoRepository;
 
     @Override
     public FuncionarioIdResponse newFuncionario(FuncionarioRequest request) {
@@ -123,5 +133,13 @@ public class FuncionarioApplicationService implements FuncionarioService {
     public List<FuncionarioComFormacaoResponse> findAllFuncionariosComFormacao() {
         List<Funcionario> funcionarios = funcionarioRepository.findAllFuncionariosComFormacao();
         return FuncionarioComFormacaoResponse.converte(funcionarios);
+    }
+
+    @Override
+    public DocumentsFuncionarioResponse findDocumentsByFuncionario(String matricula) {
+        Matricula matr = matriculaRepository.findByNumeroMatricula(matricula);
+        Contrato contrato = contratoRepository.findByMatricula(matr);
+        List<FileReference> fileReferences = documentoRepository.findAllByMatricula(matr);
+        return new DocumentsFuncionarioResponse(matr, contrato, fileReferences);
     }
 }

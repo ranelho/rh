@@ -1,6 +1,5 @@
 package com.rlti.rh.funcionario.repository;
 
-import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

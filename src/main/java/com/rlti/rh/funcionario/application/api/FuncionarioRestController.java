@@ -1,12 +1,13 @@
 package com.rlti.rh.funcionario.application.api;
 
-import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
-import com.rlti.rh.funcionario.application.request.FormacaoRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
-import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.api.request.FormacaoRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioUpdateRequest;
+import com.rlti.rh.funcionario.application.api.response.DocumentsFuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioComFormacaoResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioIdResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioResponse;
 import com.rlti.rh.funcionario.domain.Funcionario;
 import com.rlti.rh.funcionario.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +74,11 @@ public class FuncionarioRestController implements FuncionarioApi {
     @Override
     public List<FuncionarioComFormacaoResponse> findAllFuncionariosComFormacao() {
         return funcionarioService.findAllFuncionariosComFormacao();
+    }
+
+    @Override
+    public DocumentsFuncionarioResponse findDocumentsByFuncionario(String matricula) {
+        return funcionarioService.findDocumentsByFuncionario(matricula);
     }
 
 

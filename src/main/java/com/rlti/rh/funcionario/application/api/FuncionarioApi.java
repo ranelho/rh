@@ -1,12 +1,13 @@
 package com.rlti.rh.funcionario.application.api;
 
-import com.rlti.rh.funcionario.application.request.ContaPagamentoRequest;
-import com.rlti.rh.funcionario.application.request.FormacaoRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioRequest;
-import com.rlti.rh.funcionario.application.request.FuncionarioUpdateRequest;
-import com.rlti.rh.funcionario.application.response.FuncionarioComFormacaoResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioIdResponse;
-import com.rlti.rh.funcionario.application.response.FuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.request.ContaPagamentoRequest;
+import com.rlti.rh.funcionario.application.api.request.FormacaoRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioRequest;
+import com.rlti.rh.funcionario.application.api.request.FuncionarioUpdateRequest;
+import com.rlti.rh.funcionario.application.api.response.DocumentsFuncionarioResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioComFormacaoResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioIdResponse;
+import com.rlti.rh.funcionario.application.api.response.FuncionarioResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -59,4 +60,8 @@ public interface FuncionarioApi {
     @GetMapping("/all-com-formacao/")
     @ResponseStatus(code = HttpStatus.OK)
     List<FuncionarioComFormacaoResponse> findAllFuncionariosComFormacao();
+
+    @GetMapping("/documents/{matricula}")
+    @ResponseStatus(code = HttpStatus.OK)
+    DocumentsFuncionarioResponse findDocumentsByFuncionario(@PathVariable("matricula") String matricula);
 }

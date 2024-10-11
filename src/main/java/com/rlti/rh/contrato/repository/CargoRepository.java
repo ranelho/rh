@@ -10,9 +10,6 @@ public interface CargoRepository {
     Cargo saveCargo(Cargo cargo);
     Cargo findByNomeCargo(String nomeCargo);
     Cargo findCargoById(Long idCargo);
-
     List<Cargo> findAllCargos();
-
     Optional<Cargo> findById(Long idCargo);
-
 }

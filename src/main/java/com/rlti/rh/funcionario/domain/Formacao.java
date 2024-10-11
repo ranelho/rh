@@ -1,7 +1,7 @@
 package com.rlti.rh.funcionario.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rlti.rh.funcionario.application.request.FormacaoRequest;
+import com.rlti.rh.funcionario.application.api.request.FormacaoRequest;
 import com.rlti.rh.funcionario.domain.enums.SituacaoCurso;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
