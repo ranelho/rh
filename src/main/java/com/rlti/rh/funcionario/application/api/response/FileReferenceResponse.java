@@ -1,20 +1,21 @@
 package com.rlti.rh.funcionario.application.api.response;
 
-import com.rlti.rh.document.api.response.DocumentoTypeResponse;
 import com.rlti.rh.document.domain.FileReference;
 
 import java.util.List;
 
 public record FileReferenceResponse(
+        Long documentType,
         String key,
         String descricao,
-        DocumentoTypeResponse tipoDocumento
+        String tipoDocumento
 ) {
     public FileReferenceResponse(FileReference fileReference) {
         this(
+                fileReference.getDocumentType().getId(),
                 fileReference.getKey(),
                 fileReference.getDescricao(),
-                new DocumentoTypeResponse(fileReference.getDocumentType())
+                fileReference.getDocumentType().getDescricao()
         );
     }
 
