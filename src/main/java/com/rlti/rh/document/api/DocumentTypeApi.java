@@ -1,4 +1,4 @@
-package com.rlti.rh.document;
+package com.rlti.rh.document.api;
 
 import com.rlti.rh.document.api.request.DocumentoTypeRequest;
 import com.rlti.rh.document.api.response.DocumentoTypeResponse;

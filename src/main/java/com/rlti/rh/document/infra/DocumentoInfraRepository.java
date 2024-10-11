@@ -41,4 +41,9 @@ public class DocumentoInfraRepository implements DocumentoRepository {
     public Optional<DocumentType> findById(Long idDocument) {
         return documentTypeJpaRepository.findById(idDocument);
     }
+
+    @Override
+    public List<FileReference> findAllByMatricula(Matricula matr) {
+        return documentoJpaRepository.findAllByMatricula(matr);
+    }
 }

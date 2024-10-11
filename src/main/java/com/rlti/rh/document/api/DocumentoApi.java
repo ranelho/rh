@@ -18,7 +18,10 @@ import java.util.List;
 public interface DocumentoApi {
     @PostMapping("/upload/{numeroMatricula}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    FileUploadResponse uploadFile(@PathVariable String numeroMatricula, @RequestParam String descricao, @RequestParam("file") MultipartFile file);
+    FileUploadResponse uploadFile(@PathVariable String numeroMatricula,
+                                  @RequestParam Long documentType,
+                                  @RequestParam String descricao,
+                                  @RequestParam("file") MultipartFile file);
 
     @GetMapping("/download/{filePath}")
     @ResponseStatus(code = HttpStatus.OK)

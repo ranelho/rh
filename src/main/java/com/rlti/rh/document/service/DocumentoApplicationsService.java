@@ -10,6 +10,7 @@ import com.rlti.rh.document.api.response.FileResponse;
 import com.rlti.rh.document.api.response.FileUploadResponse;
 import com.rlti.rh.document.domain.DocumentType;
 import com.rlti.rh.document.domain.FileReference;
+import com.rlti.rh.document.repository.DocumentTypeRepository;
 import com.rlti.rh.document.repository.DocumentoRepository;
 import com.rlti.rh.funcionario.domain.Matricula;
 import com.rlti.rh.funcionario.repository.MatriculaRepository;
@@ -37,23 +38,27 @@ public class DocumentoApplicationsService implements DocumentoService {
     private final DocumentoRepository documentoRepository;
     private final MatriculaRepository matriculaRepository;
     private final AmazonS3 s3Client;
+    private final DocumentTypeRepository documentTypeRepository;
 
     @Value("${aws.s3.bucketName}")
     private String bucketName;
 
     @Override
     @Transactional
-    public FileUploadResponse uploadFile(String numeroMatricula, String descricao, MultipartFile file) {
+    public FileUploadResponse uploadFile(String numeroMatricula, Long documentType, String descricao, MultipartFile file) {
         FileUploadResponse fileUploadResponse;
         String filePath;
         try {
             Matricula matricula = matriculaRepository.findByNumeroMatricula(numeroMatricula);
+            DocumentType type = documentTypeRepository.findById(documentType).orElseThrow(
+                    () -> APIException.build(HttpStatus.NOT_FOUND, "Tipo de documento não encontrado")
+            );
             filePath = getFilePath("F" + numeroMatricula, file);
             ObjectMetadata objectMetadata = getObjectMetadata(file);
             s3Client.putObject(bucketName, filePath, file.getInputStream(), objectMetadata);
             String fileUrl = String.format("https://%s.s3.amazonaws.com/%s", bucketName, filePath);
 
-            FileReference fileReference = new FileReference(matricula, filePath, fileUrl, descricao);
+            FileReference fileReference = new FileReference(matricula, filePath, fileUrl, descricao, type);
             documentoRepository.save(fileReference);
             fileUploadResponse = new FileUploadResponse(fileReference);
         } catch (IOException e) {

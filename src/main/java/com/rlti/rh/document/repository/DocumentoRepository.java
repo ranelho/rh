@@ -17,4 +17,6 @@ public interface DocumentoRepository {
     DocumentType salvar(DocumentType documentType);
 
     Optional<DocumentType> findById(Long idDocument);
+
+    List<FileReference> findAllByMatricula(Matricula matr);
 }

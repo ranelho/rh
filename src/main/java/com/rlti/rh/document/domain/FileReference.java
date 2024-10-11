@@ -35,11 +35,12 @@ public class FileReference {
     @JoinColumn(name = "document_type_id")
     private DocumentType documentType;
 
-    public FileReference(Matricula matricula, String key, String fileUrl, String descricao) {
+    public FileReference(Matricula matricula, String key, String fileUrl, String descricao, DocumentType type) {
         this.matricula = matricula;
         this.key = key;
         this.url = fileUrl;
         this.descricao = descricao;
+        this.documentType = type;
     }
 }
 
